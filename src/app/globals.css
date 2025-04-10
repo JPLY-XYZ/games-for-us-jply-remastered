@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Phudu:wght@300..900&family=Sigmar&display=swap');
+@import "tailwindcss";
+
+body{
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  background-image: var(--background-img);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font-family: "Kanit", serif;
+}
+
+.sigmar-regular {
+  font-family: "Sigmar", serif;
+  font-weight: 400;
+  letter-spacing: 3px;
+  font-style: normal;
+}
+
+.phudu-uniquifier {
+  font-family: "Phudu", serif;
+  font-weight: 900;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text-color: #000;
+    --background-color: #fff;
+    --aside-card-background: #c0c6cc;
+    --header-footer-background: rgb(166, 173, 184);
+    --butons-color: rgb(75 85 99);
+    --butons-color-hover: rgb(55 65 81);
+    --background-img: url(assets/fondoClaro.png);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #fff;
+    --background-color: #000;
+    --aside-card-background: #1a2836;
+    --header-footer-background: rgb(75 85 99);
+    --butons-color: rgb(75 85 99);
+    --butons-color-hover: rgb(55 65 81);
+    --background-img: url(assets/fondoOscuro.png);
+  }
+}
+
+@media (min-width: 740px) and (max-width: 975px) {
+  .disenio {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Scrollbar oculto */
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

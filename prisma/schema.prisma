@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USUARIO
+  DESARROLLADOR
+  ADMINISTRADOR
+}
+
+model User {
+  id              String    @id @default(cuid())
+  name            String
+  email           String?   @unique
+  password        String?
+  emailVerified   DateTime?
+  image           String?
+  role            Role      @default(USUARIO)
+  bio             String?
+  birthDate       DateTime?
+  country         String?
+  avatar          String?
+  backgroundImage String?
+  createdAt       DateTime  @default(now())
+  lastLogin       DateTime?
+  reportCount     Int       @default(0)
+
+  accounts       Account[]
+  contents       Content[]
+  comments       Comment[]
+  favoriteGames  Game[]    @relation("Favorites")
+  developedGames Game[]    @relation("DevelopedBy")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Game {
+  id           Int       @id @default(autoincrement())
+  name         String
+  shortDesc    String?
+  longDesc     String?
+  releaseDate  DateTime?
+  editor       String?
+  price        Decimal?  @db.Decimal(10, 2)
+  averageScore Decimal?  @db.Decimal(3, 2)
+  salesCount   Int?      @default(0)
+  requirements Json?
+  urls         Json?
+  reportCount  Int       @default(0)
+
+  contents   Content[]
+  comments   Comment[]
+  fans       User[]     @relation("Favorites")
+  developers User[]     @relation("DevelopedBy")
+  categories Category[]
+  platforms  Platform[]
+}
+
+model Category {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  games       Game[]
+}
+
+model Platform {
+  id           Int     @id @default(autoincrement())
+  name         String  @unique
+  manufacturer String?
+  games        Game[]
+}
+
+model Content {
+  id          Int         @id @default(autoincrement())
+  game        Game        @relation(fields: [gameId], references: [id])
+  gameId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  type        ContentType
+  title       String
+  url         String?
+  text        String?
+  publishedAt DateTime    @default(now())
+  editedAt    DateTime?
+  authorName  String?
+  score       Int?
+  reportCount Int         @default(0)
+  Comment     Comment[]
+}
+
+enum ContentType {
+  RESEÑA
+  VIDEO
+  IMAGEN
+  GUIA
+}
+
+model Comment {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  game        Game?     @relation(fields: [gameId], references: [id])
+  gameId      Int?
+  content     Content?  @relation(fields: [contentId], references: [id])
+  contentId   Int?
+  text        String
+  score       Int?
+  createdAt   DateTime  @default(now())
+  edited      Boolean   @default(false)
+  editedAt    DateTime?
+  reportCount Int       @default(0)
+
+  //@@check((gameId IS NOT NULL AND contentId IS NULL) OR (gameId IS NULL AND contentId IS NOT NULL))
+
+  /**
+   * HAY QUE APLICAR ESTAS REGLAS O VERIFICAR DESDE EL CODIGO QUE ESTA O UNA U OTRA
+   * ALTER TABLE Comment
+   * ADD CONSTRAINT check_comment_target
+   * CHECK (
+   * (gameId IS NOT NULL AND contentId IS NULL)
+   * OR
+   * (gameId IS NULL AND contentId IS NOT NULL)
+   * );
+   */
+}
