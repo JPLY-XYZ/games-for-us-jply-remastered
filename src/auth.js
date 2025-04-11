@@ -9,9 +9,9 @@ export const options = {
     session: { strategy: 'jwt' },
     adapter: PrismaAdapter(prisma),
     pages: {
-        signIn: '/auth/login',
-        signOut: '/auth/logout',
-        error: '/auth/error'
+        signIn: '/login',
+        signOut: '/logout',
+        error: '/error'
     },
     events: {
         async linkAccount({ user }) {

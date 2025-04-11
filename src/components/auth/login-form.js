@@ -1,6 +1,6 @@
 'use client'
 import { useActionState } from 'react'
-import { login } from '@/lib/actions'
+import { login, loginSteam } from '@/lib/actions'
 import { loginGoogle, loginDiscord } from "@/lib/actions"
 
 
@@ -64,7 +64,7 @@ export function LoginForm({ className }) {
             
             <hr className="h-[1px] bg-gray-400 my-6 w-full" />
 
-                <div className="flex flex-row gap-4 w-full justify-center flex-nowrap">
+                <form className="flex flex-row gap-4 w-full justify-center flex-nowrap">
                     <button
                         formAction={loginGoogle}
                         className="flex items-center justify-center gap-2 w-[200px] px-4 py-2 bg-white text-black font-semibold rounded-md hover:bg-slate-100 transition"
@@ -82,12 +82,13 @@ export function LoginForm({ className }) {
                     </button>
 
                     <button
+                    formAction={loginSteam}
                         className="flex items-center justify-center gap-2 w-[200px] px-4 py-2 bg-[#171a21] text-white font-semibold rounded-md hover:bg-[#1b1f26] transition"
                     >
                         <img src="/images/steam.svg" alt="Steam" className="h-5 w-5" />
                         Steam
                     </button>
-                </div>
+                </form>
 
 
 
