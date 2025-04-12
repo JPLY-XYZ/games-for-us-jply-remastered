@@ -6,6 +6,7 @@ import {
     Search,
   } from "lucide-react";
 import Link from "next/link";
+import AuthButtons from "./auth/auth-buttons";
   
   function Aside() {
     return (
@@ -51,7 +52,7 @@ import Link from "next/link";
                 </div>
               </Link>
               <div className="block md:hidden">
-                {/* <AuthHeaderButton /> */}
+              <AuthButtons />
               </div>
             </div>
           </div>
@@ -61,7 +62,7 @@ import Link from "next/link";
           <p>¡ESCANEAME!</p>
           </div>
           <div className="hidden md:block">
-            {/* <AuthHeaderButton /> */}
+          <AuthButtons />
           </div>
         </div>
       </>

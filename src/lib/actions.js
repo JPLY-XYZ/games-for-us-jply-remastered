@@ -83,7 +83,7 @@ export async function loginGoogle() {
 }
 
 // LOGIN steam
-export async function loginSteam() {
+export async function loginMicrosoft() {
     try {
         await signIn('steam', { redirectTo: globalThis.callbackUrl })
     } catch (error) {

@@ -1,4 +1,3 @@
-// Run on edge
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 
@@ -6,29 +5,37 @@ const { auth } = NextAuth(authConfig);
 
 // Rutas públicas que no requieren autenticación
 const PUBLIC_PATHS = [
-  '/', // home
-  '/login',
-  '/register',
-  '/about',
+  '/',             // Página de inicio
+  '/about',        // Página "sobre nosotros"
+  '/login',        // Login
+  '/register',     // Registro
 ];
 
 export default auth((req) => {
   const { pathname, search } = req.nextUrl;
 
-  const isPublic = PUBLIC_PATHS.some(path => pathname === path || pathname.startsWith(path + '/'));
+  console.log("MIDDLEWARE", pathname, req.auth);
 
+  // Verificamos si es una ruta pública
+  const isPublic = PUBLIC_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(path + '/')
+  );
+
+  // Si no está autenticado y no es pública, redirige a login
   if (!req.auth && !isPublic) {
     const callbackUrl = pathname + search;
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
-    return Response.redirect(`${req.nextUrl.origin}/auth/login?callbackUrl=${encodedCallbackUrl}`);
+    return Response.redirect(
+      `${req.nextUrl.origin}/login?callbackUrl=${encodedCallbackUrl}`
+    );
   }
 
-  return null; // permitir acceso
+  // Si está autenticado o es una ruta pública, deja pasar
+  return null;
 });
 
-// ⬇️ AQUÍ va el matcher
 export const config = {
-  matcher: ['/((?!_next|api|favicon.ico|sitemap.xml|robots.txt|images).*)'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|api|images|auth).*)',
+  ],
 };
-
-
