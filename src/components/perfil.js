@@ -1,3 +1,4 @@
+import { AlertTriangle } from "lucide-react";
 import Image from "next/image";
 
 function Perfil({ user }) {
@@ -6,17 +7,28 @@ function Perfil({ user }) {
     return (
         <div className="bg-slate-100 dark:bg-slate-900 min-h-screen md:w-[60%]">
             {/* Banner */}
-            <div className="h-56 w-full bg-gray-800 relative z-0">
-                {user.backgroundImage && (
-                    <Image
-                        src={user.backgroundImage}
-                        alt="banner"
-                        layout="fill"
-                        objectFit="cover"
-                        className="brightness-75"
-                    />
-                )}
-            </div>
+         
+
+<div className="h-56 w-full bg-gray-800 relative z-0">
+    {user.backgroundImage && (
+        <Image
+            src={user.backgroundImage}
+            alt="banner"
+            layout="fill"
+            objectFit="cover"
+            className="brightness-75"
+        />
+    )}
+
+    {/* Botón de Reportar */}
+    <button
+        className="absolute bottom-4 right-4  cursor-pointer text-white rounded-full opacity-70 hover:opacity-100 shadow-md transition-all"
+        aria-label="Reportar"
+    >
+        <AlertTriangle className="w-5 h-5" />
+    </button>
+</div>
+
 
             {/* Perfil info */}
             <div className="max-w-6xl mx-auto mt-6 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-6 relative z-10">
