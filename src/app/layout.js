@@ -1,8 +1,10 @@
 import '@/app/globals.css'
 import { Inter } from 'next/font/google'
-import Header from '@/components/header'
 import Link from 'next/link'
 import Aside from '@/components/aside'
+import { Gamepad2 } from 'lucide-react'
+import AuthButtons from '@/components/auth/auth-buttons'
+import { SessionProvider } from 'next-auth/react'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,37 +19,32 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="es">
-      <body className={`bg-slate-100 ${inter.className}`} >
-      <>
-    
-    <div className="md:grid w-full md:grid-cols-[256px_auto] overflow-hidden">
-      <aside className=" md:relative fixed bottom-0 left-0 w-full h-auto bg-[var(--aside-card-background)] p-6 md:h-screen md:w-64 z-10 md:order-first ">
-        <Aside />
-      </aside>
-      <main className="flex items-center justify-center w-full order-first md:order-none z-0 md:pb-15 pb-25 mx-auto overflow-y-auto h-screen">
-        {children}
-        <Link
-          href={"/howtouse"}
-          className="fixed sm:bottom-15 sm:right-3 bottom-25 right-3 bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg text-lg hover:bg-blue-600 transition"
-        >
-          ?
-        </Link>
-      </main>
-
-      <footer className="hidden text-end md:block w-full bg-[var(--header-footer-background)] px-6 py-2 fixed bottom-0 left-0 mt-16 md:mt-4">
-        <a
-          className="text-sm hover:underline"
-          href="https://github.com/JPLY-XYZ/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          © 2025 JPLY 
-        </a>
-        | Todos los derechos reservados | GAMES FOR US V-1.5.3
-      </footer>
-    </div>
-  </>
-      </body>
-    </html>
+      <SessionProvider> 
+    <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
+      
+      <header className="h-14 bg-[var(--aside-card-background)] text-white flex px-10 py-2 justify-between items-center sticky top-0 z-50">
+      <div className=" hidden md:flex flex-row items-center">
+              <Gamepad2 className="w-12 h-12 mr-3" />
+              <h1 className="text-4xl font-bold">GAMES FOR US</h1>
+            </div>
+            <AuthButtons />
+      </header>
+  
+      <div className="flex-1 flex">
+        <main className="flex items-center justify-center w-full overflow-y-auto">
+          {children}
+          <Link
+            href="/howtouse"
+            className="fixed sm:bottom-15 sm:right-3 bottom-25 right-3 bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg text-lg hover:bg-blue-600 transition"
+          >
+            ?
+          </Link>
+        </main>
+      </div>
+  
+    </body>
+    </SessionProvider>
+  </html>
+  
   )
 }

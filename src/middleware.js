@@ -6,7 +6,6 @@ const { auth } = NextAuth(authConfig);
 // Rutas públicas que no requieren autenticación
 const PUBLIC_PATHS = [
   '/',             // Página de inicio
-  '/about',        // Página "sobre nosotros"
   '/login',        // Login
   '/register',     // Registro
 ];

@@ -83,9 +83,9 @@ export async function loginGoogle() {
 }
 
 // LOGIN steam
-export async function loginMicrosoft() {
+export async function loginReddit() {
     try {
-        await signIn('steam', { redirectTo: globalThis.callbackUrl })
+        await signIn('reddit', { redirectTo: globalThis.callbackUrl })
     } catch (error) {
         console.log(error);
         throw error

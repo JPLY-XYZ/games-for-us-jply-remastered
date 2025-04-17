@@ -11,6 +11,10 @@ import AuthButtons from "./auth/auth-buttons";
   function Aside() {
     return (
       <>
+            <aside className=" md:relative fixed bottom-0 left-0 w-full h-auto bg-[var(--aside-card-background)] p-6 md:h-screen md:w-64 z-10 md:order-first ">
+       
+    
+      
         <div className="flex flex-col justify-between h-full items-center">
           <div>
             <div className=" hidden md:flex flex-col items-center">
@@ -65,6 +69,7 @@ import AuthButtons from "./auth/auth-buttons";
           <AuthButtons />
           </div>
         </div>
+        </aside>
       </>
     );
   }
