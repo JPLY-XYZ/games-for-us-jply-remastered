@@ -1,0 +1,56 @@
+// juegos links
+
+{
+        "requirements": {
+            "minimum": {
+                "os": "Windows 10",
+                "processor": "Intel Core i5-2500K",
+                "memory": "8 GB RAM",
+                "graphics": "NVIDIA GeForce GTX 760",
+                "storage": "20 GB disponible",
+                "directx": "Versión 11"
+            },
+            "recommended": {
+                "os": "Windows 10",
+                "processor": "Intel Core i7-8700K",
+                "memory": "16 GB RAM",
+                "graphics": "NVIDIA GeForce RTX 2060",
+                "storage": "20 GB disponible",
+                "directx": "Versión 12"
+            }
+        }
+    }
+
+    // juego media
+
+
+    {
+        "shopLink": "https://ejemplo.com/tienda/juego",
+        "urls": {
+            "thumbnail": "https://placehold.co/640x360.jpg",
+            "banner": "https://placehold.co/1920x1080.jpg",
+            "cover": "https://placehold.co/1280x720.jpg",
+            "video": "https://placehold.co/640x360.jpg",
+            "screenshots": [
+                "https://placehold.co/640x360",
+                "https://placehold.co/640x360",
+                "https://placehold.co/640x360"
+            ]
+        }
+    }
+
+//    reseña media
+
+        {
+            "video":"https://www.youtube.com/embed/dQw4w9WgXcQ",
+            "img":"https://placehold.co/640x360.jpg",
+            "imgs":{
+                "thumbnail":"https://placehold.co/640x360.jpg",
+                "banner":"https://placehold.co/1920x1080.jpg",
+              "otherImages": ["https://placehold.co/640x360.jpg", "https://placehold.co/640x360.jpg", "https://placehold.co/640x360.jpg"] 
+            }
+            
+        }
+
+    
+    

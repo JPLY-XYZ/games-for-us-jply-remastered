@@ -100,11 +100,12 @@ model Content {
   userId      String
   type        ContentType
   title       String
-  url         String?
-  text        String?
+  shortTitle  String?
+  moreInfo     Json?
+  urls         Json?
+  text        String
   publishedAt DateTime    @default(now())
   editedAt    DateTime?
-  authorName  String?
   score       Int?
   reportCount Int         @default(0)
   Comment     Comment[]

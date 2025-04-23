@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 
-  images: {
+  images: { 
+    domains: ['placehold.co'],  // Permite cargar imágenes de placehold.co
+    dangerouslyAllowSVG: true,  // Habilita el soporte para SVG
+  
     remotePatterns: [
       {
         protocol: 'https',
@@ -17,6 +20,9 @@ const nextConfig = {
       }, {
         protocol: 'https',
         hostname: 'cdn1.epicgames.com',
+      }, {
+        protocol: 'https',
+        hostname: 'placehold.co',
       }
     ],
   },
