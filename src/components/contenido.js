@@ -24,6 +24,46 @@ export default function Contenidos({ game }) {
         });
     };
 
+    const renderPreview = (contenido) => {
+        const tipo = contenido.type;
+        const data = contenido.urls || {};
+
+        if (tipo === 'VIDEO' && data.video) {
+            return (
+                <div className="aspect-video mb-3 rounded overflow-hidden">
+                    <iframe
+                        src={data.video}
+                        title="Video"
+                        className="w-full h-full border-0"
+                        allowFullScreen
+                    />
+                </div>
+            );
+        }
+
+        if (tipo === 'IMAGEN' && data.img) {
+            return (
+                <img
+                    src={data.img}
+                    alt="Imagen"
+                    className="w-full h-48 object-cover rounded mb-3"
+                />
+            );
+        }
+
+        if (tipo === 'RESEÑA' && data.imgs?.thumbnail) {
+            return (
+                <img
+                    src={data.imgs.thumbnail}
+                    alt="Reseña Thumbnail"
+                    className="w-full h-48 object-cover rounded mb-3"
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <div className="max-w-screen-xl mx-auto mt-12 px-6">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Contenidos</h2>
@@ -52,6 +92,9 @@ export default function Contenidos({ game }) {
                                     {iconoPorTipo[tipo]}
                                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{tipo}</span>
                                 </div>
+
+                                {/* Vista previa */}
+                                {renderPreview(contenido)}
 
                                 {/* Título */}
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
@@ -83,4 +126,3 @@ export default function Contenidos({ game }) {
         </div>
     );
 }
-    

@@ -79,7 +79,7 @@ export default function Comentarios({ game, session }) {
                             {/* Información adicional en una sola línea */}
                             <div className="mt-2 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
-                               <Link href={"/perfil?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
+                               <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
 
                                 {/* Estrellas para la calificación */}
                                 <div className="flex items-center gap-1">
