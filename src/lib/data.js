@@ -53,3 +53,48 @@ export async function getGameById(id) {
 
   return game;
 }
+
+export async function getContentById(id) {
+  try {
+    const content = await prisma.content.findUnique({
+      where: {
+        id: Number(id), // Asegúrate de que el id sea numérico
+      },
+      include: {
+        user: {
+          include: {
+            contents: true,
+            comments: true,
+            favoriteGames: true,
+            developedGames: true,
+          },
+        },
+        game: {
+          include: {
+            categories: true,
+            platforms: true,
+            developers: true,
+            fans: true,
+          },
+        },
+        Comment: {
+          include: {
+            user: {
+              include: {
+                contents: true,
+                comments: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return content;
+  } catch (error) {
+    console.error("Error al obtener el contenido:", error);
+    return null;
+  }
+}
+
+

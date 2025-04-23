@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -63,8 +63,8 @@ model Game {
   longDesc     String?
   releaseDate  DateTime?
   editor       String?
-  price        Decimal?  @db.Decimal(10, 2)
-  averageScore Decimal?  @db.Decimal(3, 2)
+  price        Float?  
+  averageScore Int? 
   salesCount   Int?      @default(0)
   requirements Json?
   urls         Json?

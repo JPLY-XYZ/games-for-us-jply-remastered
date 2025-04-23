@@ -22,9 +22,9 @@ console.log(game)
         <div className="bg-slate-100 dark:bg-slate-900 min-h-screen font-sans">
             {/* Banner */}
             <div className="h-80 w-full bg-gray-800 relative rounded-b-lg overflow-hidden shadow-lg">
-                {game?.urls?.urls?.banner && (
+                {game?.urls?.images?.banner && (
                     <Image
-                        src={game.urls.urls.banner}
+                        src={game.urls.images.banner}
                         alt="Game Banner"
                         layout="fill"
                         objectFit="cover"
@@ -41,7 +41,7 @@ console.log(game)
                 {/* Carrusel de imágenes - Solo cliente */}
                 <div className="flex justify-center">
                      <Suspense fallback={"hola esto esta cargando"}>
-                     <ClienteCarrusel screenshots={game.urls?.urls?.screenshots} />
+                     <ClienteCarrusel screenshots={game.urls?.images?.screenshots} />
                         </Suspense>
                 </div>
 
@@ -76,7 +76,7 @@ console.log(game)
 <div className="max-w-screen-xl mx-auto mt-12 px-6">
    
     {/* Formulario para publicar comentario */}
-    <Comentarios session={session}  game={game} />
+    <Comentarios session={session}  comentariosArr={game.comments} EsPuntuacion={true} />
 
 
     

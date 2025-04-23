@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Star, Calendar, X as IconX, Plus as IconPlus, Trash, Flag, StarFilled, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 
-export default function Comentarios({ game, session }) {
+export default function Comentarios({ comentariosArr, session, EsPuntuacion = false }) {
     const user = session?.user;
     const [orden, setOrden] = useState("fecha");
     const [mostrar, setMostrar] = useState(5);
     const [modalAbierto, setModalAbierto] = useState(false);
-    const comentarios = [...(game.comments || [])];
+    const comentarios = [...(comentariosArr || [])];
 
     if (orden === "fecha") {
         comentarios.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -38,12 +38,12 @@ export default function Comentarios({ game, session }) {
                 >
                     <Calendar className="inline w-4 h-4 mr-1" /> Fecha
                 </button>
-                <button
+                {EsPuntuacion && <button
                     className={`text-sm px-3 py-1 rounded ${orden === "puntuacion" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
                     onClick={() => setOrden("puntuacion")}
                 >
                     <Star className="inline w-4 h-4 mr-1" /> Puntuación
-                </button>
+                </button>}
             </div>
 
             {comentarios.length > 0 ? (
@@ -82,7 +82,7 @@ export default function Comentarios({ game, session }) {
                                <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
 
                                 {/* Estrellas para la calificación */}
-                                <div className="flex items-center gap-1">
+                               { EsPuntuacion && <div className="flex items-center gap-1">
                                     {[...Array(5)].map((_, index) => {
                                         const filled = comment.score > index;  // Si la puntuación es mayor que el índice, la estrella se llena
                                         return (
@@ -92,7 +92,7 @@ export default function Comentarios({ game, session }) {
                                             />
                                         );
                                     })}
-                                </div>
+                                </div>}
 
                                 {/* Fecha */}
                                 <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
