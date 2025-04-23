@@ -61,31 +61,34 @@ export default function AuthButtons() {
                         <SquareUser className="w-5 h-5 text-gray-500" />
                         <span>Perfil</span>
                     </Link>
-                    {session.user.role == "USUARIO" &&
+                    {/* {session.user.role == "USUARIO" && */}
                         <Link
-                            href="/favoritos"
+                            href="/favorite_games"
                             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         >
                             <FolderHeart className="w-5 h-5 text-gray-500" />
                             <span>Juegos Favoritos</span>
-                        </Link>}
-                    {session.user.role == "DESARROLLADOR" &&
+                        </Link>
+                        {/* } */}
+                    {/* {session.user.role == "DESARROLLADOR" && */}
                         <Link
-                            href="/publicados"
+                            href="/developer_portal"
                             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         ><FolderUp
                                 className="w-5 h-5 text-gray-500" />
                             <span>Juegos Publicados</span>
-                        </Link>}
+                        </Link>
+                        {/* } */}
 
-                    {session.user.role == "ADMINISTRADOR" &&
+                    {/* {session.user.role == "ADMINISTRADOR" && */}
                         <Link
-                            href="/favoritos"
+                            href="/admin_portal"
                             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         >
                             <FolderCog className="w-5 h-5 text-gray-500" />
                             <span>Panel de administrador</span>
-                        </Link>}
+                        </Link>
+                        {/* } */}
                     <form action={logout}>
                         <button
                             type="submit"
