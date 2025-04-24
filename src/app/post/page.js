@@ -186,7 +186,8 @@ export default async function Page({ searchParams }) {
 
                 {/* Comentarios */}
                 <div className="mt-12">
-                    <Comentarios session={session} comentariosArr={content.Comment} />
+                     
+                    <Comentarios session={session} comentariosArr={content.comments} relationContent={content.id} />
                 </div>
             </div>
         </div>

@@ -27,7 +27,7 @@ export default async function RootLayout({ children }) {
       <header className="h-14 bg-[var(--aside-card-background)] text-white flex px-10 py-2 justify-between items-center sticky top-0 z-50">
       <div className=" hidden md:flex flex-row items-center">
               <Gamepad2 className="w-12 h-12 mr-3" />
-              <h1 className="text-4xl font-bold">GAMES FOR US</h1>
+              <Link href="/" className="text-4xl font-bold">GAMES FOR US</Link>
             </div>
             <AuthButtons />
       </header>

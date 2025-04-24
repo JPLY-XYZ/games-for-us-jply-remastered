@@ -108,14 +108,14 @@ model Content {
   editedAt    DateTime?
   score       Int?
   reportCount Int         @default(0)
-  Comment     Comment[]
+  comments     Comment[]
 }
 
 enum ContentType {
   RESEÑA
   VIDEO
   IMAGEN
-  GUIA
+  NOTICIA
 }
 
 model Comment {

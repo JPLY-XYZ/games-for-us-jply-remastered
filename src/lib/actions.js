@@ -1,8 +1,9 @@
 'use server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
-import { signIn, signOut } from '@/auth';
-import { getUserByEmail } from '@/lib/data';
+import { auth, signIn, signOut } from '@/auth';
+import { getUserByEmail, newComment, reportComment, reportContent, reportGame, reportUser, setFavoriteGame } from '@/lib/data';
+import { revalidatePath } from 'next/cache';
 
 
 // REGISTER
@@ -112,3 +113,100 @@ export async function logout() {
         throw error
     }
 }
+
+
+
+// funciones utilidades web
+
+export async function reportAction(prevState, formData) {
+    if (!(formData instanceof FormData)) {
+        throw new Error("formData no es una instancia de FormData");
+    }
+
+    const id = formData.get('id');
+    const tipo = formData.get('tipo');
+
+    if (!id || !tipo) {
+        throw new Error('Datos incompletos');
+    }
+
+    try {
+        switch (tipo) {
+            case 'USER':
+                await reportUser(+id);
+                break;
+            case 'GAME':
+             await reportGame(+id);
+                break;
+            case 'CONTENT':
+                await reportContent(+id);
+                break;
+            case 'COMMENT':
+                await reportComment(+id);
+                break;
+            default:
+                throw new Error('Tipo no soportado');
+        }
+
+        // revalidatePath('/');
+    } catch (error) {
+        console.error('Error en reportAction:', error);
+        throw error;
+    }
+}
+
+
+// favorito
+
+export async function toggleFavoriteAction(prevState,formData) {
+    const session = await auth()
+    const userId = session?.user?.id
+    const gameId = Number(formData.get('gameId'))
+  
+
+    if (!userId || !gameId) {
+      throw new Error('Datos inválidos o no autenticado')
+    }
+  
+    const result = await setFavoriteGame(userId, gameId)
+    return result // { status: 'added' | 'removed' }
+  }
+
+  export async function enviarComentario(prevState, formData) {
+    const comentario = formData.get('comentario');
+    const rating = Number(formData.get('rating'));
+    const gameId = Number(formData.get('gameId'));
+    const contentId = Number(formData.get('contentId'));
+    const path = formData.get('path');
+  
+console.log(comentario, rating, gameId, contentId)
+
+    if (!comentario || (!gameId && !contentId) || (gameId && contentId)) {
+      return { success: false, error: 'Datos inválidos.' };
+    }
+  
+    const session = await auth();
+    const userId = session?.user?.id;
+  
+    if (!userId) {
+      return { success: false, error: 'Usuario no autenticado.' };
+    }
+  
+    const data = {
+        text: comentario,
+        score: rating || null,
+        user: { connect: { id: userId } },
+        ...(gameId ? { game: { connect: { id: gameId } } } : {}),
+        ...(contentId ? { content: { connect: { id: contentId } } } : {})
+      };
+      
+  revalidatePath(path)
+  
+    try {
+      const comment = await newComment(data);
+      return { success: true, comment };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+  

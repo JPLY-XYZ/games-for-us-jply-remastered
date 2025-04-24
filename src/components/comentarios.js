@@ -2,13 +2,17 @@
 import { useState } from "react";
 import { Star, Calendar, X as IconX, Plus as IconPlus, Trash, Flag, StarFilled, AlertTriangle } from "lucide-react";
 import Link from "next/link";
+import ReportButton from "./utilidad/ReportBtn";
+import ModalComentario from "./utilidad/ModalComentario";
 
-export default function Comentarios({ comentariosArr, session, EsPuntuacion = false }) {
+export default function Comentarios({ relationGame, relationContent, comentariosArr, session, EsPuntuacion = false }) {
     const user = session?.user;
     const [orden, setOrden] = useState("fecha");
     const [mostrar, setMostrar] = useState(5);
     const [modalAbierto, setModalAbierto] = useState(false);
     const comentarios = [...(comentariosArr || [])];
+
+    console.log(relationGame, relationContent)
 
     if (orden === "fecha") {
         comentarios.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -64,14 +68,11 @@ export default function Comentarios({ comentariosArr, session, EsPuntuacion = fa
 
                                 {/* Botón de reportar, visible para todos */}
                                 {user?.id !== comment.userId && (
-                                    <button
-                                        className=" cursor-pointer text-white opacity-75 hover:opacity-100 focus:outline-none"
-
-
-                                        onClick={() => handleReportComment(comment.id)} // Llama a una función para reportar el comentario
-                                    >
-                                        <AlertTriangle className="w-5 h-5" />
-                                    </button>)}
+                                    <ReportButton id={comment.id} tipo="COMMENT" />
+                                )}
+                                {user?.role === "ADMINISTRADOR" && (
+                                    <span>{comment.reportCount}</span>
+                                )}
                             </div>
 
                             {/* Contenido del comentario */}
@@ -79,10 +80,10 @@ export default function Comentarios({ comentariosArr, session, EsPuntuacion = fa
                             {/* Información adicional en una sola línea */}
                             <div className="mt-2 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
-                               <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
+                                <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
 
                                 {/* Estrellas para la calificación */}
-                               { EsPuntuacion && <div className="flex items-center gap-1">
+                                {EsPuntuacion && <div className="flex items-center gap-1">
                                     {[...Array(5)].map((_, index) => {
                                         const filled = comment.score > index;  // Si la puntuación es mayor que el índice, la estrella se llena
                                         return (
@@ -130,25 +131,11 @@ export default function Comentarios({ comentariosArr, session, EsPuntuacion = fa
                 <p>No hay comentarios disponibles.</p>
             )}
 
-            {modalAbierto && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md">
-                        <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Añadir comentario</h3>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            setModalAbierto(false);
-                        }} className="space-y-4">
-                            <textarea placeholder="Escribe tu comentario..." className="w-full p-2 rounded border dark:bg-gray-800 dark:text-white" required />
-                            <input type="number" min="1" max="5" placeholder="Puntuación (1-5)" className="w-full p-2 rounded border dark:bg-gray-800 dark:text-white" required />
-                            <textarea placeholder="Sugerencia de mejora (opcional)" className="w-full p-2 rounded border dark:bg-gray-800 dark:text-white" />
-                            <div className="flex justify-end gap-2">
-                                <button type="button" onClick={() => setModalAbierto(false)} className="text-sm text-gray-500">Cancelar</button>
-                                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Enviar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+           
+{modalAbierto &&
+               <ModalComentario setModalAbierto={setModalAbierto} game={relationGame} content={relationContent} EsPuntuacion={EsPuntuacion} />
+
+}  
         </div>
     );
 }

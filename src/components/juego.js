@@ -76,7 +76,8 @@ console.log(game)
 <div className="max-w-screen-xl mx-auto mt-12 px-6">
    
     {/* Formulario para publicar comentario */}
-    <Comentarios session={session}  comentariosArr={game.comments} EsPuntuacion={true} />
+    {console.log(game.id)}
+    <Comentarios session={session}  comentariosArr={game.comments} EsPuntuacion={true} relationGame={game.id} />
 
 
     
