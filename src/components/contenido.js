@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Film, ImageIcon, MessageSquareText, AlertTriangle, ThumbsUp, MessageSquare, Calendar, Star, X, Plus } from "lucide-react";
+import { Film, ImageIcon, MessageSquareText, AlertTriangle, ThumbsUp, MessageSquare, Calendar, Star, X, Plus, Newspaper } from "lucide-react";
 import Link from "next/link";
 
 export default function Contenidos({ game, session }) {
@@ -32,6 +32,7 @@ export default function Contenidos({ game, session }) {
         RESEÑA: <MessageSquareText className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
         VIDEO: <Film className="w-5 h-5 text-red-600 dark:text-red-400" />,
         IMAGEN: <ImageIcon className="w-5 h-5 text-green-600 dark:text-green-400" />,
+        NOTICIA: <Newspaper className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
     };
 
     const formatearFecha = (fechaStr) => {
@@ -70,7 +71,9 @@ export default function Contenidos({ game, session }) {
             );
         }
 
-        if (tipo === 'RESEÑA' && data.imgs?.thumbnail) {
+        if (tipo === 'RESEÑA' || tipo === 'NOTICIA' && data.imgs?.thumbnail) {
+            console.log(data, "renderimagen prueba");
+
             return (
                 <img
                     src={data.imgs.thumbnail}
@@ -147,7 +150,7 @@ export default function Contenidos({ game, session }) {
                                 Video
                             </Link>
                             <Link
-                                href={"/contenido/nuevocontenido?tipo=IMAGEN&gameid=" + game.id }
+                                href={"/contenido/nuevocontenido?tipo=IMAGEN&gameid=" + game.id}
                                 className="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                                 onClick={() => setMenuAbierto(false)}
                             >
@@ -200,16 +203,18 @@ export default function Contenidos({ game, session }) {
                                     {contenido.shortTitle || 'Sin título corto'}
                                 </h3>
 
-                                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                    <span className="font-medium">{contenido.userId}</span>
+                                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    <img src={contenido.user.image} alt="User image" className="w-5 h-5 rounded-full object-cover" />
+                                    <span className="font-medium">{contenido.user.name}</span>
                                 </div>
+
 
                                 <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-3">
                                     <div className="flex items-center gap-2">
                                         <ThumbsUp className="w-4 h-4" />
                                         <strong>{contenido.score ?? 0}</strong>
                                         <MessageSquare className="w-4 h-4" />
-                                        <strong>{comentarios}</strong>
+                                        <strong>{contenido._count.comments}</strong>
                                     </div>
                                     <span className="text-xs">{formatearFecha(contenido.publishedAt)}</span>
                                 </div>

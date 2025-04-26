@@ -38,6 +38,11 @@ export async function getGameById(id) {
         include: {
           user: true,
           comments: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
         }
       },
       comments: {
