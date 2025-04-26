@@ -6,6 +6,8 @@ import ModalComentario from "./comentarios";
 import Comentarios from "./comentarios";
 import { auth } from "@/auth";
 import Contenido from "./contenido";
+import DesarrolladorInfo from "./utilidad/desarrollador-info";
+import CarruselDesarrolladores from "./utilidad/carrusel-desarrolladores";
  // Importa el componente de carrusel para el cliente
 
 async function Juego({ game }) {
@@ -73,16 +75,18 @@ console.log(game)
             </div>
 
            {/* Sección de comentarios */}
-<div className="max-w-screen-xl mx-auto mt-12 px-6">
-   
-    {/* Formulario para publicar comentario */}
-    {console.log(game.id)}
-    <Comentarios session={session}  comentariosArr={game.comments} EsPuntuacion={true} relationGame={game.id} />
-
-
-    
-   
+           <div className="max-w-screen-xl mx-auto mt-12 px-6">
+    {/* Contenedor en fila */}
+    <div className="flex gap-6">
+        <div className="w-2/3">
+            <Comentarios session={session} comentariosArr={game.comments} EsPuntuacion={true} relationGame={game.id} />
+        </div>
+        <div className="w-1/3">
+          <CarruselDesarrolladores developers={game.developers} />
+        </div>
+    </div>
 </div>
+
 <div className="max-w-screen-xl mx-auto mt-12 px-6">
    
     {/* Formulario para publicar comentario */}

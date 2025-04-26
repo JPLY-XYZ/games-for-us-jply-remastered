@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '200mb',
+    },
+  },
   images: { 
     domains: ['placehold.co'],  // Permite cargar imágenes de placehold.co
     dangerouslyAllowSVG: true,  // Habilita el soporte para SVG

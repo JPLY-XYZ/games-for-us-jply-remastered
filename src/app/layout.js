@@ -6,6 +6,7 @@ import AuthButtons from '@/components/auth/auth-buttons'
 import { SessionProvider } from 'next-auth/react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Buscador from '@/components/utilidad/buscador/buscador'
 
 
 
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }) {
               <Gamepad2 className="w-12 h-12 mr-3" />
               <Link href="/" className="text-4xl font-bold">GAMES FOR US</Link>
             </div>
+            <Buscador />
             <AuthButtons />
       </header>
   

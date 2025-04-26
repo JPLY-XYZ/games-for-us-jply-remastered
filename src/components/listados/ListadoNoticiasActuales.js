@@ -23,27 +23,17 @@ async function ListadoNoticiasActuales() {
             )}
           </div>
 
-          {noticia.urls?.video ? (
-            <div className="w-full mb-4">
-              <iframe
-                src={noticia.urls.video}
-                width="100%"
-                height="315"
-                className="rounded-2xl"
-                allowFullScreen
-              ></iframe>
-            </div>
-          ) : (
+           
             <div className="relative w-full h-[315px] mb-4">
               <Image
-                src={noticia.urls?.image || "/placeholder.jpg"}
+                src={noticia.urls?.imgs?.thumbnail}
                 alt={noticia.title}
                 layout="fill"
                 objectFit="cover"
                 className="rounded-2xl"
               />
             </div>
-          )}
+          
 
           <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-2">
             {noticia.title}
@@ -63,7 +53,7 @@ async function ListadoNoticiasActuales() {
             </div>
 
             <Link
-              href={`/content?id=${noticia.id}`}
+              href={`/contenido?id=${noticia.id}`}
               className="text-blue-500 font-semibold hover:text-blue-600 transition"
             >
               Leer más

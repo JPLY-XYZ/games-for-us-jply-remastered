@@ -1,15 +1,24 @@
 'use client'
+
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Film, ImageIcon, MessageSquareText, AlertTriangle, ThumbsUp, MessageSquare, Calendar, Star, X, Plus } from "lucide-react";
 import Link from "next/link";
 
-export default function Contenidos({ game }) {
-    const [contenidoActivo, setContenidoActivo] = useState(null);
+export default function Contenidos({ game, session }) {
     const [mostrar, setMostrar] = useState(3);
     const [orden, setOrden] = useState("fecha");
     const [haExpandido, setHaExpandido] = useState(false);
+    const [menuAbierto, setMenuAbierto] = useState(false);
 
-    const contenidos = [...(game.contents || [])];
+    const searchParams = useSearchParams();
+    const tipoFiltro = searchParams.get("tipo");
+
+    let contenidos = [...(game.contents || [])];
+
+    if (tipoFiltro && tipoFiltro !== "TODOS") {
+        contenidos = contenidos.filter(c => c.type === tipoFiltro);
+    }
 
     if (orden === "fecha") {
         contenidos.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
@@ -78,27 +87,84 @@ export default function Contenidos({ game }) {
 
     return (
         <div className="max-w-screen-xl mx-auto mt-12 px-6">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Contenidos</h2>
-                <div className="flex gap-2">
+            <div className="flex justify-between items-start mb-6 flex-wrap gap-y-4">
+                <div>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Contenidos</h2>
+                    <div className="flex gap-2 flex-wrap">
+                        <button
+                            className={`text-sm px-3 py-1 rounded ${orden === "fecha" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
+                            onClick={() => setOrden("fecha")}
+                        >
+                            <Calendar className="inline w-4 h-4 mr-1" /> Fecha
+                        </button>
+                        <button
+                            className={`text-sm px-3 py-1 rounded ${orden === "puntuacion" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
+                            onClick={() => setOrden("puntuacion")}
+                        >
+                            <Star className="inline w-4 h-4 mr-1" /> Puntuación
+                        </button>
+                        <button
+                            className={`text-sm px-3 py-1 rounded ${orden === "comentarios" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
+                            onClick={() => setOrden("comentarios")}
+                        >
+                            <MessageSquare className="inline w-4 h-4 mr-1" /> Comentarios
+                        </button>
+                    </div>
+                </div>
+
+                {/* Botón de crear contenido (antes filtro tipo) */}
+                <div className="relative">
                     <button
-                        className={`text-sm px-3 py-1 rounded ${orden === "fecha" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
-                        onClick={() => setOrden("fecha")}
+                        onClick={() => setMenuAbierto(!menuAbierto)}
+                        className="text-sm px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow"
                     >
-                        <Calendar className="inline w-4 h-4 mr-1" /> Fecha
+                        <Plus className="w-4 h-4" />
+                        <span>Crear contenido</span>
+                        <svg
+                            className={`w-4 h-4 transition-transform ${menuAbierto ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </button>
-                    <button
-                        className={`text-sm px-3 py-1 rounded ${orden === "puntuacion" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
-                        onClick={() => setOrden("puntuacion")}
-                    >
-                        <Star className="inline w-4 h-4 mr-1" /> Puntuación
-                    </button>
-                    <button
-                        className={`text-sm px-3 py-1 rounded ${orden === "comentarios" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
-                        onClick={() => setOrden("comentarios")}
-                    >
-                        <MessageSquare className="inline w-4 h-4 mr-1" /> Comentarios
-                    </button>
+
+                    {menuAbierto && (
+                        <div className="absolute z-50 mt-2 right-0 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+                            <Link
+                                href={"/contenido/nuevocontenido?tipo=RESEÑA&gameid=" + game.id}
+                                className="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={() => setMenuAbierto(false)}
+                            >
+                                Reseña
+                            </Link>
+                            <Link
+                                href={"/contenido/nuevocontenido?tipo=VIDEO&gameid=" + game.id}
+                                className="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={() => setMenuAbierto(false)}
+                            >
+                                Video
+                            </Link>
+                            <Link
+                                href={"/contenido/nuevocontenido?tipo=IMAGEN&gameid=" + game.id }
+                                className="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={() => setMenuAbierto(false)}
+                            >
+                                Imagen
+                            </Link>
+                            {(session?.user?.role === "ADMINISTRADOR" || game?.developers?.some(dev => dev.id === session?.user?.id)) && (
+                                <Link
+                                    href={"/contenido/nuevocontenido?tipo=NOTICIA&gameid=" + game.id}
+                                    className="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    onClick={() => setMenuAbierto(false)}
+                                >
+                                    Noticia
+                                </Link>
+                            )}
+                        </div>
+
+                    )}
                 </div>
             </div>
 
@@ -109,12 +175,15 @@ export default function Contenidos({ game }) {
                         const comentarios = contenido.Comment?.length || 0;
 
                         return (
-                            <Link href={`/post?postid=${contenido.id}`}
+                            <Link href={`/contenido?postid=${contenido.id}`}
                                 key={contenido.id}
                                 className="relative bg-white dark:bg-gray-800 rounded-xl shadow p-4 hover:shadow-lg transition"
                             >
                                 <button
-                                    onClick={() => {/* lógica de reportar */}}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        // lógica de reportar
+                                    }}
                                     className="absolute top-3 right-3 text-red-500 hover:text-red-400 transition"
                                 >
                                     <AlertTriangle className="w-5 h-5" />
@@ -161,7 +230,6 @@ export default function Contenidos({ game }) {
                                 if (!haExpandido) setHaExpandido(true);
                             }}
                             className="w-32 h-10 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center justify-center gap-2"
-                            title="Mostrar más"
                         >
                             <Plus className="w-4 h-4" />
                             <span>Mostrar más</span>
@@ -174,7 +242,6 @@ export default function Contenidos({ game }) {
                                 setHaExpandido(false);
                             }}
                             className="w-32 h-10 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded hover:bg-gray-400 flex items-center justify-center gap-2"
-                            title="Cerrar"
                         >
                             <X className="w-4 h-4" />
                             <span>Cerrar</span>

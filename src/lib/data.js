@@ -1,3 +1,4 @@
+'use server'
 import prisma from '@/lib/prisma'
 import { ContentType } from '@prisma/client';
 
@@ -30,30 +31,49 @@ export async function getUserByEmail(email) {
 export async function getGameById(id) {
   const game = await prisma.game.findUnique({
     where: {
-      id: id,  // Asegúrate de que `id` sea el tipo correcto (entero)
+      id: id,
     },
     include: {
       contents: {
         include: {
-          user: true,  // Incluye todos los campos de `User` asociados al contenido
-          comments: true,  // Incluye todos los comentarios relacionados con el contenido
+          user: true,
+          comments: true,
         }
       },
       comments: {
         include: {
-          user: true,  // Incluye todos los campos de `User` relacionados con el comentario
-          content: true,  // Incluye los datos de `Content` si el comentario está relacionado con uno
+          user: true,
+          content: true,
         }
       },
-      fans: true,  // Incluye todos los campos de los fans (usuarios que siguen el juego)
-      developers: true,  // Incluye todos los campos de los desarrolladores (usuarios que desarrollaron el juego)
-      categories: true,  // Incluye todos los campos de las categorías del juego
-      platforms: true,  // Incluye todos los campos de las plataformas en las que está disponible el juego
+      fans: true,
+      categories: true,
+      platforms: true,
+
+      // 🔽 Aquí ajustamos para incluir info adicional de los desarrolladores
+      developers: {
+        include: {
+          developedGames: {
+            select: {
+              id: true,
+              name: true,
+              shortDesc: true,
+            },
+          },
+          comments: true,
+          favoriteGames: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
     },
   });
 
   return game;
 }
+
 
 export async function getContentById(id) {
   try {
@@ -127,7 +147,7 @@ export async function getLatestGames() {
 export async function getLatestNews() {
   return await prisma.content.findMany({
     where: {
-        type: ContentType.NOTICIA,
+      type: ContentType.NOTICIA,
     },
     orderBy: {
       publishedAt: 'desc',
@@ -183,7 +203,7 @@ export async function getLatestContents() {
           name: true,
         },
       },
-      comments: true, 
+      comments: true,
       _count: {
         select: {
           comments: true, // también correcto aquí
@@ -313,4 +333,116 @@ export const newComment = async (data) => {
   }
 };
 
+
+
+
+
+
+
+
+export async function buscar(query) {
+  if (!query) return {}
+
+  const juegos = await prisma.game.findMany({
+    where: {
+      name: { contains: query, mode: 'insensitive' },
+    },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      averageScore: true,
+      urls: true, // JSON completo
+    },
+    take: 5,
+  })
+
+  const usuarios = await prisma.user.findMany({
+    where: {
+      name: { contains: query, mode: 'insensitive' },
+    },
+    select: {
+      id: true,
+      name: true,
+      image: true,
+    },
+    take: 5,
+  })
+
+  const contenidos = await prisma.content.findMany({
+    where: {
+      title: { contains: query, mode: 'insensitive' },
+    },
+    select: {
+      id: true,
+      title: true,
+      type: true,
+      moreInfo: true, // JSON completo
+    },
+    take: 5,
+  })
+
+  return {
+    Juegos: juegos.map(j => ({
+      id: j.id,
+      name: j.name,
+      type: 'Juego',
+      price: j.price,
+      score: j.averageScore,
+      image: j.urls && typeof j.urls === 'object' ? j.urls.images?.cover ?? null : null,
+    })),
+    Usuarios: usuarios.map(u => ({
+      id: u.id,
+      name: u.name,
+      type: 'Usuario',
+      image: u.image ?? null,
+    })),
+    Contenidos: contenidos.map(c => ({
+      id: c.id,
+      name: c.title,
+      type: 'Contenido',
+      contentType: c.type,
+      image: c.moreInfo && typeof c.moreInfo === 'object' ? c.moreInfo.thumbnail ?? null : null,
+    })),
+  }
+}
+
+export async function createNewContent(data) {
+
+  console.log(data, "llegado a create new content")
+
+  const {
+    userId,
+    gameId,
+    type,
+    title,
+    shortTitle,
+    text,
+    urls,
+    moreInfo,
+    score,
+  } = data;
+
+  if (!userId || !gameId || !title || !type) {
+    throw new Error("Faltan campos requeridos.");
+  }
+
+  return await prisma.content.create({
+    data: {
+      user:{
+        connect: { id: userId }
+      },
+      game:{
+        connect: { id: gameId }
+      },
+      type,
+      title,
+      shortTitle,
+      text,
+      urls,
+      moreInfo,
+      score,
+    },
+  });
+}
 

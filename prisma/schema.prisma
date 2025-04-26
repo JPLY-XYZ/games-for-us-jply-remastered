@@ -103,7 +103,7 @@ model Content {
   shortTitle  String?
   moreInfo     Json?
   urls         Json?
-  text        String
+  text        String?
   publishedAt DateTime    @default(now())
   editedAt    DateTime?
   score       Int?

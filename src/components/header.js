@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { auth } from "@/auth"
 import { logout } from '@/lib/actions'
 import { Home } from 'lucide-react';
+import Buscador from './utilidad/buscador/buscador';
 
 
 async function Header() {
@@ -20,6 +21,7 @@ async function Header() {
                 <Link href="/dashboard">Dashboard</Link>
                 <Link href="/about">About</Link>
             </nav>
+            
             <div className='flex gap-4'>
                 {session
                     ? <form><button formAction={logout}>Logout</button></form>

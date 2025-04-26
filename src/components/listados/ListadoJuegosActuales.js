@@ -37,7 +37,7 @@ async function ListadoJuegoActuales() {
             </div>
           </Link>
 
-          <Link href={`/game?gameid=${juego.id}`}>
+          <Link href={`/juego?gameid=${juego.id}`}>
             <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-2">{juego.name}</h3>
           </Link>
 

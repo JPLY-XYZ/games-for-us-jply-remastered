@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import { Star, Calendar, X as IconX, Plus as IconPlus, Trash, Flag, StarFilled, AlertTriangle } from "lucide-react";
+import { Star, Calendar, X as IconX, Plus as IconPlus, Trash, Pencil } from "lucide-react";
 import Link from "next/link";
 import ReportButton from "./utilidad/ReportBtn";
 import ModalComentario from "./utilidad/ModalComentario";
@@ -65,6 +65,14 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                                         <Trash className="w-5 h-5" />
                                     </button>
                                 )}
+                                {user?.id === comment.userId && (
+                                    <button
+                                        className="cursor-pointer text-orange-500 opacity-75 hover:opacity-100 focus:outline-none"
+                                        onClick={() => handleDeleteComment(comment.id)} // Llama a una función para eliminar el comentario
+                                    >
+                                        <Pencil className="w-5 h-5" />
+                                    </button>
+                                )}
 
                                 {/* Botón de reportar, visible para todos */}
                                 {user?.id !== comment.userId && (
@@ -76,11 +84,14 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                             </div>
 
                             {/* Contenido del comentario */}
-                            <p className="text-sm text-gray-800 dark:text-gray-200">{comment.text}</p>
+                            <p className="text-sm dark:bg-gray-900 bg-gray-300 p-3 rounded-2xl  text-gray-800 dark:text-gray-200">{comment.text}</p>
                             {/* Información adicional en una sola línea */}
-                            <div className="mt-2 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                            <div className="mt-2 flex items-center gap-4 text-sm  text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
+                                <img src={comment.user.image} alt="" className="w-6 h-6 rounded-full"/>
                                 <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
+                               
+                               
 
                                 {/* Estrellas para la calificación */}
                                 {EsPuntuacion && <div className="flex items-center gap-1">
@@ -97,6 +108,9 @@ export default function Comentarios({ relationGame, relationContent, comentarios
 
                                 {/* Fecha */}
                                 <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
+                                {comment.edited && (
+                                    <div className=" flex text-[10px] gap-1"><Pencil className="w-3 h-3" /> Editado el {new Date(comment.editedAt).toLocaleDateString()} </div>
+                                )}
                             </div>
                         </div>
 

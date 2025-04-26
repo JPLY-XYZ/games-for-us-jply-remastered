@@ -72,7 +72,7 @@ async function ListadoContenidosActuales() {
             </div>
 
             <Link
-            href={`/content?id=${contenido.id}`}
+            href={`/contenido?id=${contenido.id}`}
             className="text-blue-500 font-semibold hover:text-blue-600 transition"
           >
             Ver más
