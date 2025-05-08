@@ -122,6 +122,20 @@ export async function getContentById(id) {
     return null;
   }
 }
+export async function getContentLikesById(id) {
+  try {
+    const content = await prisma.content.findUnique({
+      where: {
+        id: Number(id), // Asegúrate de que el id sea numérico
+      },
+    });
+
+    return content;
+  } catch (error) {
+    console.error("Error al obtener el contenido:", error);
+    return null;
+  }
+}
 
 
 export async function getLatestGames() {
@@ -163,7 +177,7 @@ export async function getLatestNews() {
         select: {
           id: true,
           name: true,
-          avatar: true,
+
         },
       },
       game: {
@@ -199,7 +213,7 @@ export async function getLatestContents() {
         select: {
           id: true,
           name: true,
-          avatar: true,
+
         },
       },
       game: {
@@ -220,7 +234,7 @@ export async function getLatestContents() {
 
 
 
-// reportes
+// REPORT
 
 export async function reportUser(userId) {
   return await prisma.user.update({
@@ -258,7 +272,128 @@ export async function reportComment(commentId) {
   });
 }
 
-// deletes
+// DELETES
+
+// BORRAR UN USUARIO
+export async function deleteUser(userId) {
+  await prisma.$transaction([
+    // Eliminar relaciones en tablas intermedias (favoritos, desarrollados, etc.)
+    prisma.user.update({
+      where: { id: userId },
+      data: {
+        favoriteGames: { set: [] },
+        developedGames: { set: [] },
+      },
+    }),
+    // Eliminar primero comentarios y contenidos del usuario
+    prisma.comment.deleteMany({
+      where: { userId: userId },
+    }),
+    prisma.content.deleteMany({
+      where: { userId: userId },
+    }),
+    // Luego eliminar el usuario
+    prisma.user.delete({
+      where: { id: userId },
+    }),
+  ]);
+}
+
+// BORRAR UN JUEGO
+export async function deleteGame(gameId) {
+  await prisma.$transaction([
+    // Eliminar relaciones en tablas intermedias (categorías, plataformas, fans, developers)
+    prisma.game.update({
+      where: { id: gameId },
+      data: {
+        categories: { set: [] },
+        platforms: { set: [] },
+        fans: { set: [] },
+        developers: { set: [] },
+      },
+    }),
+    // Eliminar primero comentarios y contenidos del juego
+    prisma.comment.deleteMany({
+      where: { gameId: gameId },
+    }),
+    prisma.content.deleteMany({
+      where: { gameId: gameId },
+    }),
+    // Luego eliminar el juego
+    prisma.game.delete({
+      where: { id: gameId },
+    }),
+  ]);
+}
+
+// BORRAR UN CONTENIDO
+export async function deleteContent(contentId) {
+  await prisma.$transaction([
+    // Eliminar primero los comentarios relacionados al contenido
+    prisma.comment.deleteMany({
+      where: { contentId: contentId },
+    }),
+    // Luego eliminar el contenido
+    prisma.content.delete({
+      where: { id: contentId },
+    }),
+  ]);
+}
+
+// BORRAR UN COMENTARIO
+export async function deleteComment(commentId) {
+  await prisma.comment.delete({
+    where: { id: commentId },
+  });
+}
+
+
+//FUNCION SIMPLE PARA OBTENER SI ES PROPIETARIO
+
+
+export async function isOwner( userId, targetId, type ) {
+
+  console.log("desde isOwner", userId, targetId, type)
+
+  switch (type) {
+    case "GAME":
+      const game = await prisma.game.findUnique({
+        where: { id: Number(targetId) },
+        select: {
+          developers: {
+            where: { id: userId },
+            select: { id: true },
+          },
+        },
+      });
+      return game?.developers.length > 0;
+
+    case "CONTENT":
+      const content = await prisma.content.findUnique({
+        where: { id: Number(targetId) },
+        select: {
+          userId: true,
+        },
+      });
+      return content?.userId === userId;
+
+    case "COMMENT":
+      const comment = await prisma.comment.findUnique({
+        where: { id: Number(targetId) },
+        select: {
+          userId: true,
+        },
+      });
+      return comment?.userId === userId;
+
+    default:
+      throw new Error("Tipo no válido");
+  }
+}
+
+
+
+//ELIMINAR PRONTO REFACTORIZACION
 
 export async function deleteContentById(id) {
   try {
@@ -289,7 +424,7 @@ export async function deleteGameById(id) {
 //juegos favoritos
 
 
-export async function setFavoriteGame(userId, gameId) {
+export async function setFavoriteGame(tipo, gameId) {
   const isFan = await prisma.user.findFirst({
     where: {
       id: userId,
@@ -325,6 +460,57 @@ export async function setFavoriteGame(userId, gameId) {
   }
 }
 
+export async function setFavoriteThink(tipo, id, sumar) {
+  if (tipo === 'COMMENT') {
+      if (sumar) {
+          // Incrementar el score
+          await prisma.comment.update({
+              where: { id: id },
+              data: {
+                  score: {
+                      increment: 1
+                  }
+              }
+          });
+          return { status: 'added' };
+      } else {
+          // Decrementar el score
+          await prisma.comment.update({
+              where: { id: id },
+              data: {
+                  score: {
+                      decrement: 1
+                  }
+              }
+          });
+          return { status: 'removed' };
+      }
+  } else {
+      if (sumar) {
+          // Incrementar el score
+          await prisma.content.update({
+              where: { id: id },
+              data: {
+                  score: {
+                      increment: 1
+                  }
+              }
+          });
+          return { status: 'added' };
+      } else {
+          // Decrementar el score
+          await prisma.content.update({
+              where: { id: id },
+              data: {
+                  score: {
+                      decrement: 1
+                  }
+              }
+          });
+          return { status: 'removed' };
+      }
+  }
+}
 
 // nuevo comentario
 
@@ -434,10 +620,10 @@ export async function createNewContent(data) {
 
   return await prisma.content.create({
     data: {
-      user:{
+      user: {
         connect: { id: userId }
       },
-      game:{
+      game: {
         connect: { id: gameId }
       },
       type,
@@ -451,3 +637,48 @@ export async function createNewContent(data) {
   });
 }
 
+export async function getAllGames() {
+  const games = await prisma.game.findMany({
+    include: {
+      contents: {
+        include: {
+          user: true,
+          comments: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        }
+      },
+      comments: {
+        include: {
+          user: true,
+          content: true,
+        }
+      },
+      fans: true,
+      categories: true,
+      platforms: true,
+      developers: {
+        include: {
+          developedGames: {
+            select: {
+              id: true,
+              name: true,
+              shortDesc: true,
+            },
+          },
+          comments: true,
+          favoriteGames: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return games;
+}

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { Star, Calendar, X as IconX, Plus as IconPlus, Trash, Pencil } from "lucide-react";
 import Link from "next/link";
-import ReportButton from "./utilidad/ReportBtn";
-import ModalComentario from "./utilidad/ModalComentario";
+import ReportButton from "../utilidad/ReportBtn";
+import ModalComentario from "./ModalComentario";
 
 export default function Comentarios({ relationGame, relationContent, comentariosArr, session, EsPuntuacion = false }) {
     const user = session?.user;
@@ -84,9 +84,9 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                             </div>
 
                             {/* Contenido del comentario */}
-                            <p className="text-sm dark:bg-gray-900 bg-gray-300 p-3 rounded-2xl  text-gray-800 dark:text-gray-200">{comment.text}</p>
+                           
                             {/* Información adicional en una sola línea */}
-                            <div className="mt-2 flex items-center gap-4 text-sm  text-gray-600 dark:text-gray-400">
+                            <div className=" flex items-center gap-4 text-sm  text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
                                 <img src={comment.user.image} alt="" className="w-6 h-6 rounded-full"/>
                                 <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
@@ -111,7 +111,9 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                                 {comment.edited && (
                                     <div className=" flex text-[10px] gap-1"><Pencil className="w-3 h-3" /> Editado el {new Date(comment.editedAt).toLocaleDateString()} </div>
                                 )}
+                                
                             </div>
+                            <p className="text-sm mt-2 dark:bg-gray-900 bg-gray-300 p-3 rounded-2xl  text-gray-800 dark:text-gray-200">{comment.text}</p>
                         </div>
 
 

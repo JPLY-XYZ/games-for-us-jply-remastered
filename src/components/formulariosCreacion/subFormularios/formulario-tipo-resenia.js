@@ -3,19 +3,19 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
-import { createResenaContentAction } from '@/lib/actions';
+import { createResenaContentAction, updateResenaContentAction } from '@/lib/actions';
 import ValoracionResenia from './utilidades/valoracion-resenia';
 import { X } from 'lucide-react';
 
 const inputClass = "w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
-export default function FormularioTipoResenia({ user, gameId }) {
-  const [state, action, pending] = useActionState(createResenaContentAction, {});
+export default function FormularioTipoResenia({ user, gameId, existingResena }) {
+  const [state, action, pending] = useActionState(existingResena ? updateResenaContentAction : createResenaContentAction, {});
   const router = useRouter();
-  const [imagenes, setImagenes] = useState([null]);
-  const [bannerPreview, setBannerPreview] = useState("");
-  const [thumbnailPreview, setThumbnailPreview] = useState("");
+  const [imagenes, setImagenes] = useState(existingResena?.urls?.imgs?.otherImages || [null]);
+  const [bannerPreview, setBannerPreview] = useState(existingResena?.urls?.imgs?.banner || "");
+  const [thumbnailPreview, setThumbnailPreview] = useState(existingResena?.urls?.imgs?.thumbnail || "");
 
   useEffect(() => {
     if (state?.success) {
@@ -23,7 +23,7 @@ export default function FormularioTipoResenia({ user, gameId }) {
     }
   }, [state]);
 
-  const handleImageChange = (e, setPreview) => {
+  const handleImageChange = (e, setPreview, index = null) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -31,13 +31,13 @@ export default function FormularioTipoResenia({ user, gameId }) {
         setPreview(reader.result);
       };
       reader.readAsDataURL(file);
-    }
-  };
 
-  const handleScreenshotChange = (index, file) => {
-    const updated = [...imagenes];
-    updated[index] = file;
-    setImagenes(updated);
+      if (index !== null) {
+        const updated = [...imagenes];
+        updated[index] = file;
+        setImagenes(updated);
+      }
+    }
   };
 
   const addScreenshot = () => {
@@ -54,15 +54,14 @@ export default function FormularioTipoResenia({ user, gameId }) {
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center w-[80%] justify-center px-4 py-12">
       <div className="bg-white dark:bg-slate-800 p-10 rounded-3xl shadow-2xl w-full space-y-6">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white text-center">
-          Subir reseña
+          {existingResena ? 'Editar reseña' : 'Subir reseña'}
         </h1>
 
         <form className="space-y-6" action={action}>
           <input type="hidden" name="userId" value={user?.id} />
           <input type="hidden" name="gameId" value={gameId} />
           <input type="hidden" name="type" value="RESEÑA" />
-
-          
+          <input type="hidden" name="contentId" value={existingResena?.id || ""} />
 
           {/* TITULOS */}
           <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
@@ -73,6 +72,7 @@ export default function FormularioTipoResenia({ user, gameId }) {
                 name="titulo"
                 className={inputClass}
                 placeholder="Título principal"
+                defaultValue={existingResena?.title || ""}
                 required
               />
             </div>
@@ -84,6 +84,7 @@ export default function FormularioTipoResenia({ user, gameId }) {
                 name="tituloCorto"
                 className={inputClass}
                 placeholder="Resumen del título"
+                defaultValue={existingResena?.shortTitle || ""}
               />
             </div>
           </div>
@@ -96,6 +97,7 @@ export default function FormularioTipoResenia({ user, gameId }) {
               className={`${inputClass} resize-none min-h-[150px]`}
               required
               placeholder="Escribe tu reseña aquí..."
+              defaultValue={existingResena?.text || ""}
             />
           </div>
 
@@ -110,11 +112,14 @@ export default function FormularioTipoResenia({ user, gameId }) {
               className={inputClass}
             />
             {bannerPreview && (
-              <img
-                src={bannerPreview}
-                alt="Banner Preview"
-                className="mt-2 w-full aspect-[18/5] object-cover rounded-md"
-              />
+              <>
+                <img
+                  src={bannerPreview}
+                  alt="Banner Preview"
+                  className="mt-2 w-full aspect-[18/5] object-cover rounded-md"
+                />
+                <input type="hidden" name="bannerUrl" value={bannerPreview} />
+              </>
             )}
           </div>
 
@@ -129,11 +134,14 @@ export default function FormularioTipoResenia({ user, gameId }) {
               className={inputClass}
             />
             {thumbnailPreview && (
-              <img
-                src={thumbnailPreview}
-                alt="Thumbnail Preview"
-                className="mt-2 w-[1000px] mx-auto aspect-[16/9] object-cover rounded-md"
-              />
+              <>
+                <img
+                  src={thumbnailPreview}
+                  alt="Thumbnail Preview"
+                  className="mt-2 w-[1000px] mx-auto aspect-[16/9] object-cover rounded-md"
+                />
+                <input type="hidden" name="thumbnailUrl" value={thumbnailPreview} />
+              </>
             )}
           </div>
 
@@ -148,7 +156,7 @@ export default function FormularioTipoResenia({ user, gameId }) {
                       type="file"
                       name={`img_${index}`}
                       accept="image/*"
-                      onChange={(e) => handleScreenshotChange(index, e.target.files[0])}
+                      onChange={(e) => handleImageChange(e, () => {}, index)}
                       className="w-full p-3 rounded-md dark:bg-slate-700 dark:text-white"
                     />
                     {index > 0 && (
@@ -168,10 +176,13 @@ export default function FormularioTipoResenia({ user, gameId }) {
                   {file && (
                     <div className="w-[1000px] aspect-video overflow-hidden rounded-md border border-gray-300 dark:border-gray-600">
                       <img
-                        src={URL.createObjectURL(file)}
+                        src={typeof file === 'string' ? file : URL.createObjectURL(file)}
                         alt={`Screenshot ${index + 1} Preview`}
                         className="w-full h-full object-cover"
                       />
+                      {typeof file === 'string' && (
+                        <input type="hidden" name={`imgUrl_${index}`} value={file} />
+                      )}
                     </div>
                   )}
                 </div>
@@ -186,16 +197,15 @@ export default function FormularioTipoResenia({ user, gameId }) {
             </div>
           </div>
 
-          <ValoracionResenia name="moreInfo" />
+          <ValoracionResenia name="moreInfo" moreInfo={existingResena?.moreInfo || {}} />
 
-          {/* BOTON SUBMIT */}
           <div className="pt-4">
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl text-lg font-semibold shadow-md transition-all"
               disabled={pending}
             >
-              {pending ? "Subiendo reseña..." : "Publicar"}
+              {pending ? "Subiendo reseña..." : existingResena ? "Actualizar reseña" : "Publicar"}
             </button>
           </div>
         </form>

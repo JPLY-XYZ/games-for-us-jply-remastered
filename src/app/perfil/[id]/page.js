@@ -3,13 +3,11 @@ import { getUserById } from '@/lib/data';
 import { Suspense } from 'react';
 
 
-export default async function PerfilUsuario({searchParams}) {
+export default async function PerfilUsuario({params}) {
 
 
-    const userid = searchParams.userid;
-    
-    console.log(userid)
-   
+    const { userid } = await params
+ 
     
     const user =  await getUserById(userid)
     return (

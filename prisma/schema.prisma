@@ -24,7 +24,7 @@ model User {
   bio             String?
   birthDate       DateTime?
   country         String?
-  avatar          String?
+  active          Boolean?  @default(true)
   backgroundImage String?
   createdAt       DateTime  @default(now())
   lastLogin       DateTime?
@@ -62,9 +62,10 @@ model Game {
   shortDesc    String?
   longDesc     String?
   releaseDate  DateTime?
-  editor       String?
-  price        Float?  
-  averageScore Int? 
+  visible      Boolean?  @default(false)
+  publishedAt  DateTime  @default(now())
+  price        Float?
+  averageScore Int?
   salesCount   Int?      @default(0)
   requirements Json?
   urls         Json?
@@ -101,14 +102,15 @@ model Content {
   type        ContentType
   title       String
   shortTitle  String?
-  moreInfo     Json?
-  urls         Json?
+  moreInfo    Json?
+  urls        Json?
   text        String?
   publishedAt DateTime    @default(now())
   editedAt    DateTime?
   score       Int?
   reportCount Int         @default(0)
-  comments     Comment[]
+  visible     Boolean?    @default(true)
+  comments    Comment[]
 }
 
 enum ContentType {
@@ -128,9 +130,10 @@ model Comment {
   contentId   Int?
   text        String
   score       Int?
-  createdAt   DateTime  @default(now())
+  publishedAt DateTime    @default(now())
   edited      Boolean   @default(false)
   editedAt    DateTime?
+  visible     Boolean?  @default(true)
   reportCount Int       @default(0)
 
   //@@check((gameId IS NOT NULL AND contentId IS NULL) OR (gameId IS NULL AND contentId IS NOT NULL))

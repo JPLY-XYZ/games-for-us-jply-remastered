@@ -2,7 +2,7 @@ import { getLatestGames } from "@/lib/data";
 import { AlertTriangle, FileText, FileTextIcon, MessageCircle, Star, ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import ReportButton from "../utilidad/ReportBtn";
-import FavoriteButton from "../utilidad/FavoriteBtn";
+import FavoriteButton from "../utilidad/favorite-game-btn";
 import { auth } from "@/auth";
 import Link from "next/link";
 

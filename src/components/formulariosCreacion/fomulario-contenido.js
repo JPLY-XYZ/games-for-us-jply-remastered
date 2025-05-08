@@ -4,20 +4,20 @@ import FormularioTipoNoticia from "./subFormularios/formulario-tipo-noticia";
 import FormularioTipoImagen from "./subFormularios/formulario-tipo-imagen";
 import { auth } from "@/auth";
 
-async function  FormularioContenido({ tipo , gameId}) {
+async function  FormularioContenido({ tipo , gameId, content=null }) {
     const session = await auth();
     const user = session?.user;
     switch (tipo) {
         case "IMAGEN":
             console.log(gameId, "IMAGEN", "llegado a formulario intermedio formulariocontenido")
-            return <FormularioTipoImagen gameId={gameId} user={user}/>
+            return <FormularioTipoImagen gameId={gameId} user={user} content={content}/>
         case "RESEÑA":
             console.log(gameId, "IMAGEN", "llegado a formulario intermedio formulariocontenido")
-            return <FormularioTipoResenia gameId={gameId} user={user} />
+            return <FormularioTipoResenia gameId={gameId} user={user} existingResena={content} />
         case "VIDEO":
-            return <FormularioTipoVideo gameId={gameId} user={user}/>
+            return <FormularioTipoVideo gameId={gameId} user={user} content={content}/>
         case "NOTICIA":
-            return <FormularioTipoNoticia gameId={gameId} user={user} />
+            return <FormularioTipoNoticia gameId={gameId} user={user} content={content}/>
         default:
             return "Tipo de contenido no válido"
     }

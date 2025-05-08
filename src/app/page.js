@@ -1,17 +1,21 @@
-import ListadoContenidosActuales from "@/components/listados/ListadoContenidosActuales";
-import ListadoJuegoActuales from "@/components/listados/ListadoJuegosActuales";
-import ListadoNoticiasActuales from "@/components/listados/ListadoNoticiasActuales";
-import FallbackTresItems from "@/components/utilidad/fallback-tres-items";
-import ReportButton from "@/components/utilidad/ReportBtn";
-import { getLatestGames } from "@/lib/data";
-import { AlertTriangle, Heart, Youtube, Gamepad2, Star } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { auth } from "@/auth";
+import ListadoTresItems from "@/components/listados/listado-tres-items";
+import TarjetaContenido from "@/components/listados/tarjetas/tarjeta-contenido";
+import TarjetaJuego from "@/components/listados/tarjetas/tarjeta-juego";
+import TarjetaNoticia from "@/components/listados/tarjetas/tarjeta-noticia";
+import FallbackTresItems from "@/components/listados/fallback-tres-items";
+import { getLatestContents, getLatestGames, getLatestNews } from "@/lib/data";
+
 import { Suspense } from "react";
 
-export default function Home() {
+export default async function Home() {
 
+  const session = await auth();
+  const listaNoticias = await getLatestNews();
+  const listaContenido = await getLatestContents();
+  const listaJuegos = await getLatestGames();
 
+console.log(session)
 
   return (
     <main className="flex-1 w-full overflow-y-auto p-8 space-y-16">
@@ -22,7 +26,12 @@ export default function Home() {
         <Suspense fallback={
           <FallbackTresItems />
         }>
-          <ListadoJuegoActuales />
+
+            <ListadoTresItems>
+              {listaJuegos.map((game) => (
+                <TarjetaJuego key={game.id} game={game} sesion={session} />
+              ))}
+            </ListadoTresItems>
         </Suspense>
       </section>
 
@@ -32,7 +41,11 @@ export default function Home() {
         <Suspense fallback={
           <FallbackTresItems />
         }>
-          <ListadoNoticiasActuales />
+            <ListadoTresItems>
+            {listaNoticias.map((noticia) => (
+              <TarjetaNoticia key={noticia.id} noticia={noticia} sesion={session} />
+            ))}
+          </ListadoTresItems>
         </Suspense>
 
       </section>
@@ -43,7 +56,11 @@ export default function Home() {
         <Suspense fallback={
           <FallbackTresItems />
         }>
-          <ListadoContenidosActuales />
+         <ListadoTresItems>
+            {listaContenido.map((contenido) => (
+              <TarjetaContenido key={contenido.id} contenido={contenido} sesion={session} />
+            ))}
+          </ListadoTresItems>
         </Suspense>
       </section>
     </main >

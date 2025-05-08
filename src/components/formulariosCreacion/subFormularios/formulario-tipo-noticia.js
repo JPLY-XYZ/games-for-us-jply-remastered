@@ -3,25 +3,30 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useActionState } from 'react';
-import { createNoticiaContentAction } from '@/lib/actions';
+import FileUploaderInput from "@/components/utilidad/file-uploader";
+import { createNoticiaContentAction, updateNoticiaContentAction } from '@/lib/actions';
 import { X } from 'lucide-react';
 
 const inputClass = "w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
-export default function FormularioTipoNoticia({ user, gameId }) {
-  const [state, action, pending] = useActionState(createNoticiaContentAction, {});
+export default function FormularioTipoNoticia({ user, gameId, content }) {
   const router = useRouter();
-  const [imagenes, setImagenes] = useState([null]);
-  const [bannerPreview, setBannerPreview] = useState("");
-  const [thumbnailPreview, setThumbnailPreview] = useState("");
+  const [createState, createAction, createPending] = useActionState(createNoticiaContentAction, {});
+  const [editState, editAction, editPending] = useActionState(updateNoticiaContentAction, {});
+
+  // Mantener las imágenes previas del listado, si existen
+  const [bannerPreview, setBannerPreview] = useState(content?.urls?.imgs?.banner || "");
+  const [thumbnailPreview, setThumbnailPreview] = useState(content?.urls?.imgs?.thumbnail || "");
+  const [imagenes, setImagenes] = useState(content?.urls?.imgs?.otherImages || []);
 
   useEffect(() => {
-    if (state?.success) {
+    if (createState?.success || editState?.success) {
       router.push("/juego?gameid=" + gameId);
     }
-  }, [state]);
+  }, [createState, editState]);
 
+  // Cambiar la imagen previa (Banner/Thumbnail)
   const handleImageChange = (e, setPreview) => {
     const file = e.target.files[0];
     if (file) {
@@ -33,37 +38,41 @@ export default function FormularioTipoNoticia({ user, gameId }) {
     }
   };
 
+  // Manejar el cambio de capturas (imágenes adicionales)
   const handleScreenshotChange = (index, file) => {
     const updated = [...imagenes];
     updated[index] = file;
     setImagenes(updated);
   };
 
+  // Añadir una nueva captura de pantalla (imagen)
   const addScreenshot = () => {
     setImagenes((prev) => [...prev, null]);
   };
 
+  // Eliminar una captura de pantalla específica
   const removeScreenshot = (index) => {
-    if (index === 0) return;
     const updated = imagenes.filter((_, i) => i !== index);
     setImagenes(updated);
   };
+
+  // Campos comunes (hidden inputs)
+  const commonFields = (
+    <>
+      <input type="hidden" name="userId" defaultValue={user?.id} />
+      <input type="hidden" name="gameId" defaultValue={gameId} />
+      <input type="hidden" name="type" defaultValue="NOTICIA" />
+    </>
+  );
 
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center w-[80%] justify-center px-4 py-12">
       <div className="bg-white dark:bg-slate-800 p-10 rounded-3xl shadow-2xl w-full space-y-6">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white text-center">
-          Subir noticia
+          {content ? "Actualizar noticia" : "Subir noticia"}
         </h1>
 
-        <form className="space-y-6" action={action}>
-          <input type="hidden" name="userId" value={user?.id} />
-          <input type="hidden" name="gameId" value={gameId} />
-          <input type="hidden" name="type" value="NOTICIA" />
-
-          
-
-          {/* TITULOS */}
+        <form className="space-y-6" action={content != null ? editAction : createAction}>
           <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
             <div className="w-full md:w-1/2">
               <label className={labelClass}>Título *</label>
@@ -72,7 +81,7 @@ export default function FormularioTipoNoticia({ user, gameId }) {
                 name="titulo"
                 className={inputClass}
                 placeholder="Título principal"
-                required
+                defaultValue={content?.title || ""}
               />
             </div>
 
@@ -83,11 +92,11 @@ export default function FormularioTipoNoticia({ user, gameId }) {
                 name="tituloCorto"
                 className={inputClass}
                 placeholder="Resumen del título"
+                defaultValue={content?.shortTitle || ""}
               />
             </div>
           </div>
 
-          {/* TEXTO */}
           <div>
             <label className={labelClass}>Texto *</label>
             <textarea
@@ -95,48 +104,40 @@ export default function FormularioTipoNoticia({ user, gameId }) {
               className={`${inputClass} resize-none min-h-[150px]`}
               required
               placeholder="Escribe tu reseña aquí..."
+              defaultValue={content?.text || ""}
             />
           </div>
 
-          {/* BANNER */}
           <div>
             <label className={labelClass}>Banner principal</label>
-            <input
-              type="file"
+            <FileUploaderInput
+              required={false}
               name="banner"
+              label="Selecciona un banner"
               accept="image/*"
+              showPreview={true}
+              previewAspectRatio="16/9"
+              defaultImage={bannerPreview}
               onChange={(e) => handleImageChange(e, setBannerPreview)}
-              className={inputClass}
+              customStyles={{ inputClass, labelClass }}
             />
-            {bannerPreview && (
-              <img
-                src={bannerPreview}
-                alt="Banner Preview"
-                className="mt-2 w-full aspect-[18/5] object-cover rounded-md"
-              />
-            )}
           </div>
 
-          {/* THUMBNAIL */}
           <div>
             <label className={labelClass}>Thumbnail principal</label>
-            <input
-              type="file"
+            <FileUploaderInput
+              required={false}
               name="thumbnail"
+              label="Selecciona un thumbnail"
               accept="image/*"
+              showPreview={true}
+              previewAspectRatio="16/9"
+              defaultImage={thumbnailPreview}
               onChange={(e) => handleImageChange(e, setThumbnailPreview)}
-              className={inputClass}
+              customStyles={{ inputClass, labelClass }}
             />
-            {thumbnailPreview && (
-              <img
-                src={thumbnailPreview}
-                alt="Thumbnail Preview"
-                className="mt-2 w-[1000px] mx-auto aspect-[16/9] object-cover rounded-md"
-              />
-            )}
           </div>
 
-          {/* CAPTURAS ADICIONALES */}
           <div>
             <label className={labelClass}>Capturas adicionales</label>
             <div className="space-y-4">
@@ -167,7 +168,7 @@ export default function FormularioTipoNoticia({ user, gameId }) {
                   {file && (
                     <div className="w-[1000px] aspect-video overflow-hidden rounded-md border border-gray-300 dark:border-gray-600">
                       <img
-                        src={URL.createObjectURL(file)}
+                        src={typeof file === 'string' ? file : URL.createObjectURL(file)}
                         alt={`Screenshot ${index + 1} Preview`}
                         className="w-full h-full object-cover"
                       />
@@ -185,16 +186,25 @@ export default function FormularioTipoNoticia({ user, gameId }) {
             </div>
           </div>
 
-          
+          {commonFields}
 
-          {/* BOTON SUBMIT */}
+          {content && (
+            <input type="hidden" name="contentId" defaultValue={content.id} />
+          )}
+
           <div className="pt-4">
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl text-lg font-semibold shadow-md transition-all"
-              disabled={pending}
+              disabled={content ? editPending : createPending}
             >
-              {pending ? "Subiendo noticia..." : "Publicar"}
+              {content
+                ? editPending
+                  ? "Guardando cambios..."
+                  : "Actualizar"
+                : createPending
+                  ? "Subiendo noticia..."
+                  : "Publicar"}
             </button>
           </div>
         </form>

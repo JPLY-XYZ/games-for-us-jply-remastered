@@ -4,14 +4,18 @@ import {
   Gamepad, Brain, Image as IconImage, DollarSign, Cpu, Clock,
   BookOpen, Volume2, AlertCircle, ThumbsUp, Flag
 } from "lucide-react";
-import Comentarios from "@/components/comentarios";
+import Comentarios from "@/components/comentarios/comentarios";
 import { auth } from "@/auth";
 import { getContentById } from "@/lib/data";
 import ClienteCarrusel from "@/components/carrusel";
+import ActionsButton from "@/components/utilidad/actions-btn";
+import ButtonReportConfig from "@/components/utilidad/button-report-config";
+import ButtonFavorite from "@/components/utilidad/button-favorite";
 
-export default async function Page({ searchParams }) {
-  const contentId = searchParams.postid;
-  const content = await getContentById(+contentId);
+export default async function Page({ params }) {
+
+  const { contentid } = await params
+  const content = await getContentById(+contentid);
   const session = await auth();
 
   console.log(content);
@@ -44,7 +48,7 @@ export default async function Page({ searchParams }) {
     if (content.type === "RESEÑA" || content.type === "NOTICIA" && content.urls?.imgs) {
       const { thumbnail, banner, otherImages } = content.urls.imgs;
 
-      
+
       return (
         <>
           {banner && (
@@ -143,11 +147,10 @@ export default async function Page({ searchParams }) {
     <div className="bg-slate-50 dark:bg-slate-900 min-h-screen font-sans w-full md:w-[70%]">
       <div className="mx-auto px-6 py-12 relative">
         {/* Botón de reportar */}
-        <button className="text-red-500 hover:text-red-700 flex items-center gap-1 p-2 rounded-full bg-red-100 dark:bg-red-900 absolute top-4 right-4">
-          <Flag className="w-5 h-5" />
-          Reportar
-        </button>
 
+        <div className="absolute top-4 right-4 flex gap-2">
+          <ButtonReportConfig id={content.id} tipo="CONTENT" session={session} subtipo={content.type} />
+        </div>
         {/* Título */}
         <div className="flex flex-col mb-6">
           <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-4">{content.title}</h1>
@@ -157,11 +160,35 @@ export default async function Page({ searchParams }) {
         <div className="mb-8">{renderMultimedia()}</div>
 
         {/* Botón de likes */}
-        <div className="flex gap-6 items-center mb-6">
-          <button className="text-blue-500 hover:text-blue-700 flex items-center gap-1 p-2 rounded-full bg-blue-100 dark:bg-blue-900">
-            <ThumbsUp className="w-5 h-5" />
-            <span>{content.likesCount || 0} Likes</span>
-          </button>
+        <div className="flex space-betwen gap-6 items-center mb-6 ml-2">
+          <ButtonFavorite id={content.id} tipo="CONTENT" session={session} />
+          <div className="flex items-center flex-end gap-4 text-sm text-white/80">
+            {/* Avatar */}
+            <div className="flex flex-col items-center">
+              {content.user.image && (
+                <Image
+                  src={content.user.image}
+                  alt={content.user.name}
+                  width={48}
+                  height={48}
+                  className="rounded-full object-cover"
+                />
+
+              )}
+              <p><strong>{content.user.name}</strong></p>
+            </div>
+            {/* Info */}
+            <div className="space-y-1">
+              <p>Miembro desde {new Date(content.user.createdAt).toLocaleDateString()}</p>
+              {content.user.country && <p>🌍 {content.user.country}</p>}
+
+            </div>
+            <p>Publicado el: {new Date(content.publishedAt).toLocaleDateString()}</p>
+            {content.editedAt && (
+              <p>Editado el: {new Date(content.editedAt).toLocaleDateString()}</p>
+            )}
+          </div>
+
         </div>
 
         {/* Valoraciones si es una reseña */}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useActionState } from 'react';
 import { enviarComentario } from '@/lib/actions';
-import RatingStarsBtn from './RatingStarsBtn';
+import RatingStarsBtn from '../utilidad/RatingStarsBtn';
 import { usePathname } from 'next/navigation';
 
 export function ModalComentario({ setModalAbierto, game = null, content = null, EsPuntuacion = false }) {

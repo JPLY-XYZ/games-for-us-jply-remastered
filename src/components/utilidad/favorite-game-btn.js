@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useActionState } from "react"
 import { useState } from "react"
 
-function FavoriteButton({ game, isFavorite, userId }) {
+function FavoriteGameButton({ game, isFavorite, userId }) {
     const [favorite, setFavorite] = useState(isFavorite)
 
     console.log(game._count)
@@ -51,4 +51,4 @@ function FavoriteButton({ game, isFavorite, userId }) {
             )   
 }
 
-            export default FavoriteButton
+            export default FavoriteGameButton

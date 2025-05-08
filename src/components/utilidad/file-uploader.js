@@ -7,8 +7,10 @@ export default function FileUploaderInput({
   label = "Selecciona un archivo",
   accept = "image/*",
   showPreview = true,
+  defaultImage = "",
   previewAspectRatio = "16/9",
   customStyles = {},
+  required = true,
 }) {
   const [preview, setPreview] = useState(null);
 
@@ -35,17 +37,17 @@ export default function FileUploaderInput({
         accept={accept}
         onChange={handleChange}
         className={inputClass}
-        required
+        required={required} 
       />
 
-      {showPreview && preview && (
+        {showPreview && (preview || defaultImage) && (
         <div className="mt-4">
           <p className="text-gray-700 dark:text-gray-300 mb-2">Previsualización:</p>
           <div
             className={`aspect-[${previewAspectRatio}] w-full overflow-hidden rounded-xl shadow-md bg-slate-200 dark:bg-slate-700`}
           >
             <img
-              src={preview}
+              src={preview || defaultImage}
               alt="Previsualización"
               className="w-full h-full object-contain"
             />
