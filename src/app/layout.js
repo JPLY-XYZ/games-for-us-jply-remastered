@@ -7,6 +7,7 @@ import { SessionProvider } from 'next-auth/react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Buscador from '@/components/utilidad/buscador/buscador'
+import { auth } from '@/auth'
 
 
 
@@ -19,6 +20,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
 
+    const session = await auth();
 
   return (
     <html lang="es">
@@ -31,7 +33,7 @@ export default async function RootLayout({ children }) {
               <Link href="/" className="text-4xl font-bold">GAMES FOR US</Link>
             </div>
             <Buscador />
-            <AuthButtons />
+            <AuthButtons session={session} />
       </header>
   
       <div className="flex-1 flex">

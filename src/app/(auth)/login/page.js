@@ -21,11 +21,11 @@ errors.set('Default', "No se puede iniciar sesión.");
 
 async function PaginaLogin({ searchParams }) {
   const { error, callbackUrl } = await searchParams
-  globalThis.callbackUrl = callbackUrl
+  globalThis.callbackUrl = callbackUrl || "/"
 
   const sesion = await auth()
 
-  if (sesion) redirect('/dashboard')
+  if (sesion) redirect('/')
 
   return (
     <div className="relative mt-8 mx-auto flex flex-col gap-2">

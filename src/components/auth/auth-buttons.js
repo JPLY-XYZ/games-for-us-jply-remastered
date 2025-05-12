@@ -7,8 +7,8 @@ import Link from "next/link";
 import { logout } from "@/lib/actions";
 import { DoorClosed, FolderCog, FolderHeart, FolderUp, SquareUser } from "lucide-react";
 
-export default function AuthButtons() {
-    const { data: session } = useSession();
+export default function AuthButtons({session}) {
+
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -55,7 +55,7 @@ export default function AuthButtons() {
                         <p className="text-xs text-gray-500 truncate">{session.user?.email}</p>
                     </div>
                     <Link
-                        href={"/perfil?userid="+session.user.id}
+                        href={"/perfil/"+session.user.id}
                         className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                     >
                         <SquareUser className="w-5 h-5 text-gray-500" />
@@ -63,7 +63,7 @@ export default function AuthButtons() {
                     </Link>
                     {/* {session.user.role == "USUARIO" && */}
                         <Link
-                            href="/favorite_games"
+                            href={"/perfil/"+session.user.id+"juegosfavoritos"}
                             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         >
                             <FolderHeart className="w-5 h-5 text-gray-500" />
@@ -71,18 +71,19 @@ export default function AuthButtons() {
                         </Link>
                         {/* } */}
                     {/* {session.user.role == "DESARROLLADOR" && */}
-                        <Link
-                            href="/developer_portal"
+                     <Link
+                            href={"/perfil/"+session.user.id+"/juegospublicados"}
                             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                        ><FolderUp
-                                className="w-5 h-5 text-gray-500" />
-                            <span>Juegos Publicados</span>
+                        >
+                            <FolderUp className="w-5 h-5 text-gray-500" />
+                            <span>Panel Desarrollador</span>
                         </Link>
+                        
                         {/* } */}
 
                     {/* {session.user.role == "ADMINISTRADOR" && */}
                         <Link
-                            href="/admin_portal"
+                            href="/administradores"
                             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         >
                             <FolderCog className="w-5 h-5 text-gray-500" />

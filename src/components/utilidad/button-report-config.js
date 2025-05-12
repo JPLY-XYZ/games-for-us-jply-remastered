@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { isOwner } from "@/lib/data";
 import ActionsButton from "./actions-btn";
 import ReportButton from "./ReportBtn";
-import { Loader } from 'lucide-react';
+import {  Loader, LogIn } from 'lucide-react';
+import Link from 'next/link';
 
-function ButtonReportConfig({ id, tipo, session, subtipo, editRoute }) {
+function ButtonReportConfig({ id, tipo, session, subtipo }) {
 
        const [isUserOwner, setIsUserOwner] = useState(null);
 
@@ -20,12 +21,17 @@ function ButtonReportConfig({ id, tipo, session, subtipo, editRoute }) {
         checkOwnership();
     }, [session, id, tipo]);
 
+    if (session?.user == null) {
+        return <Link href="/login"><LogIn  className="w-6 h-6" /></Link>;
+    }
+
+
     if (isUserOwner === null) {
         return <Loader className="animate-spin text-white" />; // O cualquier indicador de carga
     }
 
     if (isUserOwner) {
-        return <ActionsButton id={id} tipo={tipo} subtipo={subtipo} editRoute={editRoute} />;
+        return <ActionsButton id={id} tipo={tipo} subtipo={subtipo} />;
     } else {
         return <ReportButton id={id} tipo={tipo} />;
     }

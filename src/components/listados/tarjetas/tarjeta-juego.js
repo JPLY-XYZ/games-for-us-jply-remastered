@@ -1,60 +1,62 @@
 "use client";
 
-import Image from "next/image";
-import { Eye, EyeOff, Pencil, Trash2, Heart } from "lucide-react";
-import BotonAccion from "./boton-accion";
+import Link from "next/link";
 
-
-export default function TarjetaJuego({ game, modoUso = "default", onEditar, onEliminar, onToggleVisible }) {
+export default function TarjetaJuego({ game, isOwner }) {
   return (
-    <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition overflow-hidden border
-      ${!game.visible ? "border-yellow-400 dark:border-yellow-500" : "border-transparent"}
-    `}>
-      <Image
+    <Link
+      href={"/juego/" + game.id}
+      className="bg-white dark:bg-slate-800 rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden"
+    >
+      <img
         src={game?.urls?.images?.cover || "https://placehold.co/1280x720.jpg"}
         alt={game.name}
-        layout="responsive"
-        width={600}
-        height={300}
-        className="object-cover w-full h-40"
+        className="w-full h-48 object-cover"
       />
 
-      <div className="p-4 flex flex-col justify-between h-48">
-        <div>
-          <div className="flex justify-between items-start mb-1">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{game.name}</h3>
-            {!game.visible && (
-              <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">Oculto</span>
-            )}
-          </div>
-          {game.shortDesc && (
-            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">{game.shortDesc}</p>
+      <div className="p-4 space-y-3 ">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
+          {game.name}
+        </h3>
+
+        {game.shortDesc && (
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+            {game.shortDesc}
+          </p>
+        )}
+
+        <div className="flex flex-wrap justify-start gap-4 text-xs text-gray-500 dark:text-gray-400">
+          {game.releaseDate && (
+            <span>
+              {new Date(game.releaseDate).toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: "short",
+              })}
+            </span>
           )}
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-            {game.categories?.length > 0 && <>🎮 {game.categories.map(c => c.name).join(", ")} · </>}
-            📅 {game.releaseDate ? new Date(game.releaseDate).getFullYear() : "Próximamente"}
-          </div>
+          {game.price != null && (
+            <span>
+              {game.price === 0 ? "Gratis" : `${game.price} €`}
+            </span>
+          )}
+          {game.averageScore != null && (
+            <span> {game.averageScore}/100</span>
+          )}
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          {modoUso === "favoritos" ? (
-            <BotonAccion texto="Quitar Favorito" icono={<Heart className="w-4 h-4" />} color="red" onClick={() => onEliminar?.(game)} />
-          ) : (
-            <>
-              {onEditar && <BotonAccion texto="Editar" icono={<Pencil className="w-4 h-4" />} color="blue" onClick={() => onEditar(game)} />}
-              {onEliminar && <BotonAccion texto="Eliminar" icono={<Trash2 className="w-4 h-4" />} color="red" onClick={() => onEliminar(game)} />}
-              {onToggleVisible && (
-                <BotonAccion
-                  texto={game.visible ? "Ocultar" : "Mostrar"}
-                  icono={game.visible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  color={game.visible ? "yellow" : "green"}
-                  onClick={() => onToggleVisible(game)}
-                />
-              )}
-            </>
-          )}
-        </div>
+        {game.categories?.length > 0 && (
+          <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+            {game.categories.map((c) => c.name).join(" · ")}
+          </div>
+        )}
       </div>
-    </div>
+
+      {/* Mensaje para el propietario si el juego está oculto */}
+      {!game.visible && isOwner && (
+        <p className="text-xs text-gray-500 dark:text-gray-400 italic mt-2 px-4 py-2  rounded-lg">
+          El juego está oculto por el desarrollador o algún moderador
+        </p>
+      )}
+    </Link>
   );
 }

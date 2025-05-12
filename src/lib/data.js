@@ -19,6 +19,55 @@ export async function getUserById(id) {
   return user;
 }
 
+export async function getAllUsersSimple() {
+  const users = await prisma.user.findMany({});
+  return users;
+}
+export async function getAllContentsSimple() {
+  const contents = await prisma.content.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      game: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+
+  return contents;
+}
+
+export async function getAllGamesSimple() {
+  const games = await prisma.game.findMany({});
+  return games;
+}
+export async function getAllCommentsSimple() {
+  const comments = await prisma.comment.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      game: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+  return comments;
+}
+
 
 export async function getUserByEmail(email) {
   const user = await prisma.user.findUnique({
@@ -274,6 +323,70 @@ export async function reportComment(commentId) {
 
 // DELETES
 
+
+//HIDES
+
+// Hacer flip-flop del estado visible de un juego
+export async function toggleVisibleGame(gameId) {
+  const game = await prisma.game.findUnique({
+    where: { id: gameId },
+  });
+
+  console.log("desde toggleVisibleGame", game)
+
+  const newVisibleState = !game.visible; // Cambia el estado de visible
+
+  await prisma.game.update({
+    where: { id: gameId },
+    data: {
+      visible: newVisibleState,
+    },
+  });
+
+  return { status: newVisibleState ? 'Visible' : 'Oculto' };
+}
+
+// Hacer flip-flop del estado visible de un contenido
+export async function toggleVisibleContent(contentId) {
+  const content = await prisma.content.findUnique({
+    where: { id: contentId },
+  });
+
+  const newVisibleState = !content.visible; // Cambia el estado de visible
+
+  await prisma.content.update({
+    where: { id: contentId },
+    data: {
+      visible: newVisibleState,
+    },
+  });
+
+  return { status: newVisibleState ? 'Visible' : 'Oculto' };
+}
+
+// Hacer flip-flop del estado visible de un comentario
+export async function toggleVisibleComment(commentId) {
+  const comment = await prisma.comment.findUnique({
+    where: { id: commentId },
+  });
+
+  const newVisibleState = !comment.visible; // Cambia el estado de visible
+
+  await prisma.comment.update({
+    where: { id: commentId },
+    data: {
+      visible: newVisibleState,
+    },
+  });
+
+  return { status: newVisibleState ? 'Visible' : 'Oculto' };
+}
+
+
+
+
+
+
 // BORRAR UN USUARIO
 export async function deleteUser(userId) {
   await prisma.$transaction([
@@ -348,10 +461,46 @@ export async function deleteComment(commentId) {
 }
 
 
+export async function deactivateAcount(userId) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (user.active) {
+    // Ya es fan, quitamos
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: userId },
+        data: {
+          active: false,
+        },
+      }),
+    ]);
+    return { status: 'Desactivado' };
+  } else {
+    // No es fan, lo añadimos
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: userId },
+        data: {
+          active: true,
+        },
+      }),
+    ]);
+    return { status: 'Activado' };
+  }
+
+}
+
+
+
+
 //FUNCION SIMPLE PARA OBTENER SI ES PROPIETARIO
 
 
-export async function isOwner( userId, targetId, type ) {
+export async function isOwner(userId, targetId, type) {
 
   console.log("desde isOwner", userId, targetId, type)
 
@@ -367,6 +516,10 @@ export async function isOwner( userId, targetId, type ) {
         },
       });
       return game?.developers.length > 0;
+
+      case "USER":
+      
+      return userId === targetId;
 
     case "CONTENT":
       const content = await prisma.content.findUnique({
@@ -462,53 +615,53 @@ export async function setFavoriteGame(tipo, gameId) {
 
 export async function setFavoriteThink(tipo, id, sumar) {
   if (tipo === 'COMMENT') {
-      if (sumar) {
-          // Incrementar el score
-          await prisma.comment.update({
-              where: { id: id },
-              data: {
-                  score: {
-                      increment: 1
-                  }
-              }
-          });
-          return { status: 'added' };
-      } else {
-          // Decrementar el score
-          await prisma.comment.update({
-              where: { id: id },
-              data: {
-                  score: {
-                      decrement: 1
-                  }
-              }
-          });
-          return { status: 'removed' };
-      }
+    if (sumar) {
+      // Incrementar el score
+      await prisma.comment.update({
+        where: { id: id },
+        data: {
+          score: {
+            increment: 1
+          }
+        }
+      });
+      return { status: 'added' };
+    } else {
+      // Decrementar el score
+      await prisma.comment.update({
+        where: { id: id },
+        data: {
+          score: {
+            decrement: 1
+          }
+        }
+      });
+      return { status: 'removed' };
+    }
   } else {
-      if (sumar) {
-          // Incrementar el score
-          await prisma.content.update({
-              where: { id: id },
-              data: {
-                  score: {
-                      increment: 1
-                  }
-              }
-          });
-          return { status: 'added' };
-      } else {
-          // Decrementar el score
-          await prisma.content.update({
-              where: { id: id },
-              data: {
-                  score: {
-                      decrement: 1
-                  }
-              }
-          });
-          return { status: 'removed' };
-      }
+    if (sumar) {
+      // Incrementar el score
+      await prisma.content.update({
+        where: { id: id },
+        data: {
+          score: {
+            increment: 1
+          }
+        }
+      });
+      return { status: 'added' };
+    } else {
+      // Decrementar el score
+      await prisma.content.update({
+        where: { id: id },
+        data: {
+          score: {
+            decrement: 1
+          }
+        }
+      });
+      return { status: 'removed' };
+    }
   }
 }
 

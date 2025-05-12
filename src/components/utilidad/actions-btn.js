@@ -9,7 +9,7 @@ import { startTransition } from "react";
 function ActionsButton({ id, tipo, subtipo }) {
   const [state, actionDelete, pendingDelete] = useActionState(deleteAction, {});
 
-  
+
 
   return (<>
     <form action={actionDelete}>
@@ -23,20 +23,20 @@ function ActionsButton({ id, tipo, subtipo }) {
         {pendingDelete ? (
           <Loader className="animate-spin text-white" />
         ) : (
-          <Trash2 className="w-6 h-6" />
+          tipo != "USER" && <Trash2 className="w-6 h-6" />
         )}
       </button>
     </form>
 
-   
-    {subtipo != "VIDEO" && <Link 
-      href={"/contenido/"+id+"/edit"}
+
+    {subtipo != "VIDEO" || tipo != "USER"  && <Link
+      href={"/contenido/" + id + "/edit"}
       replace
       className="opacity-60 text-white hover:opacity-100 focus:outline-none cursor-pointer"
     >
-      
-        <Pencil className="w-6 h-6" />
-      
+
+      <Pencil className="w-6 h-6" />
+
     </Link>}
 
   </>

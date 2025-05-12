@@ -2,13 +2,9 @@
 
 import TarjetaJuego from "./tarjetas/tarjeta-juego";
 
-
-
-
-
-function ListadoJuegos({ games = [], titulo = "Mis Juegos", onEditar, onEliminar, onToggleVisible, modo = "default" }) {
+function ListadoJuegos({ games = [], titulo = "Mis Juegos" , isOwner}) {
   return (
-    <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="  max-w-7xl mx-auto">
       {titulo && (
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{titulo}</h1>
@@ -21,10 +17,7 @@ function ListadoJuegos({ games = [], titulo = "Mis Juegos", onEditar, onEliminar
             <TarjetaJuego
               key={`${game.id}-${index}`}
               game={game}
-              modoUso={modo}
-              onEditar={onEditar}
-              onEliminar={onEliminar}
-              onToggleVisible={onToggleVisible}
+              isOwner={isOwner}
             />
           ))
         ) : (

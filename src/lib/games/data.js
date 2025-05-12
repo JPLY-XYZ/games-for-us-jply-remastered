@@ -10,14 +10,7 @@ export async function getJuegosPaginado({ offset, limit, where = {} }) {
     take: limit,
     where,
     orderBy: { releaseDate: "desc" },
-    select: {
-      id: true,
-      name: true,
-      shortDesc: true,
-      releaseDate: true,
-      urls: true,
-      categories: { select: { name: true } },
-    },
   });
   return games;
 }
+
