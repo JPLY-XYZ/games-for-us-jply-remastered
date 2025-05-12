@@ -10,7 +10,7 @@ function RegisterForm() {
   const [state, action, pending] = useActionState(register, {})
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-500 dark:bg-gray-800 w-full max-w-md rounded-lg shadow-md p-6">
+    <div className="flex flex-col items-center justify-center bg-gray-500 dark:bg-gray-800  w-full sm:h-auto  h-full max-w-screen  sm:max-w-md rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold text-gray-200 mb-4">Registro</h2>
       <form action={action} className="w-full">
         <div className="flex flex-col gap-4">

@@ -4,8 +4,9 @@ import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { buscarTodoServer } from '@/lib/actions'
 import Image from 'next/image'
+import { FileCheck, FileImage, FileSpreadsheet, FileVideo2 } from 'lucide-react'
 
-function Buscador({ className = '' }) {
+function Buscador() {
   const [query, setQuery] = useState('')
   const [resultados, setResultados] = useState({})
   const [isPending, startTransition] = useTransition()
@@ -37,15 +38,15 @@ function Buscador({ className = '' }) {
   }
 
   const getIconForContent = (type) => {
-    if (type === 'VIDEO') return '/icons/video.svg'
-    if (type === 'RESEÑA') return '/icons/review.svg'
-    if (type === 'IMAGEN') return '/icons/image.svg'
-    if (type === 'NOTICIA') return '/icons/news.svg'
-    return '/icons/file.svg'
+    if (type === 'VIDEO') return <FileVideo2 />
+    if (type === 'RESEÑA') return <FileCheck />
+    if (type === 'IMAGEN') return <FileImage />
+    if (type === 'NOTICIA') return <FileSpreadsheet />
+    return <File />
   }
 
   return (
-    <div className={`relative w-full max-w-md mx-auto mb-6 z-50 ${className}`}>
+    <div className={" w-full max-w-md mx-auto "}>
       <div className="flex">
         <input
           type="text"
@@ -56,14 +57,14 @@ function Buscador({ className = '' }) {
         />
         <button
           onClick={handleBuscar}
-          className="px-4 py-2 rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
+          className=" hidden sm:inline px-4 py-2 rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
         >
           Buscar
         </button>
       </div>
 
       {Object.keys(resultados).length > 0 && (
-        <div className="absolute w-full bg-white dark:bg-gray-800 border dark:border-gray-700 mt-1 rounded-xl shadow-lg max-h-72 overflow-auto">
+        <div className="absolute w-full bg-white dark:bg-gray-800 border dark:border-gray-700 mt-2 rounded-xl shadow-lg max-h-72 overflow-auto">
           {Object.entries(resultados).map(([categoria, items]) => (
             <div key={categoria} className="border-b dark:border-gray-700">
               <p className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
@@ -75,7 +76,6 @@ function Buscador({ className = '' }) {
                   className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-white flex items-center gap-3"
                   onClick={() => handleClick(item)}
                 >
-                  {/* Imagen dinámica según tipo */}
                   {item.type === 'Usuario' && item.image && (
                     <Image
                       src={item.image}
@@ -97,15 +97,11 @@ function Buscador({ className = '' }) {
                   )}
 
                   {item.type === 'Contenido' && (
-                    <Image
-                      src={getIconForContent(item.contentType)}
-                      alt={item.contentType}
-                      width={32}
-                      height={32}
-                    />
+
+                    getIconForContent(item.contentType)
+
                   )}
 
-                  {/* Info del resultado */}
                   <div className="flex flex-col">
                     <span className="font-medium">{item.name}</span>
 

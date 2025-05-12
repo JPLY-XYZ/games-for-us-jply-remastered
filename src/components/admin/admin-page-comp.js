@@ -202,7 +202,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                 </div>
               </div>
             </header>
-            <div className="overflow-y-auto max-h-[calc(100vh-12.5rem)] pr-2 sm:pr-1">
+            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] pr-2 sm:pr-1">
               <div className="flex flex-col gap-3">
                 {users
                   .filter((user) =>
@@ -338,7 +338,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                 </button>
               </div>
             </header>
-            <div className="overflow-y-auto max-h-[calc(100vh-12.5rem)] pr-2 sm:pr-1">
+            <div className="overflow-y-auto max-h-[calc(100vh-14.5rem)] pr-2 sm:pr-1">
               <div className="flex flex-col gap-3">
                 {comments
                   .filter((comentario) =>

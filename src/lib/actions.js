@@ -5,6 +5,7 @@ import { auth, signIn, signOut } from '@/auth';
 import { buscar, createNewContent, getUserByEmail, newComment, reportComment, reportContent, reportGame, reportUser, setFavoriteGame } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { uploadFile } from './files';
+import { updateUser } from './games/data';
 
 
 // REGISTER
@@ -787,3 +788,64 @@ export async function updateContent({
     },
   });
 }
+
+
+export async function updateUserData(prevState, formData) {
+
+  console.log('📥 Actualizando Usuario llllllllldsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
+  const updateData = {};
+
+  try {
+    // Extraer los datos del formulario
+    updateData.name = formData.get('name');
+    updateData.birthDate = formData.get('birthDate');
+    updateData.bio = formData.get('bio');
+    const id = formData.get('id');
+    updateData.country = formData.get('country');
+
+    const backgroundImage = formData.get('backgroundImage');
+    console.log('backgroundImage:', backgroundImage);
+    const image = formData.get('image');
+
+    // Validación de las imágenes
+    if (!backgroundImage || typeof backgroundImage === "string") {
+      console.error("🚫 Archivo de imagen de fondo no encontrado o inválido");
+      return { error: "Falta el archivo de imagen de fondo" };
+    }
+
+    // Subir imagen de fondo
+    const imgUrl = await uploadFile(backgroundImage, id);
+
+    updateData.backgroundImageURL = { img: imgUrl };
+
+    if (!image || typeof image === "string") {
+      console.error("🚫 Archivo de imagen de perfil no encontrado o inválido");
+      return { error: "Falta el archivo de imagen de perfil" };
+    }
+
+    // Subir imagen de perfil
+    const imgUrl2 = await uploadFile(image, id);
+
+    updateData.imageUrl = { img: imgUrl2 };
+
+    // Actualizar los datos del usuario
+    console.log("🛠 Actualizando usuario en base de datos...");
+    console.log(updateData);
+
+    await updateUser(id, updateData);
+
+    return { success: "Usuario actualizado correctamente" };
+    
+  } catch (error) {
+    console.error("🚫 Error al actualizar los datos del usuario:", error);
+    return { error: "Hubo un error al actualizar el usuario" };
+  }
+}
+
+
+
+
+
+
+

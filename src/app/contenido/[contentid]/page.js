@@ -2,7 +2,8 @@ import { Suspense } from "react";
 import Image from "next/image";
 import {
   Gamepad, Brain, Image as IconImage, DollarSign, Cpu, Clock,
-  BookOpen, Volume2, AlertCircle, ThumbsUp, Flag
+  BookOpen, Volume2, AlertCircle, ThumbsUp, Flag,
+  Cable
 } from "lucide-react";
 import Comentarios from "@/components/comentarios/comentarios";
 import { auth } from "@/auth";
@@ -11,16 +12,30 @@ import ClienteCarrusel from "@/components/carrusel";
 import ActionsButton from "@/components/utilidad/actions-btn";
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
 import ButtonFavorite from "@/components/utilidad/button-favorite";
+import Link from "next/link";
 
 export default async function Page({ params }) {
 
   const { contentid } = await params
+
+  if (isNaN(Number(contentid))) {
+  return (
+    <div>
+      <Cable className="w-36 h-36 animate-bounce mx-auto" />
+      <h1 className="text-6xl mb-4">Contenido no encontrado</h1>
+      <Link href="/">Volver Atras</Link>
+    </div>
+  );
+}
+
   const content = await getContentById(+contentid);
   const session = await auth();
 
-  console.log(content);
-
-  if (!content) return <div className="p-6 text-center text-red-500">Contenido no encontrado</div>;
+ if (!content) {
+        return <div><Cable className="w-36 h-36 animate-bounce  mx-auto"/><h1 className='text-6xl mb-4'>Contenido no encontrado</h1>
+            <Link href="/">Volver Atras</Link ></div>;
+    }
+   
 
   const renderMultimedia = () => {
     if (content.type === "VIDEO" && content.urls?.video) {

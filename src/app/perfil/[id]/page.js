@@ -2,6 +2,7 @@ import { auth } from '@/auth';
 import Perfil from '@/components/perfil';
 import ButtonReportConfig from '@/components/utilidad/button-report-config';
 import { getUserById } from '@/lib/data';
+import { Cable } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
@@ -14,6 +15,12 @@ export default async function PerfilUsuario({ params }) {
     console.log(id)
 
     const user = await getUserById(id)
+
+    if (!user) {
+        return <div><Cable className="w-36 h-36 animate-bounce  mx-auto"/><h1 className='text-6xl mb-4'>Usuario no encontrado</h1>
+            <Link href="/">Volver Atras</Link ></div>
+    }
+
 
     return (
         <div className="bg-slate-100 dark:bg-slate-900 min-h-screen md:w-[60%]">

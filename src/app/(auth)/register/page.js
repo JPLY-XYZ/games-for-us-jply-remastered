@@ -27,10 +27,9 @@ async function PaginaRegister({ searchParams }) {
   if (sesion) redirect('/dashboard')
 
   return (
-    <div className="relative mt-8 mx-auto flex flex-col gap-2">
+   
       <RegisterForm/> 
-      {/* <OauthForm/> */}
-    </div>
+   
   )
 }
 

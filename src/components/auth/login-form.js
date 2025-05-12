@@ -1,76 +1,96 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { useActionState } from 'react'
-import { login, loginSteam } from '@/lib/actions'
-import { loginGoogle, loginDiscord } from "@/lib/actions"
+import { login } from '@/lib/actions'
 import OauthButtons from './oauth-buttons'
 
-
-
 export function LoginForm({ className }) {
-    const [state, action, pending] = useActionState(login, {})
+  const [state, formAction, pending] = useActionState(login, {})
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [remember, setRemember] = useState(false)
 
-    return (
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('loginEmail')
+    const storedPassword = localStorage.getItem('loginPassword')
+    if (storedEmail && storedPassword) {
+      setEmail(storedEmail)
+      setPassword(storedPassword)
+      setRemember(true)
+    }
+  }, [])
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (remember) {
+      localStorage.setItem('loginEmail', email)
+      localStorage.setItem('loginPassword', password)
+    } else {
+      localStorage.removeItem('loginEmail')
+      localStorage.removeItem('loginPassword')
+    }
 
-        <div className="flex flex-col items-center justify-center bg-gray-500 dark:bg-gray-800 w-full max-w-md rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold text-gray-200 mb-4">Acceso</h2>
-            <form action={action} className="w-full">
-                <div className="flex flex-col gap-4">
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        defaultValue={state.fields?.email || ''}
-                        required
-                        className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-                    />
+    const formData = new FormData()
+    formData.append('email', email)
+    formData.append('password', password)
+    formData.append('remember', remember ? 'on' : '')
+    formAction(formData)
+  }
 
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Contraseña"
-                        defaultValue={state.fields?.password || ''}
-                        className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-                    />
-
-                    <div className="flex gap-7 items-center justify-between flex-wrap">
-                        <label className="text-sm text-gray-200 cursor-pointer" htmlFor="remember">
-                            <input
-                                className="mr-2"
-                                id="remember"
-                                name="remember"
-                                type="checkbox"
-                                defaultChecked={state.fields?.remember}
-                            />
-                            Recuérdame
-                        </label>
-                        <a href="/register" className="text-sm dark:text-blue-500 text-blue-900 hover:underline">
-                            ¿No tienes cuenta? Entra aquí
-                        </a>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={pending}
-                        className="cursor-pointer bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150 disabled:bg-slate-300 disabled:animate-pulse"
-                    >
-                        {pending ? 'Iniciando sesión...' : 'Iniciar sesión'}
-                    </button>
-
-                    <p className={state?.error ? 'text-red-500 text-sm mt-2' : 'hidden'}>
-                        {state.error}
-                    </p>
-                </div>
-            </form>
-
-            <hr className="h-[1px] bg-gray-400 my-6 w-full" />
-
-            <OauthButtons />
-
+  return (
+    <div className="flex flex-col items-center justify-center bg-gray-500 dark:bg-gray-800 w-full sm:h-auto h-full max-w-screen sm:max-w-md rounded-lg shadow-md p-6">
+      <h2 className="text-2xl font-bold text-gray-200 mb-4">Acceso</h2>
+      <form onSubmit={handleSubmit} className="w-full">
+        <div className="flex flex-col gap-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <div className="flex gap-7 items-center justify-between flex-wrap">
+            <label htmlFor="remember" className="text-sm text-gray-200 cursor-pointer">
+              <input
+                type="checkbox"
+                id="remember"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+                className="mr-2"
+              />
+              Recuérdame
+            </label>
+            <a href="/register" className="text-sm text-blue-300 hover:underline">
+              ¿No tienes cuenta? Entra aquí
+            </a>
+          </div>
+          <button
+            type="submit"
+            disabled={pending}
+            className="w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-2 hover:brightness-110 transition disabled:bg-slate-400 disabled:cursor-not-allowed"
+          >
+            {pending ? 'Iniciando sesión...' : 'Iniciar sesión'}
+          </button>
+          {state?.error && (
+            <p className="text-red-500 text-sm mt-2">{state.error}</p>
+          )}
         </div>
-
-
-    )
+      </form>
+      <hr className="h-px bg-gray-400 my-6 w-full" />
+      <OauthButtons />
+    </div>
+  )
 }
 
 export default LoginForm

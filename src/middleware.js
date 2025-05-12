@@ -13,8 +13,6 @@ const PUBLIC_PATHS = [
 export default auth((req) => {
   const { pathname, search } = req.nextUrl;
 
-  console.log("MIDDLEWARE", pathname, req.auth);
-
   // Verificamos si es una ruta pública
   const isPublic = PUBLIC_PATHS.some(
     (path) => pathname === path || pathname.startsWith(path + '/')
@@ -27,6 +25,11 @@ export default auth((req) => {
     return Response.redirect(
       `${req.nextUrl.origin}/login?callbackUrl=${encodedCallbackUrl}`
     );
+  }
+
+  // Si está autenticado pero no tiene 'bio' y no está en la página de completar perfil, redirige
+  if (req.auth && !req.auth.user?.bio && pathname !== '/externalservicepostform') {
+    return Response.redirect(`${req.nextUrl.origin}/externalservicepostform`);
   }
 
   // Si está autenticado o es una ruta pública, deja pasar

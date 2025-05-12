@@ -28,11 +28,10 @@ async function PaginaLogin({ searchParams }) {
   if (sesion) redirect('/')
 
   return (
-    <div className="relative mt-8 mx-auto flex flex-col gap-2">
-      {/* <RegisterForm/> */}
+    
+    
       <LoginForm/>
-      {/* <OauthForm/> */}
-    </div>
+   
   )
 }
 

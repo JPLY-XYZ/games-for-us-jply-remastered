@@ -1,6 +1,7 @@
 
 import { auth } from '@/auth'
 import OauthForm from '@/components/auth/oauth-form';
+import { getUserById } from '@/lib/data';
 import { redirect } from 'next/navigation';
 
 // https://next-auth.js.org/configuration/pages#sign-in-page
@@ -23,11 +24,13 @@ async function externalServicePostForm({ searchParams }) {
 
   const sesion = await auth()
 
-  // if (sesion) redirect('/dashboard')
+  const user = await getUserById(sesion.user.id)
+  
+console.log(user)
 
   return (
     <div className="relative mt-8 mx-auto flex flex-col gap-2">
-       <OauthForm/> 
+       <OauthForm user={user} /> 
     </div>
   )
 }
