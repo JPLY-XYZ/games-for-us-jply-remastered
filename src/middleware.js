@@ -27,10 +27,7 @@ export default auth((req) => {
     );
   }
 
-  // Si está autenticado pero no tiene 'bio' y no está en la página de completar perfil, redirige
-  if (req.auth && !req.auth.user?.bio && pathname !== '/externalservicepostform') {
-    return Response.redirect(`${req.nextUrl.origin}/externalservicepostform`);
-  }
+
 
   // Si está autenticado o es una ruta pública, deja pasar
   return null;

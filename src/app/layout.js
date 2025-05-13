@@ -1,3 +1,4 @@
+
 import '@/app/globals.css'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
@@ -10,7 +11,6 @@ import Buscador from '@/components/utilidad/buscador/buscador'
 import { auth } from '@/auth'
 
 
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -20,44 +20,46 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
 
-    const session = await auth();
+  const session = await auth();
+
+
 
   return (
     <html lang="es">
-      <SessionProvider> 
-    <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
-      
-      <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-4 md:px-10 sticky top-0 z-50">
-  <div className="flex items-center">
-    <Gamepad2 className="w-8 h-8 mr-2 md:w-12 md:h-12 md:mr-3 hidden sm:inline" />
-    <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline">
-      GAMES FOR US
-    </Link>
-  </div>
-  <div className="flex-1 mx-4 max-w-xs sm:max-w-md md:max-w-lg">
-    <Buscador />
-  </div>
-  <div className="flex items-center">
-    <AuthButtons session={session} />
-  </div>
-</header>
+      <SessionProvider>
+        <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
 
-  
-      <div className="flex-1 flex">
-        <main className="flex items-center justify-center w-full overflow-y-auto">
-          {children}
-          <Link
-            href="/howtouse"
-            className="fixed sm:bottom-15 sm:right-3 bottom-25 right-3 bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg text-lg hover:bg-blue-600 transition"
-          >
-            ?
-          </Link>
-        </main>
-      </div>
-  
-    </body>
-    </SessionProvider>
-  </html>
-  
+          <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-4 md:px-10 sticky top-0 z-50">
+            <div className="flex items-center">
+              <Gamepad2 className="w-8 h-8 mr-2 md:w-12 md:h-12 md:mr-3 hidden sm:inline" />
+              <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline">
+                GAMES FOR US
+              </Link>
+            </div>
+            <div className="flex-1 mx-4 max-w-xs sm:max-w-md md:max-w-lg">
+              <Buscador />
+            </div>
+            <div className="flex items-center">
+              <AuthButtons session={session} />
+            </div>
+          </header>
+
+          <div className="flex-1 flex">
+            <main className="flex items-center justify-center w-full overflow-y-auto">
+
+              { children }
+
+              <Link
+                href="/howtouse"
+                className="fixed sm:bottom-15 sm:right-3 bottom-25 right-3 bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg text-lg hover:bg-blue-600 transition"
+              >
+                ?
+              </Link>
+            </main>
+          </div>
+
+        </body>
+      </SessionProvider>
+    </html>
   )
 }

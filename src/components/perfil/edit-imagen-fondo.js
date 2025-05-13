@@ -1,0 +1,99 @@
+'use client'
+import { updateUserBackImagen, updateUserProfileImagen } from '@/lib/actions';
+import { Pencil, Save, X } from 'lucide-react';
+import { useActionState, useEffect, useId, useRef, useState } from 'react';
+
+function EditImageFondo({ user, ownership, children }) {
+
+
+    const key = useId();
+    const [isEditing, setIsEditing] = useState(false);
+    const [imagePreview, setImagePreview] = useState(user.backgroundImage);
+    const fileInputRef = useRef(null);
+
+    const [state, action, pending] = useActionState(updateUserBackImagen, {});
+
+    useEffect(() => {
+        if (!pending && state?.success) {
+            setIsEditing(false);
+        }
+    }, [pending, state?.success]);
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setImagePreview(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    return (
+        <div className="relative w-full h-60 overflow-hidden rounded-lg shadow">
+            <form action={action} className="absolute inset-0">
+                <input
+                    ref={fileInputRef}
+                    id="imageInputBack"
+                    type="file"
+                    name="img"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                />
+                <input type="hidden" name="id" value={user.id} />
+
+                {isEditing ? (
+                    <label htmlFor="imageInputBack" className="absolute inset-0 cursor-pointer">
+                        <img
+                            src={imagePreview}
+                            alt="banner"
+                            className="brightness-75 object-cover w-full h-full"
+                        />
+                    </label>
+                ) : (
+                    <img
+                        src={imagePreview}
+                        alt="banner"
+                        className="brightness-75 object-cover w-full h-full"
+                    />
+                )}
+
+                {isEditing && (
+                    <div key={key} className="absolute bottom-2 right-2 flex gap-2">
+                        <button
+                            type="submit"
+                            disabled={pending || !fileInputRef.current?.files.length}
+                            className="text-white hover:text-green-500 p-1 rounded-full disabled:opacity-50"
+                            title="Guardar cambios"
+                        >
+                            <Save className="w-6 h-6" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIsEditing(false);
+                                setImagePreview(user.backgroundImage);
+                            }}
+                            className="text-white hover:text-red-500 p-1 rounded-full"
+                            title="Cancelar"
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+                    </div>
+                )}
+            </form>
+
+            {!isEditing && ownership && (
+                <button
+                    onClick={() => setIsEditing(true)}
+                    className="absolute top-2 right-2 text-white hover:text-blue-400 p-1 rounded-full"
+                    title="Editar fondo"
+                >
+                    <Pencil className="w-6 h-6" />
+                </button>
+            )}
+        </div>
+    );
+}
+
+export default EditImageFondo;

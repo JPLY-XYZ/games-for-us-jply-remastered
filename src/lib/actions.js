@@ -2,10 +2,11 @@
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { auth, signIn, signOut } from '@/auth';
-import { buscar, createNewContent, getUserByEmail, newComment, reportComment, reportContent, reportGame, reportUser, setFavoriteGame } from '@/lib/data';
+import { buscar, createNewContent, getUserByEmail, getUserById, newComment, reportComment, reportContent, reportGame, reportUser, setFavoriteGame } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { uploadFile } from './files';
-import { updateUser } from './games/data';
+import { updateUser,  updateUserProfileBackImagen, updateUserProfilePerfileImagen } from './games/data';
+import { profile } from 'console';
 
 
 // REGISTER
@@ -298,7 +299,7 @@ export async function createResenaContentAction(prevState, formData) {
 
     const bannerFile = formData.get("banner");
     console.log("🖼 banner recibido:", bannerFile?.name || 'No hay banner');
-    
+
     let bannerUrl = null;
     if (bannerFile && typeof bannerFile !== 'string') {
       bannerUrl = await uploadFile(bannerFile, userId);
@@ -404,7 +405,7 @@ export async function createNoticiaContentAction(prevState, formData) {
 
     const bannerFile = formData.get("banner");
     console.log("🖼 banner recibido:", bannerFile?.name || 'No hay banner');
-    
+
     let bannerUrl = null;
     if (bannerFile && typeof bannerFile !== 'string') {
       bannerUrl = await uploadFile(bannerFile, userId);
@@ -441,7 +442,7 @@ export async function createNoticiaContentAction(prevState, formData) {
         console.log(`✅ Imagen ${key} subida:`, url);
       }
     }
-   
+
 
     console.log("🛠 Creando contenido en DB...");
     const content = await createNewContent({
@@ -462,7 +463,6 @@ export async function createNoticiaContentAction(prevState, formData) {
     return { error: error.message || "Error desconocido" };
   }
 }
-
 
 // update
 export async function updateImageContentAction(prevState, formData) {
@@ -515,7 +515,6 @@ export async function updateImageContentAction(prevState, formData) {
   }
 }
 
-
 export async function updateVideoContentAction(prevState, formData) {
   try {
     console.log("📥 Actualizando Video");
@@ -566,11 +565,6 @@ export async function updateVideoContentAction(prevState, formData) {
     return { error: error.message || "Error desconocido" };
   }
 }
-
-
-
-
-
 
 export async function updateResenaContentAction(prevState, formData) {
   try {
@@ -789,59 +783,77 @@ export async function updateContent({
   });
 }
 
-
+// Server-side: updateUserData
 export async function updateUserData(prevState, formData) {
+  console.log('📥 Iniciando actualización de usuario');
 
-  console.log('📥 Actualizando Usuario llllllllldsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-
-  const updateData = {};
+  const id = formData.get('id');
+  const name = formData.get('name');
+  const bio = formData.get('bio');
+  const country = formData.get('country');
+    const birthdate = formData.get('birthdate');
 
   try {
-    // Extraer los datos del formulario
-    updateData.name = formData.get('name');
-    updateData.birthDate = formData.get('birthDate');
-    updateData.bio = formData.get('bio');
-    const id = formData.get('id');
-    updateData.country = formData.get('country');
-
-    const backgroundImage = formData.get('backgroundImage');
-    console.log('backgroundImage:', backgroundImage);
-    const image = formData.get('image');
-
-    // Validación de las imágenes
-    if (!backgroundImage || typeof backgroundImage === "string") {
-      console.error("🚫 Archivo de imagen de fondo no encontrado o inválido");
-      return { error: "Falta el archivo de imagen de fondo" };
-    }
-
-    // Subir imagen de fondo
-    const imgUrl = await uploadFile(backgroundImage, id);
-
-    updateData.backgroundImageURL = { img: imgUrl };
-
-    if (!image || typeof image === "string") {
-      console.error("🚫 Archivo de imagen de perfil no encontrado o inválido");
-      return { error: "Falta el archivo de imagen de perfil" };
-    }
-
-    // Subir imagen de perfil
-    const imgUrl2 = await uploadFile(image, id);
-
-    updateData.imageUrl = { img: imgUrl2 };
-
-    // Actualizar los datos del usuario
-    console.log("🛠 Actualizando usuario en base de datos...");
-    console.log(updateData);
-
-    await updateUser(id, updateData);
-
+    await updateUser(id, name,bio, birthdate, country);
     return { success: "Usuario actualizado correctamente" };
-    
   } catch (error) {
-    console.error("🚫 Error al actualizar los datos del usuario:", error);
-    return { error: "Hubo un error al actualizar el usuario" };
+    console.error("🚫 Error durante la actualización:", error);
+    return { error: "Hubo un error actualizando el usuario" };
+  }
+  finally {
+   revalidatePath('/perfil')
   }
 }
+
+
+export async function updateUserProfileImagen(prevState, formData) {
+  console.log('📥 Iniciando actualización de imagen de usuario usuario');
+
+  const id = formData.get('id');
+  const img = formData.get('img');
+   let profileImgUrl = await uploadFile(img, id)
+
+  try {
+    await updateUserProfilePerfileImagen(id,profileImgUrl);
+    return { success: "Usuario actualizado correctamente" };
+  } catch (error) {
+    console.error("🚫 Error durante la actualización:", error);
+    return { error: "Hubo un error actualizando el usuario" };
+  }
+  finally {
+   revalidatePath('/perfil')
+  }
+}
+
+export async function updateUserBackImagen(prevState, formData) {
+  console.log('📥 Iniciando actualización de imagen de usuario usuario');
+
+  const id = formData.get('id');
+  const img = formData.get('img');
+
+  let backImg; // <- Debe declararse aquí una sola vez
+
+  if (img && typeof img !== "string" && img.size > 0) {
+    backImg = await uploadFile(img, id);
+  } else {
+    const user = await getUserById(id);
+    backImg = user.image; // <- Accede a la imagen de fondo si es diferente
+  }
+
+  try {
+    await updateUserProfileBackImagen(id, backImg);
+    return { success: "Usuario actualizado correctamente" };
+  } catch (error) {
+    console.error("🚫 Error durante la actualización:", error);
+    return { error: "Hubo un error actualizando el usuario" };
+  }
+  finally {
+   revalidatePath('/perfil')
+  }
+}
+
+
+
 
 
 

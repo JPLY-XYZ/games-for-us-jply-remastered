@@ -1,6 +1,6 @@
-import RegisterForm from '@/components/auth/register-form'
+
 import LoginForm from '@/components/auth/login-form'
-import OauthForm from '@/components/auth/oauth-form'
+
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation';
 import { CirclePlus, Play, Globe } from 'lucide-react'

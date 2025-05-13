@@ -19,13 +19,13 @@ model User {
   email           String?   @unique
   password        String?
   emailVerified   DateTime?
-  image           String?
+  image           String?   @default("https://placehold.co/600x600/orange/white?text=GFU")
   role            Role      @default(USUARIO)
   bio             String?
   birthDate       DateTime?
   country         String?
   active          Boolean?  @default(true)
-  backgroundImage String?
+  backgroundImage String? @default("https://placehold.co/600x600/orange/white?text=Games For Us")
   createdAt       DateTime  @default(now())
   lastLogin       DateTime?
   reportCount     Int       @default(0)

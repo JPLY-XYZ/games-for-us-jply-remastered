@@ -15,24 +15,74 @@ export async function getJuegosPaginado({ offset, limit, where = {} }) {
 }
 
 
-export async function updateUser(userId, updateData) {
+export async function updateUser(userId, name, bio, birthdate, country) {
   try {
-    // Actualizar el usuario en la base de datos
+    const updateData = {};
+
+    if (name) updateData.name = name;
+    if (bio) updateData.bio = bio;
+    if (birthdate) updateData.birthDate = new Date(birthdate).toISOString();
+    if (country) updateData.country = country;
+
+    updateData.emailVerified = new Date().toISOString();
+
     const updatedUser = await prisma.user.update({
-      where: { id: userId },  // Buscar por el ID del usuario
-      data: {
-        name: updateData.name,  // Actualiza el nombre si se proporciona
-        bio: updateData.bio,    // Actualiza la bio si se proporciona
-        birthDate: updateData.birthDate,  // Actualiza la fecha de nacimiento
-        country: updateData.country,      // Actualiza el país
-        image: updateData.image,  // Actualiza la imagen de perfil
-        backgroundImage: updateData.backgroundImage, // Actualiza la imagen de fondo
-      },
+      where: { id: userId },
+      data: updateData,
     });
 
-    return updatedUser;  // Retorna el usuario actualizado
+    return updatedUser;
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
     throw new Error('No se pudo actualizar el usuario');
   }
 }
+
+
+export async function updateUserProfilePerfileImagen(userId, imagenPerfil) {
+  try {
+    const updateData = {};
+
+    if (imagenPerfil) updateData.image = imagenPerfil;
+  
+
+    updateData.emailVerified = new Date().toISOString();
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+    });
+
+    return updatedUser;
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error);
+    throw new Error('No se pudo actualizar el usuario');
+  }
+}
+
+export async function updateUserProfileBackImagen(userId, imagenFondo) {
+
+console.log('🔥 Iniciando actualización de imagen de fondo de usuario');
+console.log('🔥 userId:', userId)
+console.log('🔥 imagenFondo:', imagenFondo);
+
+  try {
+    const updateData = {};
+
+    if (imagenFondo) updateData.backgroundImage = imagenFondo;
+
+    updateData.emailVerified = new Date().toISOString();
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+    });
+
+    return updatedUser;
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error);
+    throw new Error('No se pudo actualizar el usuario');
+  }
+}
+
+
