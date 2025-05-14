@@ -10,8 +10,9 @@ function Buscador() {
   const [query, setQuery] = useState('')
   const [resultados, setResultados] = useState({})
   const [isPending, startTransition] = useTransition()
+  const [dropdownVisible, setDropdownVisible] = useState(false)
   const router = useRouter()
-  const resultsRef = useRef(null)
+  const dropdownRef = useRef(null)
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -19,9 +20,11 @@ function Buscador() {
         startTransition(async () => {
           const res = await buscarTodoServer(query)
           setResultados(res)
+          setDropdownVisible(true)
         })
       } else {
         setResultados({})
+        setDropdownVisible(false)
       }
     }, 300)
 
@@ -30,27 +33,15 @@ function Buscador() {
 
   const handleBuscar = () => {
     router.push(`/busqueda?q=${query}`)
+    setDropdownVisible(false)
   }
 
   const handleClick = (item) => {
     if (item.type === 'Juego') router.push(`/juego/${item.id}`)
     else if (item.type === 'Usuario') router.push(`/usuario/${item.id}`)
     else if (item.type === 'Contenido') router.push(`/contenido/${item.id}`)
-    setResultados({})  // Cerrar los resultados
+    setDropdownVisible(false)
   }
-
-  const handleClickOutside = (e) => {
-    if (resultsRef.current && !resultsRef.current.contains(e.target)) {
-      setResultados({})  // Cerrar los resultados al hacer clic fuera
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside)
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [])
 
   const getIconForContent = (type) => {
     if (type === 'VIDEO') return <FileVideo2 />
@@ -60,32 +51,39 @@ function Buscador() {
     return <File />
   }
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownVisible(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
-    <div className=" mx-auto relative">
-   <div className="w-full  mx-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-  {/* Buscador */}
-  <div className="flex w-full sm:w-auto">
-    <input
-      type="text"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      placeholder="Buscar..."
-      className="flex-grow px-6 py-3 text-lg rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
-    />
-    <button
-      className="hidden sm:inline px-6 py-3 text-lg rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
-    >
-      Buscar
-    </button>
-  </div>
-</div>
+    <div className="w-full max-w-md mx-auto">
+      <div className="flex">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Buscar..."
+          className="flex-grow px-4 py-2 rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
+        />
+        <button
+          onClick={handleBuscar}
+          className="hidden sm:inline px-4 py-2 rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
+        >
+          Buscar
+        </button>
+      </div>
 
-
-      {/* Contenedor de resultados más grande */}
-      {Object.keys(resultados).length > 0 && (
+      {dropdownVisible && Object.keys(resultados).length > 0 && (
         <div
-          ref={resultsRef}
-          className="absolute top-full left-0 right-0 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 mt-2 rounded-xl shadow-lg max-h-96 overflow-auto z-50"
+          ref={dropdownRef}
+          className="absolute left-1/2 top-full w-[100%] sm:w-[50%] transform -translate-x-1/2 -translate-y-2 bg-white dark:bg-gray-800 border dark:border-gray-700 mt-2 rounded-xl shadow-lg max-h-90 overflow-auto"
         >
           {Object.entries(resultados).map(([categoria, items]) => (
             <div key={categoria} className="border-b dark:border-gray-700">
