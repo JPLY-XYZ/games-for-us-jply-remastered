@@ -18,7 +18,7 @@
 
     useEffect(() => {
         if (state?.success) {
-        router.push("/juego?gameid=" + gameId);
+        router.push("/juego/" + gameId);
         }
     }, [state]);
 

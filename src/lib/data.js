@@ -1,6 +1,7 @@
 'use server'
 import prisma from '@/lib/prisma'
 import { ContentType } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 export async function getUserById(id) {
   const user = await prisma.user.findUnique({
@@ -191,6 +192,7 @@ export async function getLatestGames() {
   return await prisma.game.findMany({
     where: {
       releaseDate: { not: null },
+      visible: true,
     },
     orderBy: {
       releaseDate: 'desc',
@@ -216,6 +218,7 @@ export async function getLatestNews() {
   return await prisma.content.findMany({
     where: {
       type: ContentType.NOTICIA,
+      visible: true,
     },
     orderBy: {
       publishedAt: 'desc',
@@ -252,6 +255,7 @@ export async function getLatestContents() {
       NOT: {
         type: ContentType.NOTICIA, // Excluir noticias
       },
+       visible: true,
     },
     orderBy: {
       publishedAt: 'desc',
@@ -342,8 +346,9 @@ export async function toggleVisibleGame(gameId) {
       visible: newVisibleState,
     },
   });
-
+revalidatePath('/');
   return { status: newVisibleState ? 'Visible' : 'Oculto' };
+  
 }
 
 // Hacer flip-flop del estado visible de un contenido
@@ -577,7 +582,7 @@ export async function deleteGameById(id) {
 //juegos favoritos
 
 
-export async function setFavoriteGame(tipo, gameId) {
+export async function setFavoriteGame( userId, gameId) {
   const isFan = await prisma.user.findFirst({
     where: {
       id: userId,

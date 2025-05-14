@@ -29,7 +29,7 @@
 
     useEffect(() => {
       if (createState?.success || editState?.success) {
-        router.push("/juego?gameid=" + gameId);
+        router.push("/juego/" + gameId);
       }
     }, [createState, editState]);
 

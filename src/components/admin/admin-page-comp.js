@@ -202,7 +202,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                 </div>
               </div>
             </header>
-            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] pr-2 sm:pr-1">
+            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] ">
               <div className="flex flex-col gap-3">
                 {users
                   .filter((user) =>
@@ -256,7 +256,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                 </div>
               </div>
             </header>
-            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] pt-2 pr-2 sm:pr-1 sm:max-h-[calc(100vh-11.5rem)]">
+            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] pt-2  sm:max-h-[calc(100vh-11.5rem)]">
               <div className="flex flex-col gap-3">
                 {contents
                   .filter((content) =>
@@ -299,7 +299,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                 </div>
               </div>
             </header>
-            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] pt-2 pr-2 sm:pr-1 sm:max-h-[calc(100vh-11.5rem)]">
+            <div className="overflow-y-auto max-h-[calc(100vh-14rem)] pt-2  sm:max-h-[calc(100vh-11.5rem)]">
               <div className="flex flex-col gap-3">
                 {juegos
                   .filter((juego) =>
@@ -338,7 +338,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                 </button>
               </div>
             </header>
-            <div className="overflow-y-auto max-h-[calc(100vh-14.5rem)] pr-2 sm:pr-1">
+            <div className="overflow-y-auto max-h-[calc(100vh-14.5rem)] ">
               <div className="flex flex-col gap-3">
                 {comments
                   .filter((comentario) =>

@@ -29,6 +29,7 @@ function ActionsButton({ id, tipo, subtipo }) {
     </form>
 
 
+
     {subtipo != "VIDEO" || tipo != "USER"  && <Link
       href={"/contenido/" + id + "/edit"}
       replace

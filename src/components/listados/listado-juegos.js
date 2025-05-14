@@ -2,7 +2,15 @@
 
 import TarjetaJuego from "./tarjetas/tarjeta-juego";
 
-function ListadoJuegos({ games = [], titulo = "Mis Juegos" , isOwner}) {
+function ListadoJuegos({ games = [], titulo = "Mis Juegos" , isOwner = false, session}) {
+
+  if(isOwner){
+    games = games
+  }
+  else{
+    games = games.filter(game => game.visible)
+  }
+
   return (
     <div className="  max-w-7xl mx-auto">
       {titulo && (
@@ -15,9 +23,10 @@ function ListadoJuegos({ games = [], titulo = "Mis Juegos" , isOwner}) {
         {games.length > 0 ? (
           games.map((game, index) => (
             <TarjetaJuego
-              key={`${game.id}-${index}`}
+              key={`${game.id}`}
               game={game}
               isOwner={isOwner}
+              session={session}
             />
           ))
         ) : (

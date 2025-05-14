@@ -56,7 +56,7 @@ function ReportButton({ id, tipo }) {
             <button
                 disabled={reported || pending}
                 type="submit"
-                className={`opacity-60 focus:outline-none ${reported ? 'text-orange-500' : 'text-white'} ${reported ? '' : 'hover:opacity-100 cursor-pointer'}`}
+                className={`opacity-60 focus:outline-none cursor-pointer ${reported ? 'text-orange-500' : 'text-white'} ${reported ? '' : 'hover:opacity-100 cursor-pointer'}`}
             >
                 {pending ? <Loader className="animate-spin text-white" /> : <AlertTriangle className="w-6 h-6" />}
             </button>

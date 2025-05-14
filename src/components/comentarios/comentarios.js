@@ -25,8 +25,8 @@ export default function Comentarios({ relationGame, relationContent, comentarios
 
     return (
         <div className="max-w-screen-xl mx-auto mt-12 px-6">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Comentarios</h2>
+            <div className="flex justify-between items-center mb-4 flex-col sm:flex-row">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 sm:mb-0">Comentarios</h2>
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                     onClick={() => setModalAbierto(true)}
@@ -35,7 +35,7 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                 </button>
             </div>
 
-            <div className="mb-4 flex gap-4">
+            <div className="mb-4 flex gap-4 justify-start sm:justify-start">
                 <button
                     className={`text-sm px-3 py-1 rounded ${orden === "fecha" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
                     onClick={() => setOrden("fecha")}
@@ -84,14 +84,10 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                             </div>
 
                             {/* Contenido del comentario */}
-                           
-                            {/* Información adicional en una sola línea */}
-                            <div className=" flex items-center gap-4 text-sm  text-gray-600 dark:text-gray-400">
+                            <div className="flex items-center flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
-                                <img src={comment.user.image} alt="" className="w-6 h-6 rounded-full"/>
+                                <img src={comment.user.image} alt="" className="w-6 h-6 rounded-full" />
                                 <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
-                               
-                               
 
                                 {/* Estrellas para la calificación */}
                                 {EsPuntuacion && <div className="flex items-center gap-1">
@@ -105,19 +101,17 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                                         );
                                     })}
                                 </div>}
-
-                                {/* Fecha */}
-                                <span>{new Date(comment.createdAt).toLocaleDateString()}</span>
-                                {comment.edited && (
-                                    <div className=" flex text-[10px] gap-1"><Pencil className="w-3 h-3" /> Editado el {new Date(comment.editedAt).toLocaleDateString()} </div>
-                                )}
-                                
+                                <div className="flex items-center gap-3 ">
+                                    {/* Fecha */}
+                                    <span>{new Date(comment.publishedAt).toLocaleDateString()}</span>
+                                    {comment.edited && (
+                                        <div className="flex text-[10px]  gap-1"><Pencil className="w-3 h-3" /> Editado el {new Date(comment.editedAt).toLocaleDateString()} </div>
+                                    )}
+                                </div>
                             </div>
-                            <p className="text-sm mt-2 dark:bg-gray-900 bg-gray-300 p-3 rounded-2xl  text-gray-800 dark:text-gray-200">{comment.text}</p>
+                            <p className="text-sm mt-2 dark:bg-gray-900 bg-gray-300 p-3 rounded-2xl text-gray-800 dark:text-gray-200 break-words overflow-hidden">{comment.text}</p>
+
                         </div>
-
-
-
                     ))}
 
                     <div className="flex justify-center items-center gap-4 mt-4">
@@ -147,11 +141,9 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                 <p>No hay comentarios disponibles.</p>
             )}
 
-           
-{modalAbierto &&
-               <ModalComentario setModalAbierto={setModalAbierto} game={relationGame} content={relationContent} EsPuntuacion={EsPuntuacion} />
-
-}  
+            {modalAbierto &&
+                <ModalComentario setModalAbierto={setModalAbierto} game={relationGame} content={relationContent} EsPuntuacion={EsPuntuacion} />
+            }
         </div>
     );
 }

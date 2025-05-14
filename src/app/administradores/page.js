@@ -9,6 +9,11 @@ async function page() {
   const juegos = await getAllGamesSimple();
   const comments = await getAllCommentsSimple();
 
+  console.log(users, "users")
+  console.log(contents, "contents")
+  console.log(juegos, "juegos")
+  console.log(comments, "comments") 
+
   return (<Suspense fallback={"hola esto esta cargando"}>
     <AdminPageComp users={users} contents={contents} juegos={juegos} comments={comments} />
   </Suspense>);

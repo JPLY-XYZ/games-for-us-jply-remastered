@@ -34,7 +34,7 @@ async function fileToBuffer(file) {
   
     const buffer = await fileToBuffer(file);
   
-    const uploadDir = path.join(process.cwd(), "public", "uploads", userId);
+    const uploadDir = path.join(process.cwd(), "uploads", userId);
     fs.mkdirSync(uploadDir, { recursive: true });
   
     const ext = path.extname(file.name).toLowerCase();

@@ -2,7 +2,7 @@
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { auth, signIn, signOut } from '@/auth';
-import { buscar, createNewContent, getUserByEmail, getUserById, newComment, reportComment, reportContent, reportGame, reportUser, setFavoriteGame } from '@/lib/data';
+import { buscar, createNewContent, getUserByEmail, getUserById, newComment} from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { uploadFile } from './files';
 import { updateUser,  updateUserProfileBackImagen, updateUserProfilePerfileImagen } from './games/data';

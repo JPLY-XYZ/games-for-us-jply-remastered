@@ -3,6 +3,11 @@ import { RequisitosJuego } from './subFormularios/utilidades/requisitos-juego';
 import { MultimediaJuego } from './subFormularios/utilidades/multimedia-juego';
 
 function FormularioJuego() {
+
+
+    
+
+
     return (
         <div className="bg-slate-100 dark:bg-slate-900 min-h-screen px-4 py-12 w-[85%]">
             <div className=" mx-auto bg-white dark:bg-slate-800 p-10 rounded-3xl shadow-2xl space-y-12">

@@ -4,6 +4,9 @@
 
 import { revalidatePath } from "next/cache";
 import { deactivateAcount, deleteComment, deleteContent, deleteGame, deleteUser, reportComment, reportContent, reportGame, reportUser, setFavoriteGame, setFavoriteThink, toggleVisibleComment, toggleVisibleContent, toggleVisibleGame } from "../data";
+import { auth } from "@/auth";
+
+
 
 export async function reportAction(prevState, formData) {
   if (!(formData instanceof FormData)) {
@@ -35,7 +38,7 @@ export async function reportAction(prevState, formData) {
         throw new Error('Tipo no soportado');
     }
 
-    // revalidatePath('/');
+    revalidatePath('/');
   } catch (error) {
     console.error('Error en reportAction:', error);
     throw error;
@@ -73,9 +76,9 @@ export async function deleteAction(prevState, formData) {
         throw new Error('Tipo no soportado');
     }
 
-    revalidatePath('/');
+     revalidatePath('/'); 
   } catch (error) {
-    console.error('Error en reportAction:', error);
+    console.error('Error en deleteAction:', error);
     throw error;
   }
 }
@@ -109,7 +112,7 @@ export async function togleVisibilitiAction(prevState, formData) {
 
     revalidatePath('/');
   } catch (error) {
-    console.error('Error en reportAction:', error);
+    console.error('Error en togleVisibilitiAction:', error);
     throw error;
   }
 }
@@ -127,9 +130,8 @@ export async function suspenderAcount(prevState, formData) {
 // SERVER ACTION DE GUARDAR COMO FAVORITO UN JUEGO
 
 export async function toggleFavoriteGameAction(prevState, formData) {
-  const session = await auth()
-  const userId = session?.user?.id
-  const gameId = Number(formData.get('gameId'))
+  const userId = formData.get('userid')
+  const gameId = Number(formData.get('gameid'))
 
 
   if (!userId || !gameId) {
@@ -137,14 +139,15 @@ export async function toggleFavoriteGameAction(prevState, formData) {
   }
 
   const result = await setFavoriteGame(userId, gameId)
-  return result // { status: 'added' | 'removed' }
+  revalidatePath('/')
+  return result 
+  
 }
 
 export async function toggleFavoriteAny({ tipo, id, sumar }) {
   // const id = Number(formData.get('id'))
   // const tipo = Number(formData.get('tipo'))
   // const sumar = Boolean(formData.get('sumar'))
-  console.log("tu puta mucho puta desde favoriteany", id, tipo, sumar)
 
   if (!id || !tipo) {
     throw new Error('Datos inválidos')

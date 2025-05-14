@@ -29,7 +29,7 @@ console.log(session)
 
             <ListadoTresItems>
               {listaJuegos.map((game) => (
-                <TarjetaJuego key={game.id} game={game} sesion={session} />
+                <TarjetaJuego key={game.id} game={game} session={session} />
               ))}
             </ListadoTresItems>
         </Suspense>
