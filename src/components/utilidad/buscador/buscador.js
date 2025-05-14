@@ -38,7 +38,7 @@ function Buscador() {
 
   const handleClick = (item) => {
     if (item.type === 'Juego') router.push(`/juego/${item.id}`)
-    else if (item.type === 'Usuario') router.push(`/usuario/${item.id}`)
+    else if (item.type === 'Usuario') router.push(`/perfil/${item.id}`)
     else if (item.type === 'Contenido') router.push(`/contenido/${item.id}`)
     setDropdownVisible(false)
   }

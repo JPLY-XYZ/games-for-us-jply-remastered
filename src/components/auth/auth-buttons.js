@@ -18,6 +18,9 @@ export default function AuthButtons({ session }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
+
+ 
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -112,29 +115,32 @@ export default function AuthButtons({ session }) {
             <SquareUser className="w-5 h-5 text-gray-500" />
             <span>Perfil</span>
           </Link>
-          {/* <Link
+          <Link
             href={"/perfil/" + session.user.id + "/juegosfavoritos"}
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
           >
             <FolderHeart className="w-5 h-5 text-gray-500" />
             <span>Juegos Favoritos</span>
           </Link>
-          <Link
+          
+          {session.user?.role == "DESARROLLADOR" && <Link
             href={"/perfil/" + session.user.id + "/juegospublicados"}
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
           >
             <FolderUp className="w-5 h-5 text-gray-500" />
             <span>Panel Desarrollador</span>
-          </Link> */}
-
-          
-          <Link
+          </Link> }
+         
+         {session.user?.role == "ADMINISTRADOR" && <Link
             href="/administradores"
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
           >
             <FolderCog className="w-5 h-5 text-gray-500" />
             <span>Panel de administrador</span>
-          </Link>
+          </Link>}
+
+
+          
           <form action={logout}>
             <button
               type="submit"
