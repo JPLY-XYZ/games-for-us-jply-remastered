@@ -31,7 +31,7 @@ export default async function RootLayout({ children }) {
 
           <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-4 md:px-10 sticky top-0 z-50">
             <div className="flex items-center">
-              <Gamepad2 className="w-8 h-8 mr-2 md:w-12 md:h-12 md:mr-3 hidden sm:inline" />
+              <Gamepad2 className="w-8 h-8 mr-2 md:w-12 md:h-12 md:mr-3 " />
               <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline">
                 GAMES FOR US
               </Link>

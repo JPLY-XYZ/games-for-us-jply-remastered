@@ -5,13 +5,23 @@ import prisma from "../prisma";
 
 
 export async function getJuegosPaginado({ offset, limit, where = {} }) {
-  const games = await prisma.game.findMany({
-    skip: offset,
-    take: limit,
-    where,
-    orderBy: { releaseDate: "desc" },
-  });
-  return games;
+  try {
+    const games = await prisma.game.findMany({
+      skip: offset,
+      take: limit,
+      where,
+      orderBy: { releaseDate: 'desc' },
+      include: {
+        developers: true,
+        fans: true,
+      },
+    });
+
+    return games;
+  } catch (error) {
+    console.error("Error fetching paginated games:", error);
+    throw new Error("Unable to fetch games. Please try again later.");
+  }
 }
 
 

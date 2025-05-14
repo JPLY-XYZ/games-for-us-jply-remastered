@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition, useEffect } from 'react'
+import { useState, useTransition, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { buscarTodoServer } from '@/lib/actions'
 import Image from 'next/image'
@@ -11,6 +11,7 @@ function Buscador() {
   const [resultados, setResultados] = useState({})
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const resultsRef = useRef(null)
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -35,7 +36,21 @@ function Buscador() {
     if (item.type === 'Juego') router.push(`/juego/${item.id}`)
     else if (item.type === 'Usuario') router.push(`/usuario/${item.id}`)
     else if (item.type === 'Contenido') router.push(`/contenido/${item.id}`)
+    setResultados({})  // Cerrar los resultados
   }
+
+  const handleClickOutside = (e) => {
+    if (resultsRef.current && !resultsRef.current.contains(e.target)) {
+      setResultados({})  // Cerrar los resultados al hacer clic fuera
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
 
   const getIconForContent = (type) => {
     if (type === 'VIDEO') return <FileVideo2 />
@@ -46,25 +61,32 @@ function Buscador() {
   }
 
   return (
-    <div className={" w-full max-w-md mx-auto "}>
-      <div className="flex">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar..."
-          className="flex-grow px-4 py-2 rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
-        />
-        <button
-          onClick={handleBuscar}
-          className=" hidden sm:inline px-4 py-2 rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
-        >
-          Buscar
-        </button>
-      </div>
+    <div className=" mx-auto relative">
+   <div className="w-full  mx-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+  {/* Buscador */}
+  <div className="flex w-full sm:w-auto">
+    <input
+      type="text"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder="Buscar..."
+      className="flex-grow px-6 py-3 text-lg rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
+    />
+    <button
+      className="hidden sm:inline px-6 py-3 text-lg rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
+    >
+      Buscar
+    </button>
+  </div>
+</div>
 
+
+      {/* Contenedor de resultados más grande */}
       {Object.keys(resultados).length > 0 && (
-        <div className="absolute w-full bg-white dark:bg-gray-800 border dark:border-gray-700 mt-2 rounded-xl shadow-lg max-h-72 overflow-auto">
+        <div
+          ref={resultsRef}
+          className="absolute top-full left-0 right-0 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 mt-2 rounded-xl shadow-lg max-h-96 overflow-auto z-50"
+        >
           {Object.entries(resultados).map(([categoria, items]) => (
             <div key={categoria} className="border-b dark:border-gray-700">
               <p className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
@@ -96,11 +118,7 @@ function Buscador() {
                     />
                   )}
 
-                  {item.type === 'Contenido' && (
-
-                    getIconForContent(item.contentType)
-
-                  )}
+                  {item.type === 'Contenido' && getIconForContent(item.contentType)}
 
                   <div className="flex flex-col">
                     <span className="font-medium">{item.name}</span>

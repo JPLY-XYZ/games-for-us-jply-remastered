@@ -86,12 +86,12 @@
                         </Link>
                     ))}
                 </div>
-                {user.favoriteGames.length === 0 && (
+                {/* {user.favoriteGames.length === 0 && (
                     <p className="text-gray-600 dark:text-gray-300 mt-4">No hay juegos favoritos.</p>
                 )}
                 <Link href={`/perfil/${user.id}/juegosfavoritos`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
                     Ver todos los juegos favoritos
-                </Link>
+                </Link> */}
             </div>
 
             {user.role === "DESARROLLADOR" && (
@@ -107,12 +107,12 @@
                             </Link>
                         ))}
                     </div>
-                    {user.developedGames.length === 0 && (
+                    {/* {user.developedGames.length === 0 && (
                         <p className="text-gray-600 dark:text-gray-300 mt-4">No hay juegos publicados.</p>
                     )}
                     <Link href={`/perfil/${user.id}/publicados`} className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
                         Ver todos los juegos publicados
-                    </Link>
+                    </Link> */}
                 </div>
             )}
         </div>

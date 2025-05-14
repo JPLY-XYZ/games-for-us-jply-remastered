@@ -139,7 +139,7 @@ export async function toggleFavoriteGameAction(prevState, formData) {
   }
 
   const result = await setFavoriteGame(userId, gameId)
-  revalidatePath('/')
+ 
   return result 
   
 }

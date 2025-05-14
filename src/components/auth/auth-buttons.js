@@ -112,7 +112,7 @@ export default function AuthButtons({ session }) {
             <SquareUser className="w-5 h-5 text-gray-500" />
             <span>Perfil</span>
           </Link>
-          <Link
+          {/* <Link
             href={"/perfil/" + session.user.id + "/juegosfavoritos"}
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
           >
@@ -125,7 +125,9 @@ export default function AuthButtons({ session }) {
           >
             <FolderUp className="w-5 h-5 text-gray-500" />
             <span>Panel Desarrollador</span>
-          </Link>
+          </Link> */}
+
+          
           <Link
             href="/administradores"
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"

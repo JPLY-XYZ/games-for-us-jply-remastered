@@ -19,61 +19,61 @@ async function Juego({ game }) {
     const { requirements } = game;
     const { minimum, recommended } = requirements ? requirements.requirements : {};
 
-  
+
 
     return (
-        <div className="w-full lg:w-[80%] mx-auto bg-slate-100 dark:bg-slate-900 min-h-screen font-sans">
-            {/* Banner */}
-            <div className="h-80 w-full bg-gray-800 relative rounded-b-lg overflow-hidden shadow-lg">
-                {game?.urls?.images?.banner && (
-                    <Image
-                        src={game.urls.images.banner}
-                        alt="Game Banner"
-                        layout="fill"
-                        objectFit="cover"
-                        className="brightness-50"
-                    />
-                )}
-                <div className= "  absolute top-4 right-4 text-white opacity-75 hover:opacity-100 focus:outline-none">
-                    <ButtonReportConfig id={game.id} tipo="GAME" session={session} />
-                </div>
-            </div>
+       <div className="w-full lg:w-[80%] mx-auto bg-slate-100 dark:bg-slate-900 min-h-screen font-sans">
+  {/* Banner */}
+  <div className="relative h-56 sm:h-80 w-full overflow-hidden rounded-b-lg shadow-lg bg-gray-800">
+    {game?.urls?.images?.banner && (
+      <Image
+        src={game.urls.images.banner}
+        alt="Game Banner"
+        fill
+        className="object-cover brightness-50"
+      />
+    )}
+    <div className="absolute top-4 right-4 text-white opacity-75 hover:opacity-100">
+      <ButtonReportConfig id={game.id} tipo="GAME" session={session} />
+    </div>
+  </div>
 
-            {/* Info principal */}
-            <div className="w-full py-12 grid grid-cols-1 xl:grid-cols-2 gap-12">
-                <div className="flex justify-center items-center col-span-1 mx-6">
-                    <Suspense fallback={"hola esto está cargando"}>
-                        <ClienteCarrusel screenshots={game.urls?.images?.screenshots} />
-                    </Suspense>
-                </div>
+  {/* Info principal */}
+  <div className="w-full py-10 px-4 md:px-6 grid grid-cols-1 xl:grid-cols-2 gap-10">
+    <div className="w-full flex justify-center items-center">
+      <Suspense fallback={"Cargando carrusel..."}>
+        <ClienteCarrusel screenshots={game.urls?.images?.screenshots} />
+      </Suspense>
+    </div>
 
-                <div className="col-span-1 space-y-6 mx-6">
-                    <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white">{game.name}</h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-300">{game.shortDesc}</p>
-                    <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{game.longDesc}</p>
+    <div className="space-y-6">
+      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{game.name}</h1>
+      <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">{game.shortDesc}</p>
+      <p className="text-sm sm:text-base text-gray-700 dark:text-gray-200">{game.longDesc}</p>
 
-                    <div className="flex flex-wrap gap-6 text-sm text-gray-600 dark:text-gray-300">
-                        <span className="flex items-center gap-1"><strong>Editor:</strong> {game.editor || "Desconocido"}</span>
-                        <span className="flex items-center gap-1"><strong>Lanzamiento:</strong> {game.releaseDate ? new Date(game.releaseDate).toLocaleDateString() : "Próximamente"}</span>
-                        <span className="flex items-center gap-1"><strong>Precio:</strong> {game.price ? `${game.price} €` : "Gratis"}</span>
-                        <span className="flex items-center gap-1"><Star className="w-5 h-5 text-yellow-500" /> {game.averageScore?.toFixed(1) ?? "N/A"}</span>
-                        <span className="flex items-center gap-1"><strong>Ventas:</strong> {game.salesCount}</span>
-                        <span className="flex items-center gap-1"><Gamepad className="w-5 h-5 text-green-500" /> {game.platforms?.map(p => p.name).join(", ")}</span>
-                    </div>
-<div className="flex flex-wrap gap-6 text-sm text-gray-600 dark:text-gray-300">
-<LikeButton game={game} user={session?.user} />
-                    {game?.urls?.shopLink && (
-                        <a href={game.urls.shopLink} target="_blank" rel="noopener noreferrer">
-                            <button className=" cursor-pointer mt-4 px-6 py-3 bg-blue-500 text-white rounded-full text-sm shadow-lg hover:bg-blue-600 transition-all flex items-center gap-2">
-                                <ArrowBigRightDash className="w-5 h-5" />
-                                Ir a la web del desarrollador
-                            </button>
-                        </a>
-                    )}
+      <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300">
+        <span><strong>Editor:</strong> {game.editor || "Desconocido"}</span>
+        <span><strong>Lanzamiento:</strong> {game.releaseDate ? new Date(game.releaseDate).toLocaleDateString() : "Próximamente"}</span>
+        <span><strong>Precio:</strong> {game.price ? `${game.price} €` : "Gratis"}</span>
+        <span className="flex items-center gap-1"><Star className="w-4 h-4 text-yellow-500" /> {game.averageScore?.toFixed(1) ?? "N/A"}</span>
+        <span><strong>Ventas:</strong> {game.salesCount}</span>
+        <span className="flex items-center gap-1"><Gamepad className="w-4 h-4 text-green-500" /> {game.platforms?.map(p => p.name).join(", ")}</span>
+      </div>
 
-                  </div>
-                </div>
-            </div>
+      <div className="flex flex-wrap items-center gap-4">
+        <LikeButton game={game} user={session?.user} />
+        {game?.urls?.shopLink && (
+          <a href={game.urls.shopLink} target="_blank" rel="noopener noreferrer">
+            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm shadow">
+              <ArrowBigRightDash className="w-4 h-4" />
+              Ir a la web del desarrollador
+            </button>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+
 
 
             {/* Comentarios y desarrolladores */}

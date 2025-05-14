@@ -603,6 +603,7 @@ export async function setFavoriteGame( userId, gameId) {
         }
       }
     });
+    revalidatePath('/');
     return { status: 'removed' };
   } else {
     // No es fan, lo añadimos
@@ -614,6 +615,7 @@ export async function setFavoriteGame( userId, gameId) {
         }
       }
     });
+    revalidatePath('/');
     return { status: 'added' };
   }
 }

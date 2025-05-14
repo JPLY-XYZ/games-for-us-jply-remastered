@@ -22,7 +22,7 @@ if (!game || !user) {
             <input type="hidden" name="gameid" value={game.id} />
             <input type="hidden" name="userid" value={user.id} />
             <button
-                className={`cursor-pointer mt-4 px-6 py-3 text-sm rounded-full shadow-lg transition-all flex items-center gap-2 
+                className={`cursor-pointer px-6 py-3 text-sm rounded-full shadow-lg transition-all flex items-center gap-2 
                 ${isFavorite ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} 
                 ${pending ? 'opacity-50 cursor-not-allowed' : ''}`}
                 disabled={pending}
