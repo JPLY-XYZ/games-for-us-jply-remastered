@@ -15,7 +15,6 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
   const [createState, createAction, createPending] = useActionState(createNoticiaContentAction, {});
   const [editState, editAction, editPending] = useActionState(updateNoticiaContentAction, {});
 
-  // Mantener las imágenes previas del listado, si existen
   const [bannerPreview, setBannerPreview] = useState(content?.urls?.imgs?.banner || "");
   const [thumbnailPreview, setThumbnailPreview] = useState(content?.urls?.imgs?.thumbnail || "");
   const [imagenes, setImagenes] = useState(content?.urls?.imgs?.otherImages || []);
@@ -26,7 +25,6 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
     }
   }, [createState, editState]);
 
-  // Cambiar la imagen previa (Banner/Thumbnail)
   const handleImageChange = (e, setPreview) => {
     const file = e.target.files[0];
     if (file) {
@@ -38,25 +36,21 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
     }
   };
 
-  // Manejar el cambio de capturas (imágenes adicionales)
   const handleScreenshotChange = (index, file) => {
     const updated = [...imagenes];
     updated[index] = file;
     setImagenes(updated);
   };
 
-  // Añadir una nueva captura de pantalla (imagen)
   const addScreenshot = () => {
     setImagenes((prev) => [...prev, null]);
   };
 
-  // Eliminar una captura de pantalla específica
   const removeScreenshot = (index) => {
     const updated = imagenes.filter((_, i) => i !== index);
     setImagenes(updated);
   };
 
-  // Campos comunes (hidden inputs)
   const commonFields = (
     <>
       <input type="hidden" name="userId" defaultValue={user?.id} />
@@ -66,15 +60,15 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
   );
 
   return (
-    <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center w-[80%] justify-center px-4 py-12">
-      <div className="bg-white dark:bg-slate-800 p-10 rounded-3xl shadow-2xl w-full space-y-6">
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white text-center">
+    <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex justify-center px-2 sm:px-4 py-12 min-w-auto sm:min-w-[700px] md:min-w-[1200px]">
+      <div className="bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-3xl shadow-2xl w-full max-w-5xl space-y-6">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white text-center">
           {content ? "Actualizar noticia" : "Subir noticia"}
         </h1>
 
         <form className="space-y-6" action={content != null ? editAction : createAction}>
-          <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
-            <div className="w-full md:w-1/2">
+          <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-6 sm:space-y-0">
+            <div className="w-full sm:w-1/2">
               <label className={labelClass}>Título *</label>
               <input
                 type="text"
@@ -84,8 +78,7 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
                 defaultValue={content?.title || ""}
               />
             </div>
-
-            <div className="w-full md:w-1/2">
+            <div className="w-full sm:w-1/2">
               <label className={labelClass}>Título corto</label>
               <input
                 type="text"
@@ -142,8 +135,8 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
             <label className={labelClass}>Capturas adicionales</label>
             <div className="space-y-4">
               {imagenes.map((file, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-full flex items-center space-x-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white">
+                <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                  <div className="w-full sm:w-auto flex-1 flex items-center space-x-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white">
                     <input
                       type="file"
                       name={`img_${index}`}
@@ -166,7 +159,7 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
                   </div>
 
                   {file && (
-                    <div className="w-[1000px] aspect-video overflow-hidden rounded-md border border-gray-300 dark:border-gray-600">
+                    <div className="w-full sm:w-[400px] aspect-video overflow-hidden rounded-md border border-gray-300 dark:border-gray-600">
                       <img
                         src={typeof file === 'string' ? file : URL.createObjectURL(file)}
                         alt={`Screenshot ${index + 1} Preview`}

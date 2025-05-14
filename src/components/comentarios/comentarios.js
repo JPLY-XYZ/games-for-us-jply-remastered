@@ -1,27 +1,45 @@
 'use client'
+
 import { useState } from "react";
 import { Star, Calendar, X as IconX, Plus as IconPlus, Trash, Pencil } from "lucide-react";
 import Link from "next/link";
-import ReportButton from "../utilidad/ReportBtn";
+import ButtonReportConfig from "../utilidad/button-report-config";
 import ModalComentario from "./ModalComentario";
 
 export default function Comentarios({ relationGame, relationContent, comentariosArr, session, EsPuntuacion = false }) {
     const user = session?.user;
-    const [orden, setOrden] = useState("fecha");
+    const [orden, setOrden] = useState({ campo: "fecha", asc: false });
     const [mostrar, setMostrar] = useState(5);
     const [modalAbierto, setModalAbierto] = useState(false);
-    const comentarios = [...(comentariosArr || [])];
-
-    console.log(relationGame, relationContent)
-
-    if (orden === "fecha") {
-        comentarios.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    } else if (orden === "puntuacion") {
-        comentarios.sort((a, b) => b.score - a.score);
+    const [haExpandido, setHaExpandido] = useState(false);
+    
+    let comentarios = [...(comentariosArr || [])];
+    console.log(relationGame, relationContent);
+    
+    // Ordenación similar a la de contenido.js
+    if (orden.campo === "fecha") {
+        comentarios.sort((a, b) =>
+            orden.asc
+                ? new Date(a.createdAt) - new Date(b.createdAt)
+                : new Date(b.createdAt) - new Date(a.createdAt)
+        );
+    } else if (orden.campo === "puntuacion" && EsPuntuacion) {
+        comentarios.sort((a, b) =>
+            orden.asc
+                ? (a.score ?? 0) - (b.score ?? 0)
+                : (b.score ?? 0) - (a.score ?? 0)
+        );
     }
 
     const desplegadoMasDeUnaVez = mostrar > 9;
     const quedanPorMostrar = mostrar < comentarios.length;
+
+    // Función para cambiar el orden, similar a la de contenido.js
+    const cambiarOrden = (campo) => {
+        setOrden(prev =>
+            prev.campo === campo ? { campo, asc: !prev.asc } : { campo, asc: false }
+        );
+    };
 
     return (
         <div className="max-w-screen-xl mx-auto mt-12 px-6">
@@ -34,20 +52,28 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                     Añadir Comentario
                 </button>
             </div>
-
+            
+            {/* Botones de ordenación mejorados */}
             <div className="mb-4 flex gap-4 justify-start sm:justify-start">
                 <button
-                    className={`text-sm px-3 py-1 rounded ${orden === "fecha" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
-                    onClick={() => setOrden("fecha")}
+                    className={`text-sm px-3 py-1 rounded flex items-center gap-1 ${
+                        orden.campo === "fecha" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
+                    }`}
+                    onClick={() => cambiarOrden("fecha")}
                 >
-                    <Calendar className="inline w-4 h-4 mr-1" /> Fecha
+                    <Calendar className="inline w-4 h-4 mr-1" /> Fecha {orden.campo === "fecha" && (orden.asc ? "↑" : "↓")}
                 </button>
-                {EsPuntuacion && <button
-                    className={`text-sm px-3 py-1 rounded ${orden === "puntuacion" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"}`}
-                    onClick={() => setOrden("puntuacion")}
-                >
-                    <Star className="inline w-4 h-4 mr-1" /> Puntuación
-                </button>}
+                
+                {EsPuntuacion && (
+                    <button
+                        className={`text-sm px-3 py-1 rounded flex items-center gap-1 ${
+                            orden.campo === "puntuacion" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
+                        }`}
+                        onClick={() => cambiarOrden("puntuacion")}
+                    >
+                        <Star className="inline w-4 h-4 mr-1" /> Puntuación {orden.campo === "puntuacion" && (orden.asc ? "↑" : "↓")}
+                    </button>
+                )}
             </div>
 
             {comentarios.length > 0 ? (
@@ -56,39 +82,16 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                         <div key={index} className="p-4 bg-gray-200 dark:bg-gray-800 rounded-xl shadow-md relative">
                             {/* Botones de utilidad en la esquina superior derecha */}
                             <div className="absolute top-2 right-2 flex gap-2">
-                                {/* Botón de eliminar, solo visible si el usuario logueado es el creador */}
-                                {user?.id === comment.userId && (
-                                    <button
-                                        className="cursor-pointer text-red-500 opacity-75 hover:opacity-100 focus:outline-none"
-                                        onClick={() => handleDeleteComment(comment.id)} // Llama a una función para eliminar el comentario
-                                    >
-                                        <Trash className="w-5 h-5" />
-                                    </button>
-                                )}
-                                {user?.id === comment.userId && (
-                                    <button
-                                        className="cursor-pointer text-orange-500 opacity-75 hover:opacity-100 focus:outline-none"
-                                        onClick={() => handleDeleteComment(comment.id)} // Llama a una función para eliminar el comentario
-                                    >
-                                        <Pencil className="w-5 h-5" />
-                                    </button>
-                                )}
-
-                                {/* Botón de reportar, visible para todos */}
-                                {user?.id !== comment.userId && (
-                                    <ReportButton id={comment.id} tipo="COMMENT" />
-                                )}
+                               <ButtonReportConfig id={comment.id} session={session} tipo={"COMMENT"} key={comment.id} />
                                 {user?.role === "ADMINISTRADOR" && (
                                     <span>{comment.reportCount}</span>
                                 )}
                             </div>
-
                             {/* Contenido del comentario */}
                             <div className="flex items-center flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
                                 <img src={comment.user.image} alt="" className="w-6 h-6 rounded-full" />
                                 <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
-
                                 {/* Estrellas para la calificación */}
                                 {EsPuntuacion && <div className="flex items-center gap-1">
                                     {[...Array(5)].map((_, index) => {
@@ -110,14 +113,17 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                                 </div>
                             </div>
                             <p className="text-sm mt-2 dark:bg-gray-900 bg-gray-300 p-3 rounded-2xl text-gray-800 dark:text-gray-200 break-words overflow-hidden">{comment.text}</p>
-
                         </div>
                     ))}
-
+                    
+                    {/* Botones para mostrar más/cerrar */}
                     <div className="flex justify-center items-center gap-4 mt-4">
                         {quedanPorMostrar && (
                             <button
-                                onClick={() => setMostrar(mostrar + 5)}
+                                onClick={() => {
+                                    setMostrar(mostrar + 5);
+                                    setHaExpandido(true);
+                                }}
                                 className="w-32 h-10 bg-blue-500 text-white rounded-sm hover:bg-blue-600 flex items-center justify-center gap-2"
                                 title="Mostrar más"
                             >
@@ -127,7 +133,10 @@ export default function Comentarios({ relationGame, relationContent, comentarios
                         )}
                         {desplegadoMasDeUnaVez && (
                             <button
-                                onClick={() => setMostrar(5)}
+                                onClick={() => {
+                                    setMostrar(5);
+                                    setHaExpandido(false);
+                                }}
                                 className="w-32 h-10 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-sm hover:bg-gray-400 flex items-center justify-center gap-2"
                                 title="Cerrar"
                             >
@@ -140,7 +149,7 @@ export default function Comentarios({ relationGame, relationContent, comentarios
             ) : (
                 <p>No hay comentarios disponibles.</p>
             )}
-
+            
             {modalAbierto &&
                 <ModalComentario setModalAbierto={setModalAbierto} game={relationGame} content={relationContent} EsPuntuacion={EsPuntuacion} />
             }

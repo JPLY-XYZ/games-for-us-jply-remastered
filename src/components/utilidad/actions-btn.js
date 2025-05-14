@@ -29,7 +29,7 @@ function ActionsButton({ id, tipo, subtipo }) {
     </form>
 
 
-
+{/* 
     {subtipo != "VIDEO" || tipo != "USER"  && <Link
       href={"/contenido/" + id + "/edit"}
       replace
@@ -38,7 +38,7 @@ function ActionsButton({ id, tipo, subtipo }) {
 
       <Pencil className="w-6 h-6" />
 
-    </Link>}
+    </Link>} */}
 
   </>
   );

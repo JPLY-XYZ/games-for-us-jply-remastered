@@ -19,7 +19,7 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
 
   useEffect(() => {
     if (state?.success) {
-      router.push("/juego/" + gameId);
+      router.push("/juego" + gameId);
     }
   }, [state]);
 
@@ -51,9 +51,9 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
   };
 
   return (
-    <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center w-[80%] justify-center px-4 py-12">
-      <div className="bg-white dark:bg-slate-800 p-10 rounded-3xl shadow-2xl w-full space-y-6">
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white text-center">
+    <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center justify-center px-4 py-12  min-w-auto sm:min-w-[700px] md:min-w-[1200px]">
+      <div className="bg-white dark:bg-slate-800 p-6 sm:p-10 rounded-3xl shadow-2xl w-full max-w-screen-lg space-y-6">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white text-center">
           {existingResena ? 'Editar reseña' : 'Subir reseña'}
         </h1>
 
@@ -64,8 +64,8 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
           <input type="hidden" name="contentId" value={existingResena?.id || ""} />
 
           {/* TITULOS */}
-          <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
-            <div className="w-full md:w-1/2">
+          <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-6 sm:space-y-0">
+            <div className="w-full sm:w-1/2">
               <label className={labelClass}>Título *</label>
               <input
                 type="text"
@@ -77,7 +77,7 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
               />
             </div>
 
-            <div className="w-full md:w-1/2">
+            <div className="w-full sm:w-1/2">
               <label className={labelClass}>Título corto</label>
               <input
                 type="text"
@@ -138,7 +138,7 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
                 <img
                   src={thumbnailPreview}
                   alt="Thumbnail Preview"
-                  className="mt-2 w-[1000px] mx-auto aspect-[16/9] object-cover rounded-md"
+                  className="mt-2 w-full max-w-full aspect-video object-cover rounded-md"
                 />
                 <input type="hidden" name="thumbnailUrl" value={thumbnailPreview} />
               </>
@@ -150,8 +150,8 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
             <label className={labelClass}>Capturas adicionales</label>
             <div className="space-y-4">
               {imagenes.map((file, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-full flex items-center space-x-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white">
+                <div key={index} className="flex flex-col md:flex-row gap-2">
+                  <div className="flex-1 flex items-center space-x-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white">
                     <input
                       type="file"
                       name={`img_${index}`}
@@ -174,7 +174,7 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
                   </div>
 
                   {file && (
-                    <div className="w-[1000px] aspect-video overflow-hidden rounded-md border border-gray-300 dark:border-gray-600">
+                    <div className="w-full md:w-[300px] aspect-video overflow-hidden rounded-md border border-gray-300 dark:border-gray-600">
                       <img
                         src={typeof file === 'string' ? file : URL.createObjectURL(file)}
                         alt={`Screenshot ${index + 1} Preview`}

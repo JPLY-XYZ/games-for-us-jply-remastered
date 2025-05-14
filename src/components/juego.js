@@ -95,7 +95,7 @@ async function Juego({ game }) {
 
             {/* Requisitos */}
             {requirements && (
-                <div className="max-w-screen-xl mx-auto mt-12 px-6">
+                <div className="max-w-screen-xl mx-auto mt-12 px-6 mb-10">
                     <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Requisitos</h2>
 
                     <div className="flex flex-col lg:flex-row gap-12">
