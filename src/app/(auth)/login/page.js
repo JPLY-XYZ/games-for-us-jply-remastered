@@ -29,7 +29,6 @@ async function PaginaLogin({ searchParams }) {
 
   return (
     
-    
       <LoginForm/>
    
   )
