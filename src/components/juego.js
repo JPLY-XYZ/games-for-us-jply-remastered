@@ -16,8 +16,11 @@ async function Juego({ game }) {
 
     console.log(game);
 
-    const { requirements } = game;
-    const { minimum, recommended } = requirements ? requirements.requirements : {};
+    const scores = game.comments.map(c => c.score).filter(s => s !== null);
+const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+ const { minimum, recomended } = game.requirements;
+
+   
 
 
 
@@ -26,10 +29,10 @@ async function Juego({ game }) {
   {/* Banner */}
   <div className="relative h-56 sm:h-80 w-full overflow-hidden rounded-b-lg shadow-lg bg-gray-800">
     {game?.urls?.images?.banner && (
-      <Image
+      <img
         src={game.urls.images.banner}
         alt="Game Banner"
-        fill
+        
         className="object-cover brightness-50"
       />
     )}
@@ -51,23 +54,25 @@ async function Juego({ game }) {
       <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">{game.shortDesc}</p>
       <p className="text-sm sm:text-base text-gray-700 dark:text-gray-200">{game.longDesc}</p>
 
-      <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300">
-        <span><strong>Editor:</strong> {game.editor || "Desconocido"}</span>
-        <span><strong>Lanzamiento:</strong> {game.releaseDate ? new Date(game.releaseDate).toLocaleDateString() : "Próximamente"}</span>
-        <span><strong>Precio:</strong> {game.price ? `${game.price} €` : "Gratis"}</span>
-        <span className="flex items-center gap-1"><Star className="w-4 h-4 text-yellow-500" /> {game.averageScore?.toFixed(1) ?? "N/A"}</span>
-        <span><strong>Ventas:</strong> {game.salesCount}</span>
-        <span className="flex items-center gap-1"><Gamepad className="w-4 h-4 text-green-500" /> {game.platforms?.map(p => p.name).join(", ")}</span>
-      </div>
+  <div className=" mx-10 flex flex-wrap justify-between text-sm text-gray-600 dark:text-gray-300">
+  <span className="flex-1 min-w-[120px]">
+    <strong>Lanzamiento:</strong> {game.releaseDate ? new Date(game.releaseDate).toLocaleDateString() : "Próximamente"}
+  </span>
+  <span className="flex-1 min-w-[80px] text-center">
+    <strong>Precio:</strong> {game.price !== null && game.price !== undefined ? `${game.price} €` : "Gratis"}
+  </span>
+  <span className="flex-1 min-w-[60px] flex items-center justify-end gap-1">
+    <Star className="w-4 h-4 text-yellow-500" /> {averageScore ?? "N/A"}
+  </span>
+</div>
 
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap justify-between items-center gap-4">
         <LikeButton game={game} user={session?.user} />
         {game?.urls?.shopLink && (
-          <a href={game.urls.shopLink} target="_blank" rel="noopener noreferrer">
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm shadow">
+          <a href={game.urls.shopLink} className=" flex items-center gap-2 px-6 py-3.5 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm shadow" target="_blank" rel="noopener noreferrer">
               <ArrowBigRightDash className="w-4 h-4" />
               Ir a la web del desarrollador
-            </button>
+            
           </a>
         )}
       </div>
@@ -94,7 +99,7 @@ async function Juego({ game }) {
             </div>
 
             {/* Requisitos */}
-            {requirements && (
+            {game.requirements && (
                 <div className="max-w-screen-xl mx-auto mt-12 px-6 mb-10">
                     <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Requisitos</h2>
 
@@ -113,16 +118,16 @@ async function Juego({ game }) {
                             </div>
                         )}
 
-                        {recommended && (
+                        {recomended && (
                             <div className="flex-1">
                                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Requisitos Recomendados</h3>
                                 <div className="bg-gray-200 dark:bg-gray-800 p-6 rounded-xl shadow-lg text-sm text-gray-800 dark:text-gray-200">
-                                    <p><strong>SO:</strong> {recommended.os}</p>
-                                    <p><strong>Procesador:</strong> {recommended.processor}</p>
-                                    <p><strong>Memoria:</strong> {recommended.memory}</p>
-                                    <p><strong>Gráficos:</strong> {recommended.graphics}</p>
-                                    <p><strong>Almacenamiento:</strong> {recommended.storage}</p>
-                                    <p><strong>DirectX:</strong> {recommended.directx}</p>
+                                    <p><strong>SO:</strong> {recomended.os}</p>
+                                    <p><strong>Procesador:</strong> {recomended.processor}</p>
+                                    <p><strong>Memoria:</strong> {recomended.memory}</p>
+                                    <p><strong>Gráficos:</strong> {recomended.graphics}</p>
+                                    <p><strong>Almacenamiento:</strong> {recomended.storage}</p>
+                                    <p><strong>DirectX:</strong> {recomended.directx}</p>
                                 </div>
                             </div>
                         )}

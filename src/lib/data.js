@@ -80,46 +80,34 @@ export async function getUserByEmail(email) {
 
 export async function getGameById(id) {
   const game = await prisma.game.findUnique({
-    where: {
-      id: id,
-    },
+    where: { id },
     include: {
       contents: {
         include: {
           user: true,
           comments: true,
-          _count: {
-            select: {
-              comments: true,
-            },
-          },
-        }
+          _count: { select: { comments: true } },
+        },
       },
       comments: {
         include: {
           user: true,
           content: true,
-        }
+        },
       },
       fans: true,
       categories: true,
       platforms: true,
-
-      // 🔽 Aquí ajustamos para incluir info adicional de los desarrolladores
       developers: {
         include: {
           developedGames: {
-            select: {
-              id: true,
-              name: true,
-              shortDesc: true,
+            include: {
+              comments: true,
             },
           },
           comments: true,
           favoriteGames: {
-            select: {
-              id: true,
-            },
+            select: { id: true },
           },
         },
       },
@@ -128,6 +116,7 @@ export async function getGameById(id) {
 
   return game;
 }
+
 
 
 export async function getContentById(id) {
@@ -191,14 +180,14 @@ export async function getContentLikesById(id) {
 export async function getLatestGames() {
   return await prisma.game.findMany({
     where: {
-      releaseDate: { not: null },
       visible: true,
     },
     orderBy: {
-      releaseDate: 'desc',
+      publishedAt: 'desc', // Ordenar por fecha de publicación (creación)
     },
     take: 3,
     include: {
+      comments: true,
       categories: true,
       platforms: true,
       fans: true,
@@ -213,6 +202,7 @@ export async function getLatestGames() {
     },
   });
 }
+
 
 export async function getLatestNews() {
   return await prisma.content.findMany({

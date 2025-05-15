@@ -73,7 +73,6 @@ function Buscador() {
           className="flex-grow px-4 py-2 rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
         />
         <button
-          onClick={handleBuscar}
           className="hidden sm:inline px-4 py-2 rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"
         >
           Buscar
@@ -97,7 +96,7 @@ function Buscador() {
                   onClick={() => handleClick(item)}
                 >
                   {item.type === 'Usuario' && item.image && (
-                    <Image
+                    <img
                       src={item.image}
                       alt={item.name}
                       width={36}
@@ -107,7 +106,7 @@ function Buscador() {
                   )}
 
                   {item.type === 'Juego' && item.cover && (
-                    <Image
+                    <img
                       src={item.cover}
                       alt={item.name}
                       width={40}

@@ -18,10 +18,14 @@ export default function DesarrolladorInfo({ user }) {
         createdAt
     } = user;
 
+
+    
     const [startIndex, setStartIndex] = useState(0);
     const juegosPorVista = 3;
 
     const juegosVisibles = developedGames?.slice(startIndex, startIndex + juegosPorVista) || [];
+
+    console.log(juegosVisibles);
 
     const subir = () => {
         if (startIndex > 0) {
@@ -39,7 +43,7 @@ export default function DesarrolladorInfo({ user }) {
         <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md">
             {/* Header */}
             <div className="flex items-center gap-4 mb-6">
-                <Image
+                <img
                     src={user.image || "/placeholder-avatar.png"}
                     alt={`Avatar de ${name}`}
                     width={64}
@@ -87,36 +91,45 @@ export default function DesarrolladorInfo({ user }) {
 
                         {/* Lista visible */}
                         <div className="flex flex-col gap-4 my-4 w-full">
-                            {juegosVisibles.map((game) => (
-                                <Link
-                                    href={`/juego/${game.id}`}
-                                    key={game.id}
-                                    className="flex items-center gap-4 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-                                >
-                                    <Image
-                                        src={game.cover || "/placeholder-game.png"}
-                                        alt={game.name}
-                                        width={64}
-                                        height={64}
-                                        className="rounded-md object-cover w-16 h-16"
-                                    />
-                                    <div className="flex-1">
-                                        <p className="font-medium text-gray-800 dark:text-white truncate">{game.name}</p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">€{game.price?.toFixed(2) || 'Gratis'}</p>
-                                        <p className="text-sm text-yellow-500">⭐ {game.averageScore ?? 'Sin puntuar'}</p>
-                                        <div className="flex flex-wrap gap-1 mt-1">
-                                            {game.platforms?.map((platform) => (
-                                                <span
-                                                    key={platform.id}
-                                                    className="text-xs px-2 py-0.5 bg-blue-200 dark:bg-blue-700 text-blue-900 dark:text-white rounded-full"
-                                                >
-                                                    {platform.name}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
+                            {juegosVisibles.map((game) => {
+  // Calcula el promedio de scores válidos (no nulos)
+  const scores = game.comments.map(c => c.score).filter(s => s !== null);
+  const averageScore = scores.length > 0 
+    ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) 
+    : null;
+
+  return (
+    <Link
+      href={`/juego/${game.id}`}
+      key={game.id}
+      className="flex items-center gap-4 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+      <img
+        src={game.urls.images.cover || "/placeholder-game.png"}
+        alt={game.name}
+        className="rounded-md object-cover w-32 h-16"
+      />
+      <div className="flex-1">
+        <p className="font-medium text-gray-800 dark:text-white truncate">{game.name}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">€{game.price?.toFixed(2) || 'Gratis'}</p>
+        <p className="text-sm text-yellow-500">
+          ⭐ {averageScore ?? 'Sin puntuar'}
+        </p>
+        <div className="flex flex-wrap gap-1 mt-1">
+          {game.platforms?.map((platform) => (
+            <span
+              key={platform.id}
+              className="text-xs px-2 py-0.5 bg-blue-200 dark:bg-blue-700 text-blue-900 dark:text-white rounded-full"
+            >
+              {platform.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    </Link>
+  );
+})}
+
                         </div>
 
                         {/* Flecha abajo */}

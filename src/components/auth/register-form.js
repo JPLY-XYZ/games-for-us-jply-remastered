@@ -48,31 +48,7 @@ function RegisterForm() {
             className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
           />
 
-          <input
-            type="date"
-            name="birthDate"
-            defaultValue={state.fields?.birthDate || ''}
-            className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-          />
-
-          <select
-            name="country"
-            defaultValue={state.fields?.country || ''}
-            className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-          >
-            <option value="" disabled>Selecciona un país</option>
-            <option value="Argentina">Argentina</option>
-            <option value="Brasil">Brasil</option>
-            <option value="Chile">Chile</option>
-            <option value="México">México</option>
-            <option value="España">España</option>
-            <option value="Colombia">Colombia</option>
-            <option value="Perú">Perú</option>
-            <option value="Venezuela">Venezuela</option>
-            <option value="Francia">Francia</option>
-            <option value="Alemania">Alemania</option>
-          </select>
-
+          
           <button
             type="submit"
             disabled={pending}

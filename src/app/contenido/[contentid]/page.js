@@ -68,7 +68,7 @@ export default async function Page({ params }) {
         <>
           {banner && (
             <div className="h-96 w-full bg-gray-800 relative rounded-xl overflow-hidden shadow-xl mb-6">
-              <Image src={banner} alt="Banner" layout="fill" objectFit="cover" className="brightness-50" />
+              <img src={banner} alt="Banner" layout="fill" objectFit="cover" className="brightness-50" />
             </div>
           )}
 

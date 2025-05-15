@@ -3,20 +3,23 @@
 import { toggleFavoriteGameAction } from "@/lib/common/actions";
 import { LogIn, RefreshCw, ThumbsUp, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+
 import { useActionState } from "react";
 
 function LikeButton({ game, user }) {
 
     const [state, action, pending] = useActionState(toggleFavoriteGameAction, {});
 
-    const currentPath = window.location.pathname
+    const pathname = usePathname();
 
-    const handleBuscar = () => {
 
-        if (currentPath != "/") { window.location.reload() }
+const handleBuscar = () => {
+  if (pathname !== "/" && !pathname.startsWith("/juego/")) {
+    window.location.reload();
+  }
+};
 
-    }
 
 
     if (!game || !user) {

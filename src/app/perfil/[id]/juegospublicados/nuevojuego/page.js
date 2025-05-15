@@ -1,7 +1,10 @@
+import { auth } from "@/auth";
 import FormularioJuego from "@/components/formulariosCreacion/FomularioJuego";
 
-function PageNuevoJuego() {
-    return ( <FormularioJuego /> );
+
+async function PageNuevoJuego() {
+    const Session = await auth()
+    return ( <FormularioJuego userId={Session.user?.id} /> );
 }
 
 export default PageNuevoJuego;

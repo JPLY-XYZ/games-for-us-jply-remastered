@@ -81,7 +81,7 @@ export default function AuthButtons({ session }) {
         className="cursor-pointer flex items-center gap-2 px-2 py-1 rounded-full hover:bg-gray-200 transition"
       >
         {session.user?.image && (
-          <Image
+          <img
             src={session.user.image}
             alt="Avatar"
             width={32}

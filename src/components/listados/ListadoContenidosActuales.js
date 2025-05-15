@@ -43,7 +43,7 @@ async function ListadoContenidosActuales() {
             </div>
           ) : (
             <div className="relative w-full h-[315px] mb-4">
-              <Image
+              <img
                 src={contenido.urls?.image || "/placeholder.jpg"}
                 alt={contenido.title}
                 layout="fill"

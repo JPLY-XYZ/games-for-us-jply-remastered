@@ -2,11 +2,12 @@
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
 import { auth, signIn, signOut } from '@/auth';
-import { buscar, createNewContent, getUserByEmail, getUserById, newComment} from '@/lib/data';
+import { buscar, createNewContent, getUserByEmail, getUserById, newComment } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { uploadFile } from './files';
-import { updateUser,  updateUserProfileBackImagen, updateUserProfilePerfileImagen } from './games/data';
+import { updateUser, updateUserProfileBackImagen, updateUserProfilePerfileImagen } from './games/data';
 import { profile } from 'console';
+import { redirect } from 'next/navigation';
 
 
 // REGISTER
@@ -36,6 +37,12 @@ export async function register(prevState, formData) {
       password: hashedPassword
     }
   })
+
+  await signIn('credentials',
+    {
+      email, password,
+      redirectTo: "/"
+    })
 
   return { success: "Registro correcto" }
 }
@@ -791,17 +798,17 @@ export async function updateUserData(prevState, formData) {
   const name = formData.get('name');
   const bio = formData.get('bio');
   const country = formData.get('country');
-    const birthdate = formData.get('birthdate');
+  const birthdate = formData.get('birthdate');
 
   try {
-    await updateUser(id, name,bio, birthdate, country);
+    await updateUser(id, name, bio, birthdate, country);
     return { success: "Usuario actualizado correctamente" };
   } catch (error) {
     console.error("🚫 Error durante la actualización:", error);
     return { error: "Hubo un error actualizando el usuario" };
   }
   finally {
-   revalidatePath('/perfil')
+    revalidatePath('/perfil')
   }
 }
 
@@ -811,17 +818,17 @@ export async function updateUserProfileImagen(prevState, formData) {
 
   const id = formData.get('id');
   const img = formData.get('img');
-   let profileImgUrl = await uploadFile(img, id)
+  let profileImgUrl = await uploadFile(img, id)
 
   try {
-    await updateUserProfilePerfileImagen(id,profileImgUrl);
+    await updateUserProfilePerfileImagen(id, profileImgUrl);
     return { success: "Usuario actualizado correctamente" };
   } catch (error) {
     console.error("🚫 Error durante la actualización:", error);
     return { error: "Hubo un error actualizando el usuario" };
   }
   finally {
-   revalidatePath('/perfil')
+    revalidatePath('/perfil')
   }
 }
 
@@ -848,7 +855,7 @@ export async function updateUserBackImagen(prevState, formData) {
     return { error: "Hubo un error actualizando el usuario" };
   }
   finally {
-   revalidatePath('/perfil')
+    revalidatePath('/perfil')
   }
 }
 
@@ -860,4 +867,122 @@ export async function updateUserBackImagen(prevState, formData) {
 
 
 
+export async function createOrUpdateGameAction(prevState, formData) {
+  let idJuego
+  try {
+    console.log("📥 Procesando datos del juego");
 
+    const userId = formData.get("userId");
+
+    // Leer campos
+    const name = formData.get("name")?.trim();
+    const shortDesc = formData.get("shortDesc")?.trim() || null;
+    // const editor = formData.get("editor")?.trim() || null;
+    const longDesc = formData.get("longDesc")?.trim() || null;
+    let releaseDate = formData.get("releaseDate");
+    if (releaseDate) {
+      releaseDate = new Date(releaseDate).toISOString();
+    } else {
+      releaseDate = null;
+    }
+
+    const price = formData.get("price") || null;
+
+    if (!name) {
+      return { error: "El nombre del juego es obligatorio" };
+    }
+
+    // Requisitos mínimos y recomendados
+    const requisitos = {
+      minimum: {
+        os: formData.get("req_min_os") || null,
+        processor: formData.get("req_min_cpu") || null,
+        memory: formData.get("req_min_ram") || null,
+        graphics: formData.get("req_min_gpu") || null,
+        storage: formData.get("req_min_storage") || null,
+        directx: formData.get("req_min_dx") || null,
+      },
+      recomended: {
+        os: formData.get("req_rec_os") || null,
+        processor: formData.get("req_rec_cpu") || null,
+        memory: formData.get("req_rec_ram") || null,
+        graphics: formData.get("req_rec_gpu") || null,
+        storage: formData.get("req_rec_storage") || null,
+        directx: formData.get("req_rec_dx") || null,
+      },
+    };
+
+    // Multimedia
+    let bannerUrl = null;
+    let thumbnailUrl = null;
+    let coverUrl = null;
+    const otherImages = [];
+
+
+    const banner = formData.get("banner");
+    const thumbnail = formData.get("thumbnail");
+    const cover = formData.get("cover");
+
+    const shopLink = formData.get("shopLink") || null;
+
+    if (banner && typeof banner !== "string" && banner.size > 0) {
+      coverUrl = await uploadFile(cover, userId);
+    }
+    if (banner && typeof banner !== "string" && banner.size > 0) {
+      bannerUrl = await uploadFile(banner, userId);
+    }
+
+    if (thumbnail && typeof thumbnail !== "string" && thumbnail.size > 0) {
+      thumbnailUrl = await uploadFile(thumbnail, userId);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      if (key.startsWith("img_") && value instanceof File && value.size > 0) {
+        const url = await uploadFile(value, userId);
+        if (url) otherImages.push(url);
+      }
+    }
+
+  const multimedia = {
+  images: {
+    cover: coverUrl,     // asegúrate de tener esta variable
+    banner: bannerUrl,
+    thumbnail: thumbnailUrl,
+    screenshots: otherImages // array de URLs
+  },
+  shopLink: shopLink
+};
+
+
+    // Guardar en la base de datos
+    const nuevoJuego = await prisma.game.create({
+      data: {
+        name,
+        shortDesc,
+        longDesc,
+        releaseDate: releaseDate || null,
+        price: price ? parseFloat(price) : null,
+        requirements: requisitos,
+       urls: multimedia,
+        developers: {
+          connect: { id: userId }
+        }
+      },
+    });
+
+
+
+    console.log("✅ Juego creado:", nuevoJuego.id);
+idJuego = nuevoJuego.id;
+    
+
+    return { success: true, game: nuevoJuego };
+
+  } catch (error) {
+    console.error("❌ Error al guardar el juego:", error);
+    return { error: "Error inesperado al guardar el juego" };
+  }
+  finally{
+    redirect('/juego/'+ idJuego);
+  }
+}

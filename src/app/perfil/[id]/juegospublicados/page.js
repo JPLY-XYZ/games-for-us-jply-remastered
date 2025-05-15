@@ -13,7 +13,7 @@ export default async function PageJuegosPublicados({ params }) {
     <div className="bg-gray-50 dark:bg-gray-900 min-h-screen w-full sm:w-[80%] md:w-[70%] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        {/* <div className="flex justify-end items-center mb-6">
+        <div className="flex justify-end items-center mb-6">
          
 
           {isOwner && <Link
@@ -22,7 +22,7 @@ export default async function PageJuegosPublicados({ params }) {
           >
             Nuevo Juego
           </Link>}
-        </div> */}
+        </div>
 
         {/* Juegos List Section */}
         <ListadoJuegoPaginado

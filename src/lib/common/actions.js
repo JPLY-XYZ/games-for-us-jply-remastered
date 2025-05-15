@@ -5,6 +5,7 @@
 import { revalidatePath } from "next/cache";
 import { deactivateAcount, deleteComment, deleteContent, deleteGame, deleteUser, reportComment, reportContent, reportGame, reportUser, setFavoriteGame, setFavoriteThink, toggleVisibleComment, toggleVisibleContent, toggleVisibleGame } from "../data";
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 
 
@@ -75,11 +76,13 @@ export async function deleteAction(prevState, formData) {
       default:
         throw new Error('Tipo no soportado');
     }
-
-     revalidatePath('/'); 
+ 
   } catch (error) {
     console.error('Error en deleteAction:', error);
     throw error;
+  }
+  finally {
+    redirect('/');
   }
 }
 
@@ -115,6 +118,7 @@ export async function togleVisibilitiAction(prevState, formData) {
     console.error('Error en togleVisibilitiAction:', error);
     throw error;
   }
+  
 }
 
 export async function suspenderAcount(prevState, formData) {

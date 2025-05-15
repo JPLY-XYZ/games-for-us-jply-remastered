@@ -8,7 +8,6 @@ export function MultimediaJuego() {
         thumbUrl: "",
         bannerUrl: "",
         coverUrl: "",
-        videoUrl: "",
     });
 
     const addScreenshot = () => setScreenshots([...screenshots, null]);
@@ -44,6 +43,7 @@ export function MultimediaJuego() {
             <div>
                 <label className="label">Banner</label>
                 <input
+                name='banner'
                     type="file"
                     onChange={(e) => handleImageChange(e, 'bannerUrl')}
                     className={inputClass}
@@ -61,23 +61,12 @@ export function MultimediaJuego() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Video */}
                 <div>
-                    <label className="label">Video</label>
-                    <div>
-                        <input
-                            type="file"
-                            onChange={(e) => handleImageChange(e, 'videoUrl')}
-                            className={inputClass}
-                        />
-                        {imagePreviews.videoUrl && (
-                            <video controls className="mt-2 w-full aspect-[16/9] object-cover">
-                                <source src={imagePreviews.videoUrl} />
-                            </video>
-                        )}
-                    </div>
+                    
                     {/* Cover */}
                     <div className='mt-2'>
                         <label className="label">Cover</label>
                         <input
+                        name='cover'
                             type="file"
                             onChange={(e) => handleImageChange(e, 'coverUrl')}
                             className={inputClass}
@@ -96,6 +85,7 @@ export function MultimediaJuego() {
                 <div>
                     <label className="label">Thumbnail</label>
                     <input
+                    name='thumbnail'
                         type="file"
                         onChange={(e) => handleImageChange(e, 'thumbUrl')}
                         className={inputClass}
@@ -124,6 +114,7 @@ export function MultimediaJuego() {
                     <div key={index} className="flex items-center gap-2">
                         <div className="w-full flex items-center space-x-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white">
                             <input
+                             name={`img_${index}`}
                                 type="file"
                                 onChange={(e) => handleScreenshotChange(index, e.target.files[0])}
                                 className="w-full p-3 rounded-md dark:bg-slate-700 dark:text-white"
