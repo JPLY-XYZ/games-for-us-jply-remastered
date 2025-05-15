@@ -225,6 +225,7 @@ export async function createImageContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content.id);
+    revalidatePath("/juego/"+gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createImageContentAction:", error);
@@ -278,6 +279,7 @@ export async function createVideoContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content.id);
+    revalidatePath("/juego/"+gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createVideoContentAction:", error);
@@ -383,6 +385,7 @@ export async function createResenaContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content?.id);
+    revalidatePath("/juego/"+gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createResenaContentAction:", error);
@@ -470,6 +473,7 @@ export async function createNoticiaContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content?.id);
+    revalidatePath("/juego/"+gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createNoticiaContentAction:", error);
