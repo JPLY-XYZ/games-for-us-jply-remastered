@@ -63,6 +63,12 @@ export async function login(prevState, formData) {
       fields: Object.fromEntries(formData.entries())
     }
   }
+  if (!user.active) {
+    return {
+      error: 'Usuario esta desactivado por un administrador.',
+      fields: Object.fromEntries(formData.entries())
+    }
+  }
 
   // Comparamos password 
   const matchPassword = await bcrypt.compare(password, user.password)
@@ -71,7 +77,7 @@ export async function login(prevState, formData) {
     await signIn('credentials',
       {
         email, password,
-        redirectTo: globalThis.callbackUrl
+        redirectTo: "/"
       })
     return { success: "Inicio de sesión correcto" }
   } else {
@@ -86,7 +92,7 @@ export async function login(prevState, formData) {
 // LOGIN google
 export async function loginGoogle() {
   try {
-    await signIn('google', { redirectTo: globalThis.callbackUrl })
+    await signIn('google', { redirectTo: "/" })
   } catch (error) {
     console.log(error);
     throw error
@@ -96,7 +102,7 @@ export async function loginGoogle() {
 // LOGIN steam
 export async function loginReddit() {
   try {
-    await signIn('reddit', { redirectTo: globalThis.callbackUrl })
+    await signIn('reddit', { redirectTo: "/" })
   } catch (error) {
     console.log(error);
     throw error
@@ -107,7 +113,7 @@ export async function loginReddit() {
 // LOGIN discord
 export async function loginDiscord() {
   try {
-    await signIn('discord', { redirectTo: globalThis.callbackUrl })
+    await signIn('discord', { redirectTo: "/" })
   } catch (error) {
     console.log(error);
     throw error

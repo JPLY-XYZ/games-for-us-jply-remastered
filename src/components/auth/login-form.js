@@ -20,8 +20,7 @@ export function LoginForm({ className }) {
     }
   }, [])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleRemember = () => {
     if (remember) {
       localStorage.setItem('loginEmail', email)
       localStorage.setItem('loginPassword', password)
@@ -29,18 +28,18 @@ export function LoginForm({ className }) {
       localStorage.removeItem('loginEmail')
       localStorage.removeItem('loginPassword')
     }
-
-    const formData = new FormData()
-    formData.append('email', email)
-    formData.append('password', password)
-    formData.append('remember', remember ? 'on' : '')
-    formAction(formData)
   }
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-500 dark:bg-gray-800 w-full sm:h-auto h-full max-w-screen sm:max-w-md rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold text-gray-200 mb-4">Acceso</h2>
-      <form onSubmit={handleSubmit} className="w-full">
+      <form
+        action={(formData) => {
+          handleRemember()
+          formAction(formData)
+        }}
+        className="w-full"
+      >
         <div className="flex flex-col gap-4">
           <input
             type="email"
@@ -78,7 +77,7 @@ export function LoginForm({ className }) {
           <button
             type="submit"
             disabled={pending}
-            className="w-full bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-2 hover:brightness-110 transition disabled:bg-slate-400 disabled:cursor-not-allowed"
+            className="w-full cursor-pointer bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-2 hover:brightness-110 transition disabled:bg-slate-400 disabled:cursor-not-allowed"
           >
             {pending ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>

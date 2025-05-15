@@ -24,17 +24,20 @@ export const options = {
     callbacks: {
         async session({ session, token }) {
             session.user.id = token?.sub;     // Para recuperar ID de usuario desde el token
-            session.user.role = token?.role   // Para recuperar rol de usuario desde el token
+            session.user.role = token?.role 
+            session.user.active = token?.active   // Para recuperar rol de usuario desde el token
             return session
         },
 
         async jwt({ token }) {
             if (!token.sub) return token;
-
+            if (token.active == false) return token;
             const user = await getUserById(token.sub)
-            if (!user) return token;
+            if (!user.active ) return null;
+             
 
             token.role = user?.role
+            token.active = user?.active
             return token
         }
     },
