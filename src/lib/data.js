@@ -687,6 +687,7 @@ export async function buscar(query) {
   const juegos = await prisma.game.findMany({
     where: {
       name: { contains: query, mode: 'insensitive' },
+      visible: true,
     },
     select: {
       id: true,
@@ -701,6 +702,7 @@ export async function buscar(query) {
   const usuarios = await prisma.user.findMany({
     where: {
       name: { contains: query, mode: 'insensitive' },
+      active: true,
     },
     select: {
       id: true,
@@ -713,6 +715,7 @@ export async function buscar(query) {
   const contenidos = await prisma.content.findMany({
     where: {
       title: { contains: query, mode: 'insensitive' },
+      visible: true,
     },
     select: {
       id: true,

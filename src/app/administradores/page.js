@@ -1,8 +1,18 @@
+import { auth } from "@/auth";
 import AdminPageComp from "@/components/admin/admin-page-comp";
 import { getAllCommentsSimple, getAllContentsSimple, getAllGamesSimple, getAllUsersSimple } from "@/lib/data";
+import { redirect } from "next/navigation";
+
 import { Suspense } from "react";
 
 async function page() {
+
+
+  const session = await auth();
+  
+ 
+  if (session?.user?.role !== "ADMINISTRADOR") redirect("/");
+
 
   const users = await getAllUsersSimple();
   const contents = await getAllContentsSimple();

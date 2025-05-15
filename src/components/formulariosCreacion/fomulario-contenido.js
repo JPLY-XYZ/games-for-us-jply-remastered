@@ -3,6 +3,7 @@ import FormularioTipoVideo from "./subFormularios/formulario-tipo-video";
 import FormularioTipoNoticia from "./subFormularios/formulario-tipo-noticia";
 import FormularioTipoImagen from "./subFormularios/formulario-tipo-imagen";
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 async function  FormularioContenido({ tipo , gameId, content=null }) {
     const session = await auth();
@@ -17,6 +18,7 @@ async function  FormularioContenido({ tipo , gameId, content=null }) {
         case "VIDEO":
             return <FormularioTipoVideo gameId={gameId} user={user} content={content}/>
         case "NOTICIA":
+            if (session?.user?.role !== "DESARROLLADOR") redirect("/");
             return <FormularioTipoNoticia gameId={gameId} user={user} content={content}/>
         default:
             return "Tipo de contenido no válido"

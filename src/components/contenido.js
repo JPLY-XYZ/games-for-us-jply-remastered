@@ -17,8 +17,9 @@ export default function Contenidos({ game, session }) {
 
   const searchParams = useSearchParams();
   const tipoFiltro = searchParams.get("tipo");
+const contenidosVisibles = game.contents.filter(c => c.visible);
 
-  let contenidos = [...(game.contents || [])];
+  let contenidos = [...(contenidosVisibles || [])];
   if (tipoFiltro && tipoFiltro !== "TODOS") {
     contenidos = contenidos.filter(c => c.type === tipoFiltro);
   }

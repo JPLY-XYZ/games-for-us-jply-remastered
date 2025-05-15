@@ -62,7 +62,7 @@ model Game {
   shortDesc    String?
   longDesc     String?
   releaseDate  DateTime?
-  visible      Boolean?  @default(false)
+  visible      Boolean?  @default(true)
   publishedAt  DateTime  @default(now())
   price        Float?
   averageScore Int?

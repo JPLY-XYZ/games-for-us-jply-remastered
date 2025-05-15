@@ -7,6 +7,9 @@ import Link from "next/link";
 
 export default function TarjetaJuego({ game, isOwner, session }) {
 
+
+  console.log(game)
+
  const scores = game.comments.map(c => c.score).filter(s => s !== null);
 const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
 

@@ -14,6 +14,7 @@ export async function getJuegosPaginado({ offset, limit, where = {} }) {
       include: {
         developers: true,
         fans: true,
+        comments:true,
       },
     });
 

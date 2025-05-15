@@ -7,7 +7,9 @@ import { getLatestContents } from "@/lib/data";
 
 async function ListadoContenidosActuales() {
   const sesion = await auth();
-  const contenidos = await getLatestContents();
+  const contenidos = await getLatestContents().filter(c => c.visible);
+
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

@@ -13,7 +13,10 @@ export default function Comentarios({ relationGame, relationContent, comentarios
     const [modalAbierto, setModalAbierto] = useState(false);
     const [haExpandido, setHaExpandido] = useState(false);
     
-    let comentarios = [...(comentariosArr || [])];
+const contenidosVisibles = comentariosArr.filter(c => c.visible);
+
+
+    let comentarios = [...(contenidosVisibles|| [])];
     console.log(relationGame, relationContent);
     
     // Ordenación similar a la de contenido.js
