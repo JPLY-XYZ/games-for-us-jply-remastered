@@ -43,6 +43,7 @@ export default function MobileMenuButton() {
 
           <a
             onClick={() => setOpen(false)}
+            href="https://github.com/JPLY-XYZ"
             className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition"
           >
             GAMES FOR US REMASTERED BY JPLY - V-1
