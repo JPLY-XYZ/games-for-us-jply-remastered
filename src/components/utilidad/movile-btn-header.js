@@ -40,6 +40,14 @@ export default function MobileMenuButton() {
           <Link href="/juegos" onClick={() => setOpen(false)} className="px-6 py-3 hover:bg-white hover:text-[var(--aside-card-background)] rounded transition">
             Juegos
           </Link>
+
+          <a
+            onClick={() => setOpen(false)}
+            className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition"
+          >
+            GAMES FOR US REMASTERED BY JPLY - V-1
+          </a>
+
         </div>
       )}
     </>

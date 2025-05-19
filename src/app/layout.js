@@ -40,7 +40,7 @@ export default async function RootLayout({ children }) {
 
             <div className="flex-1 flex items-center mx-4">
               <div className="hidden md:flex gap-3">
-                <Link  href="/contenidos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                <Link href="/contenidos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
                   Contenidos
                 </Link>
                 <Link href="/juegos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
@@ -65,7 +65,14 @@ export default async function RootLayout({ children }) {
             <main className="flex items-center justify-center w-full overflow-y-auto">
               {children}
             </main>
+            
           </div>
+         <footer className=" hidden md:block fixed bottom-0 right-0 z-50">
+  <a className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition">
+    GAMES FOR US REMASTERED BY JPLY - V1.0
+  </a>
+</footer>
+
         </body>
       </SessionProvider>
     </html>
