@@ -1,4 +1,3 @@
-
 import '@/app/globals.css'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
@@ -9,8 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Buscador from '@/components/utilidad/buscador/buscador'
 import { auth } from '@/auth'
-
-
+import MobileMenuButton from '@/components/utilidad/movile-btn-header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,26 +19,43 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }) {
-
   const session = await auth();
-
-
 
   return (
     <html lang="es">
       <SessionProvider>
         <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
-
-          <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-4 md:px-10 sticky top-0 z-50">
+          <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-0 md:px-10 sticky top-0 z-50">
             <div className="flex items-center">
-              <Link href="/"><Gamepad2 className="w-8 h-8 mr-2 md:w-12 md:h-12 md:mr-3 " /></Link>
-              <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline">
+              <div className="hidden md:block mr-3">
+                <Link href="/">
+                  <Gamepad2 className="w-12 h-12" />
+                </Link>
+              </div>
+              <MobileMenuButton />
+              <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline ml-4">
                 GAMES FOR US
               </Link>
             </div>
-            <div className="flex-1 mx-4 max-w-xs sm:max-w-md md:max-w-lg">
-              <Buscador />
+
+            <div className="flex-1 flex items-center mx-4">
+              <div className="hidden md:flex gap-3">
+                <Link  href="/contenidos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                  Contenidos
+                </Link>
+                <Link href="/juegos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                  Juegos
+                </Link>
+                <Link href="/noticias" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                  Noticias
+                </Link>
+              </div>
+
+              <div className="ml-auto">
+                <Buscador />
+              </div>
             </div>
+
             <div className="flex items-center">
               <AuthButtons session={session} />
             </div>
@@ -48,14 +63,9 @@ export default async function RootLayout({ children }) {
 
           <div className="flex-1 flex">
             <main className="flex items-center justify-center w-full overflow-y-auto">
-              
-                {children}
-            
-
-
+              {children}
             </main>
           </div>
-
         </body>
       </SessionProvider>
     </html>

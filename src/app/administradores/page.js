@@ -24,9 +24,8 @@ async function page() {
   console.log(juegos, "juegos")
   console.log(comments, "comments") 
 
-  return (<Suspense fallback={"hola esto esta cargando"}>
-    <AdminPageComp users={users} contents={contents} juegos={juegos} comments={comments} />
-  </Suspense>);
+  return <AdminPageComp users={users} contents={contents} juegos={juegos} comments={comments} />
+
 }
 
 export default page;

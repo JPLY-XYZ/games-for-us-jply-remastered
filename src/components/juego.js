@@ -33,7 +33,7 @@ const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / sco
         src={game.urls.images.banner}
         alt="Game Banner"
         
-        className="object-cover brightness-50"
+        className="w-full h-full object-cover brightness-50"
       />
     )}
     <div className="absolute top-4 right-4 text-white opacity-75 hover:opacity-100">

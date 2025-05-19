@@ -385,7 +385,7 @@ export async function createResenaContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content?.id);
-    revalidatePath("/juego/"+gameId);
+    revalidatePath("/juego/"+ gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createResenaContentAction:", error);

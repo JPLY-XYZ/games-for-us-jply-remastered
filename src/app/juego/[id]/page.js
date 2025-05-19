@@ -24,10 +24,7 @@ export default async function page({ params }) {
             <Link href="/">Volver Atras</Link ></div>;
     }
 
-    return (
-        <Suspense fallback={"hola esto esta cargando"}>
-        <Juego game={game} />
-    </Suspense>
-    );
+    return <Juego game={game} />
+    
     
 }

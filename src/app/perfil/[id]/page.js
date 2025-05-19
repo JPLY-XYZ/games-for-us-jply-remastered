@@ -44,15 +44,17 @@
             </div>
 
             <div className="max-w-6xl mx-auto mt-6 flex flex-col md:flex-row items-center md:items-start gap-6">
-                <div className="flex-shrink-0 text-center md:text-left">
-                    <EditImagePerfil ownership={ownership} user={user} />
-                    {user.role === "DESARROLLADOR" && (
-                        <p className="mt-2 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-full inline-block">DESARROLLADOR</p>
-                    )}
-                    {user.role === "ADMINISTRADOR" && (
-                        <p className="mt-2 px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full inline-block">MODERADOR</p>
-                    )}
-                </div>
+                <div className="flex-shrink-0 text-center">
+    <EditImagePerfil ownership={ownership} user={user} />
+    <div className="flex justify-center mt-2">  {/* Contenedor flex para centrar */}
+        {user.role === "DESARROLLADOR" && (
+            <p className="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-full">DESARROLLADOR</p>
+        )}
+        {user.role === "ADMINISTRADOR" && (
+            <p className="px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full">MODERADOR</p>
+        )}
+    </div>
+</div>
                 <div className="w-full">
                     <EditUserInfoForm ownership={ownership} user={user} />
                 </div>

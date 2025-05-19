@@ -43,20 +43,21 @@ function EditImageFondo({ user, ownership, children }) {
                 <input type="hidden" name="id" value={user.id} />
 
                 {isEditing ? (
-                    <label htmlFor="imageInputBack" className="absolute inset-0 cursor-pointer">
-                        <img
-                            src={imagePreview}
-                            alt="banner"
-                            className="brightness-75 object-cover w-full h-full"
-                        />
-                    </label>
-                ) : (
-                    <img
-                        src={imagePreview}
-                        alt="banner"
-                        className="brightness-75 object-cover w-full h-full"
-                    />
-                )}
+  <label htmlFor="imageInputBack" className="absolute inset-0 cursor-pointer">
+    <img
+      src={imagePreview}
+      alt="banner"
+      className="w-full h-full object-cover absolute inset-0"
+    />
+  </label>
+) : (
+  <img
+    src={imagePreview}
+    alt="banner"
+    className="w-full h-full object-cover absolute inset-0"
+  />
+)}
+
 
                 {isEditing && (
                     <div key={key} className="absolute bottom-2 right-2 flex gap-2">

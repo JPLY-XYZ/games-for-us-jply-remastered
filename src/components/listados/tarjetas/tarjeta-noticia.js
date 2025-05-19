@@ -9,7 +9,7 @@ export default function TarjetaNoticia({ noticia, sesion }) {
   return (
     <div
       key={noticia.id}
-      className="relative bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition"
+      className="relative bg-white  dark:bg-slate-800 p-6 rounded-3xl shadow-lg hover:shadow-2xl transition"
     >
       <div className="absolute z-10 top-4 right-4 flex gap-2">
         <Suspense fallback={

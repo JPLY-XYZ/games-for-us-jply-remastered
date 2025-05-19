@@ -9,9 +9,7 @@ import { Suspense } from "react";
 
 export default function TarjetaContenido({ contenido, sesion }) {
 
-console.log("hola desde contenido" , contenido.type != "RESEÑA" ? contenido.urls?.img : contenido.urls.imgs.thumbnail)
 
-console.log(contenido )
   return (
     <div
       key={contenido.id}
