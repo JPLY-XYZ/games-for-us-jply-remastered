@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import ListadoTresItems from "../listados/listado-tres-items";
-import TarjetaNoticia from "../listados/tarjetas/tarjeta-noticia";
 import { getLatestNews } from "@/lib/data";
+import TarjetaContenido from "../listados/tarjetas/tarjeta-contenido";
 
 async function UltimasNoticias() {
     const session = await auth();
@@ -9,7 +9,7 @@ async function UltimasNoticias() {
 
     return (<ListadoTresItems>
         {listaNoticias.map((noticia) => (
-            <TarjetaNoticia key={noticia.id} noticia={noticia} sesion={session} />
+            <TarjetaContenido key={noticia.id} contenido={noticia} sesion={session} />
         ))}
     </ListadoTresItems>);
 }

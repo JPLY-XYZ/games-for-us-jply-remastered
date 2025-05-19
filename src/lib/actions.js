@@ -65,7 +65,7 @@ export async function login(prevState, formData) {
   }
   if (!user.active) {
     return {
-      error: 'Usuario esta desactivado por un administrador.',
+      error: 'Tu cuenta está desactivada. Contacta con el administrador.',
       fields: Object.fromEntries(formData.entries())
     }
   }

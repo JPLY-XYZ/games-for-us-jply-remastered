@@ -3,12 +3,12 @@ import { useState, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import TarjetaContenido from "./tarjeta-contenido";
 
-export default function ContentClient({ initialContents }) {
+export default function ContentClient({ initialContents, session }) {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(9);
-  const { data: session } = useSession();
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,6 +31,8 @@ export default function ContentClient({ initialContents }) {
   }, [initialContents, search]);
 
   const totalPages = Math.ceil(filteredContents.length / itemsPerPage);
+  
+
 
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
@@ -59,7 +61,7 @@ export default function ContentClient({ initialContents }) {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] min-w-[100%] md:min-w-[80%] mx-auto p-4 gap-4">
+    <div className="flex flex-col h-[calc(100vh-80px)]  min-w-[100%] md:min-w-[80%] mx-auto p-4 gap-4">
       <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className="h-5 w-5 text-gray-400" />
@@ -79,33 +81,8 @@ export default function ContentClient({ initialContents }) {
       {paginatedContents.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 flex-grow overflow-y-auto">
           {paginatedContents.map(content => (
-            <div key={content.id} className="flex justify-center">
-              <Link
-                href={`/contenido/${content.id}`}
-                className={`bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col w-full max-w-[300px] h-[250px] border-4 ${getBorderColor(content.type)}`}
-              >
-                <div className="relative w-full h-[180px]">
-                  {content.type === 'VIDEO' ? (
-                    <video
-                      src={content.urls?.video }
-                      className="w-full h-full object-cover"
-                      controls
-                    />
-                  ) : (
-                    <img
-                      src={content.urls?.imgs?.thumbnail }
-                      alt={content.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
-                <div className="p-4 flex items-center justify-center h-[70px]">
-                  <h3 className="font-semibold text-lg text-center text-gray-800 dark:text-gray-100 line-clamp-2">
-                    {content.title}
-                  </h3>
-                </div>
-              </Link>
+            <div key={content.id} className="flex max-h-[520px] justify-center">
+              <TarjetaContenido contenido={content} sesion={session} />
             </div>
           ))}
         </div>

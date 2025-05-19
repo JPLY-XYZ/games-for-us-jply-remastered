@@ -15,6 +15,7 @@ errors.set('Callback', "Error en la ruta del controlador de devolución de llama
 errors.set('OAuthAccountNotLinked', "Este email ya está registrado con otro proveedor.");
 errors.set('EmailSignin', "Comprueba tu dirección de correo electrónico.");
 errors.set('CredentialsSignin', "Fallo al iniciar sesion. Verifique que los datos que proporcionó sean correctos.");
+errors.set('AccessDenied', "Su cuenta esta bloqueada. Comuniquese con el administrador.");
 errors.set('SessionRequired', "Error al iniciar sesión. Verifique que los detalles que proporcionó sean correctos.");
 errors.set('Default', "No se puede iniciar sesión.");
 
@@ -29,7 +30,7 @@ async function PaginaLogin({ searchParams }) {
 
   return (
     
-      <LoginForm/>
+      <LoginForm error={errors.get(error)} />
    
   )
 }

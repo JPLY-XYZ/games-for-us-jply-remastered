@@ -149,7 +149,8 @@ const contenidosVisibles = game.contents.filter(c => c.visible);
           </button>
 
           {menuAbierto && (
-            <div className="absolute z-50 mt-2 right-0 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+            <div className="absolute 5
+             mt-2 right-0 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
               {["RESEÑA", "VIDEO", "IMAGEN"].map(tipo => (
                 <Link
                   key={tipo}

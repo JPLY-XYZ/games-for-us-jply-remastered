@@ -27,6 +27,7 @@ export async function getAllUsersSimple() {
 export async function getAllContentsSimple() {
   const contents = await prisma.content.findMany({
     include: {
+
       user: {
         select: {
           id: true,
@@ -37,6 +38,21 @@ export async function getAllContentsSimple() {
         select: {
           id: true,
           name: true,
+        },
+      },
+        comments: {
+          include: {
+            user: {
+              include: {
+                contents: true,
+                comments: true,
+              },
+            },
+          },
+        },
+        _count: {
+        select: {
+          comments: true, // también correcto aquí
         },
       },
     },

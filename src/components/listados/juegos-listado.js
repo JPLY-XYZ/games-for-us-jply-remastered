@@ -3,12 +3,13 @@ import { useState, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import TarjetaJuego from "./tarjetas/tarjeta-juego";
 
-export default function JuegosClient({ initialGames }) {
+export default function JuegosClient({ initialGames ,session }) {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(9);
-  const { data: session } = useSession();
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,7 +45,7 @@ export default function JuegosClient({ initialGames }) {
   );
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] min-w-[100%] md:min-w-[80%] mx-auto p-4 gap-4">
+    <div className="flex flex-col h-[calc(100vh-80px)]  min-w-[100%] md:min-w-[80%] mx-auto p-4 gap-4">
       <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className="h-5 w-5 text-gray-400" />
@@ -65,25 +66,7 @@ export default function JuegosClient({ initialGames }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 flex-grow overflow-y-auto">
           {paginatedGames.map(game => (
             <div key={game.id} className="flex justify-center">
-              <Link
-                href={`/juego/${game.id}`}
-                className="bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col w-full max-w-[300px] h-[250px]"
-              >
-                <div className="relative w-full h-[180px]">
-                  <img
-                    src={game.urls?.images?.cover || "https://placehold.co/640x360"}
-                    alt={game.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    style={{ width: '300px', height: '180px' }}
-                  />
-                </div>
-                <div className="p-4 flex items-center justify-center h-[70px]">
-                  <h3 className="font-semibold text-lg text-center text-gray-800 dark:text-gray-100 line-clamp-2">
-                    {game.name}
-                  </h3>
-                </div>
-              </Link>
+            <TarjetaJuego game={game} session={session} />
             </div>
           ))}
         </div>

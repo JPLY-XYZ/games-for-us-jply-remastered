@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import prisma from "@/lib/prisma"
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { getUserById } from "@/lib/data"
+import { getUserByEmail, getUserById } from "@/lib/data"
 import authConfig from "@/auth.config"
 
 
@@ -11,7 +11,7 @@ export const options = {
     pages: {
         signIn: '/login',
         signOut: '/logout',
-        error: '/error'
+        error: '/login'
     },
     events: {
         async linkAccount({ user }) {
@@ -22,6 +22,11 @@ export const options = {
         }
     },
     callbacks: {
+        async signIn({ user }) {
+    const dbUser = await getUserByEmail(user.email);
+    if (!dbUser || !dbUser.active) return false;
+    return true;
+  },
         async session({ session, token }) {
             session.user.id = token?.sub;     // Para recuperar ID de usuario desde el token
             session.user.role = token?.role 
@@ -33,7 +38,7 @@ export const options = {
             if (!token.sub) return token;
             if (token.active == false) return token;
             const user = await getUserById(token.sub)
-            if (!user.active ) return null;
+            if (!user.active ) return token;
              
 
             token.role = user?.role

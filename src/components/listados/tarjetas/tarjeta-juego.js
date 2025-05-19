@@ -11,9 +11,15 @@ export default function TarjetaJuego({ game, isOwner, session }) {
   const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
 
   return (
-    <div className="w-full mx-auto max-w-md aspect-[10/11.5] rounded-2xl bg-white dark:bg-slate-800 shadow-md hover:shadow-xl transition-all flex flex-col overflow-hidden">
+<div className="max-h-120 min-w-full rounded-2xl bg-white dark:bg-slate-800 shadow-md hover:shadow-xl transition-all flex flex-col overflow-hidden relative">
+      
+      {/* Botón reportar en esquina superior derecha */}
+      <div className="absolute bottom-2 right-4 z-5">
+        <ButtonReportConfig id={game.id} tipo={"GAME"} session={session} />
+      </div>
+
       <Link href={`/juego/${game.id}`} className="flex flex-col flex-1">
-        {/* Image */}
+        {/* Imagen */}
         <div className="relative w-full aspect-[16/9] overflow-hidden">
           <img
             src={game?.urls?.images?.cover || "https://placehold.co/1280x720.jpg"}
@@ -27,7 +33,7 @@ export default function TarjetaJuego({ game, isOwner, session }) {
           )}
         </div>
 
-        {/* Content */}
+        {/* Contenido */}
         <div className="p-4 flex flex-col flex-1 justify-between space-y-2">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1">
             {game.name}
@@ -55,7 +61,7 @@ export default function TarjetaJuego({ game, isOwner, session }) {
 
             {averageScore != null && (
               <span className="flex gap-0.5">
-                {averageScore}
+                {averageScore.toFixed(1)}
                 <Star className="text-yellow-300 h-3.5 w-3.5" />
               </span>
             )}
@@ -68,14 +74,7 @@ export default function TarjetaJuego({ game, isOwner, session }) {
           )}
         </div>
       </Link>
-
-      {/* Footer */}
-      <div className="border-t  border-gray-200 dark:border-slate-700 px-4 py-3 bg-gray-50 dark:bg-slate-900 flex items-center justify-between">
-        <div className="scale-75 -translate-y-2 sm:scale-100 sm:translate-y-0">
-          <LikeButton game={game} user={session?.user} />
-        </div>
-        <ButtonReportConfig id={game.id} tipo={"GAME"} session={session} />
-      </div>
     </div>
   );
 }
+

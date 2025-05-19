@@ -4,7 +4,7 @@ import { useActionState } from 'react'
 import { login } from '@/lib/actions'
 import OauthButtons from './oauth-buttons'
 
-export function LoginForm({ className }) {
+export function LoginForm({ error }) {
   const [state, formAction, pending] = useActionState(login, {})
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -81,13 +81,16 @@ export function LoginForm({ className }) {
           >
             {pending ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
-          {state?.error && (
+          {error && (
+            <p className="text-red-500 text-sm mt-2">{error}</p>
+          )}
+          {state.error && (
             <p className="text-red-500 text-sm mt-2">{state.error}</p>
           )}
         </div>
       </form>
       <hr className="h-px bg-gray-400 my-6 w-full" />
-      <OauthButtons />
+      <OauthButtons  />
     </div>
   )
 }

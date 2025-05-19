@@ -20,7 +20,7 @@ export default function MobileMenuButton() {
 
       {/* Menú fullscreen overlay */}
       {open && (
-        <div className="fixed inset-0 bg-[var(--aside-card-background)] z-50 flex flex-col items-center justify-center gap-6 text-white text-2xl">
+        <div className="fixed  inset-0 bg-[var(--aside-card-background)] z-[400] flex flex-col items-center justify-center gap-6 text-white text-2xl">
           <button
             onClick={() => setOpen(false)}
             className="absolute top-5 right-5 text-white text-4xl font-bold"

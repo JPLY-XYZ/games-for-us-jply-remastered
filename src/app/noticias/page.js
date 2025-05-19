@@ -10,5 +10,5 @@ export default async function Page() {
 );
 
 
-  return <ContentClient initialContents={visiblesContent} />;
+  return <ContentClient initialContents={visiblesContent} session={session} />;
 }
