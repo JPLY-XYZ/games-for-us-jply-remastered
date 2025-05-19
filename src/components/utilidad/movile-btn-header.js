@@ -28,9 +28,15 @@ export default function MobileMenuButton() {
           >
             &times;
           </button>
-          <Link href="/" onClick={() => setOpen(false)} className="px-6 py-3 hover:bg-white hover:text-[var(--aside-card-background)] rounded transition">
-            Home
+          <Link href="/">
+            <p className="mb-30 text-4xl text-center flex flex-col items-center justify-center">
+              <Gamepad2 className="w-20 h-20" />
+              <span>GAMES FOR US</span>
+            </p>
           </Link>
+
+
+         
           <Link href="/contenidos" onClick={() => setOpen(false)} className="px-6 py-3 hover:bg-white hover:text-[var(--aside-card-background)] rounded transition">
             Contenidos
           </Link>

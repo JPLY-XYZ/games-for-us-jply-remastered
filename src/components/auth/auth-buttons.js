@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,14 +11,12 @@ import {
   FolderUp,
   SquareUser,
   Menu,
+  ChevronDown,
 } from "lucide-react";
 
 export default function AuthButtons({ session }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-
-
- 
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -55,16 +52,18 @@ export default function AuthButtons({ session }) {
           </Link>
         </div>
         {open && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-5 flex flex-col sm:hidden">
+          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10 flex flex-col sm:hidden">
             <Link
               href="/login"
               className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+              onClick={() => setOpen(false)}
             >
               Iniciar sesión
             </Link>
             <Link
               href="/register"
               className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+              onClick={() => setOpen(false)}
             >
               Registrarse
             </Link>
@@ -75,33 +74,30 @@ export default function AuthButtons({ session }) {
   }
 
   return (
-    <div className="relative" ref={menuRef}>
-      <button
-        onClick={() => setOpen(!open)}
-        className="cursor-pointer flex items-center gap-2 px-2 py-1 rounded-full hover:bg-gray-200 transition"
-      >
-        {session.user?.image && (
-          <img
-            src={session.user.image}
-            alt="Avatar"
-            width={32}
-            height={32}
-            className="rounded-full"
-          />
-        )}
-        <svg
-          className="w-4 h-4 text-gray-600"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+   <div className="relative" ref={menuRef}>
+  <button
+    onClick={() => setOpen(!open)}
+    className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-200 transition cursor-pointer"
+  >
+    {session.user?.image ? (
+    <div className="w-8 h-8 rounded-full overflow-hidden">
+  <Image
+    src={session.user.image}
+    alt="Avatar"
+    width={32}
+    height={32}
+    className="w-full h-full object-cover"
+    unoptimized
+  />
+</div>
+    ) : (
+      <SquareUser className="w-8 h-8 text-gray-600" />
+    )}
+    <ChevronDown className="w-4 h-4 text-gray-600 hidden md:block" />
+  </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-5">
+        <div className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">
           <div className="px-4 py-3">
             <p className="text-sm font-medium text-gray-900 truncate">
               {session.user?.name}
@@ -111,6 +107,7 @@ export default function AuthButtons({ session }) {
           <Link
             href={"/perfil/" + session.user.id}
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+            onClick={() => setOpen(false)}
           >
             <SquareUser className="w-5 h-5 text-gray-500" />
             <span>Perfil</span>
@@ -118,29 +115,34 @@ export default function AuthButtons({ session }) {
           <Link
             href={"/perfil/" + session.user.id + "/juegosfavoritos"}
             className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+            onClick={() => setOpen(false)}
           >
             <FolderHeart className="w-5 h-5 text-gray-500" />
             <span>Juegos Favoritos</span>
           </Link>
-          
-          {session.user?.role == "DESARROLLADOR" && <Link
-            href={"/perfil/" + session.user.id + "/juegospublicados"}
-            className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-          >
-            <FolderUp className="w-5 h-5 text-gray-500" />
-            <span>Panel Desarrollador</span>
-          </Link> }
-         
-         {session.user?.role == "ADMINISTRADOR" && <Link
-            href="/administradores"
-            className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-          >
-            <FolderCog className="w-5 h-5 text-gray-500" />
-            <span>Panel de administrador</span>
-          </Link>}
 
+          {session.user?.role === "DESARROLLADOR" && (
+            <Link
+              href={"/perfil/" + session.user.id + "/juegospublicados"}
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+              onClick={() => setOpen(false)}
+            >
+              <FolderUp className="w-5 h-5 text-gray-500" />
+              <span>Panel Desarrollador</span>
+            </Link>
+          )}
 
-          
+          {session.user?.role === "ADMINISTRADOR" && (
+            <Link
+              href="/administradores"
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+              onClick={() => setOpen(false)}
+            >
+              <FolderCog className="w-5 h-5 text-gray-500" />
+              <span>Panel de administrador</span>
+            </Link>
+          )}
+
           <form action={logout}>
             <button
               type="submit"
@@ -155,4 +157,3 @@ export default function AuthButtons({ session }) {
     </div>
   );
 }
-    

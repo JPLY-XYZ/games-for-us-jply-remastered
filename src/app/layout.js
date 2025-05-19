@@ -29,7 +29,7 @@ export default async function RootLayout({ children }) {
             <div className="flex items-center">
               <div className="hidden md:block mr-3">
                 <Link href="/">
-                  <Gamepad2 className="w-12 h-12" />
+                  <Gamepad2 className=" w-12 h-12" />
                 </Link>
               </div>
               <MobileMenuButton />
