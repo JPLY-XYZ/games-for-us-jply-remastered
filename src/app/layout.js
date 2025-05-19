@@ -11,6 +11,7 @@ import Buscador from '@/components/utilidad/buscador/buscador'
 import { auth } from '@/auth'
 
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -47,10 +48,11 @@ export default async function RootLayout({ children }) {
 
           <div className="flex-1 flex">
             <main className="flex items-center justify-center w-full overflow-y-auto">
+              
+                {children}
+            
 
-              { children }
 
-             
             </main>
           </div>
 

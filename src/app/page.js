@@ -18,9 +18,7 @@ export default function Home() {
         <Suspense fallback={
           <FallbackTresItems />
         }>
-
           <NuevosLanzamientos />
-
         </Suspense>
       </section>
 
