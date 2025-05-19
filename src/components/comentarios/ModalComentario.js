@@ -40,7 +40,7 @@ export function ModalComentario({ setModalAbierto, game = null, content = null, 
                         <textarea
                             name='comentario'
                             placeholder="Escribe tu comentario..."
-                            className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                            className="dark:bg-gray-700 bg-gray-300 dark:text-gray-200 border-0 rounded-md p-2 dark:focus:bg-gray-600 focus:bg-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                             rows={4}
                             required
                         />

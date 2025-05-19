@@ -18,7 +18,7 @@ function ActionsButton({ id, tipo, subtipo }) {
       <button
         disabled={pendingDelete}
         type="submit"
-        className="opacity-60 text-white hover:opacity-100 focus:outline-none cursor-pointer"
+        className="opacity-60  dark:text-white hover:opacity-100 focus:outline-none cursor-pointer"
       >
         {pendingDelete ? (
           <Loader className="animate-spin text-white" />

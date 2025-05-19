@@ -693,7 +693,6 @@ export async function buscar(query) {
       id: true,
       name: true,
       price: true,
-      averageScore: true,
       urls: true, // JSON completo
     },
     take: 5,

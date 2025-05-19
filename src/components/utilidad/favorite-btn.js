@@ -56,7 +56,12 @@ function FavoriteButton({ id, tipo, owner }) {
         }
     }
 
+    if (owner) {
+        return <><ThumbsUp className="w-6 h-6" /> {likes}</>
+    }
     return (
+
+        
         <button
             type="button"
             disabled={owner || pending}

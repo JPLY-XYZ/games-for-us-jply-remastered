@@ -68,7 +68,7 @@ export default async function Page({ params }) {
         <>
           {banner && (
             <div className="h-96 w-full bg-gray-800 relative rounded-xl overflow-hidden shadow-xl mb-6">
-              <img src={banner} alt="Banner" layout="fill" objectFit="cover" className="brightness-50" />
+              <Image src={banner} alt="Banner" layout="fill" objectFit="cover" className="brightness-50" />
             </div>
           )}
 
@@ -176,7 +176,7 @@ export default async function Page({ params }) {
 
         {/* Botón de likes */}
         <div className="flex space-betwen gap-6 items-center mb-6 ml-2">
-          <ButtonFavorite id={content.id} tipo="CONTENT" session={session} />
+         <ButtonFavorite id={content.id} tipo="CONTENT" session={session} />
           <div className="flex items-center flex-end gap-4 text-sm text-white/80">
             {/* Avatar */}
             <div className="flex flex-col items-center">

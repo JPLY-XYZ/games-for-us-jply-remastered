@@ -62,6 +62,8 @@ function Buscador() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+
+
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="flex">
@@ -105,16 +107,7 @@ function Buscador() {
                     />
                   )}
 
-                  {item.type === 'Juego' && item.cover && (
-                    <img
-                      src={item.cover}
-                      alt={item.name}
-                      width={40}
-                      height={40}
-                      className="rounded-lg object-cover"
-                    />
-                  )}
-
+                 
                   {item.type === 'Contenido' && getIconForContent(item.contentType)}
 
                   <div className="flex flex-col">
@@ -122,7 +115,7 @@ function Buscador() {
 
                     {item.type === 'Juego' && (
                       <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {item.price ? `${item.price} €` : 'Gratis'} · ⭐ {item.score || 0}
+                        {item.price ? `${item.price} €` : 'Gratis'}
                       </span>
                     )}
 
