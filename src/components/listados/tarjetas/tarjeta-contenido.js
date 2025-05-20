@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import Image from "next/image";
 import Link from "next/link";
@@ -20,11 +20,10 @@ const borderBottomAnimation = `
   }
 `;
 
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
 const safeSrc = (src) =>
-  typeof src === "string" && src.trim() !== "" ? src : isDarkMode
-  ? "/ImagenJuegoNotFound-oscuro.jpg"
-  : "/ImagenJuegoNotFound-claro.jpg";
+  typeof src === "string" && src.trim() !== "" ? src : "/ImagenJuegoNotFound-oscuro.jpg"
+ 
 
 // Configuración para bordes e iconos según tipo
 const tipoConfig = {
@@ -60,7 +59,7 @@ export default function TarjetaContenido({ contenido, sesion }) {
           {esNoticia ? (
             <div className="relative w-full h-[315px] mb-4 rounded-t-2xl overflow-hidden">
               <Image
-                src={safeSrc(contenido.urls?.img)}
+                src={safeSrc(contenido.urls?.imgs.thumbnail)}
 
                 alt={contenido.title}
                 fill

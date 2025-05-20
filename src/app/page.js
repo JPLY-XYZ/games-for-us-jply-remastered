@@ -14,7 +14,7 @@ export default function Home() {
 
       {/* NUEVOS LANZAMIENTOS */}
       <section>
-        <h2 className="text-4xl font-semibold text-white mb-8">Nuevos Lanzamientos</h2>
+        <h2 className="text-4xl font-semibold dark:text-white  text-black mb-8">Nuevos Lanzamientos</h2>
         <Suspense fallback={
           <FallbackTresItems />
         }>
@@ -24,7 +24,7 @@ export default function Home() {
 
       {/* NOTICIAS */}
       <section>
-        <h2 className="text-4xl font-semibold text-white mb-8"> Ultimas noticias</h2>
+        <h2 className="text-4xl font-semibold dark:text-white  text-black mb-8"> Ultimas noticias</h2>
         <Suspense fallback={
           <FallbackTresItems />
         }>
@@ -35,7 +35,7 @@ export default function Home() {
 
       {/* CONTENIDOS */}
       <section>
-        <h2 className="text-4xl font-semibold text-white mb-8">Últimos Contenidos</h2>
+        <h2 className="text-4xl font-semibold dark:text-white  text-black mb-8">Últimos Contenidos</h2>
         <Suspense fallback={
           <FallbackTresItems />
         }>

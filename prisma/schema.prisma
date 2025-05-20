@@ -107,7 +107,7 @@ model Content {
   text        String?
   publishedAt DateTime    @default(now())
   editedAt    DateTime?
-  score       Int? @default(0)
+  score       Int        @default(0)
   reportCount Int         @default(0)
   visible     Boolean?    @default(true)
   comments    Comment[]

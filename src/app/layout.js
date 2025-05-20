@@ -29,24 +29,24 @@ export default async function RootLayout({ children }) {
             <div className="flex items-center">
               <div className="hidden md:block mr-3">
                 <Link href="/">
-                  <Gamepad2 className=" w-12 h-12" />
+                  <Gamepad2 className=" w-12 h-12 dark:text-white  text-black" />
                 </Link>
               </div>
               <MobileMenuButton />
-              <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline ml-4">
+              <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline ml-4 dark:text-white  text-black">
                 GAMES FOR US
               </Link>
             </div>
 
             <div className="flex-1 flex items-center mx-4">
               <div className="hidden md:flex gap-3">
-                <Link href="/contenidos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                <Link href="/contenidos" className="bg-[var(--aside-card-background)]  hover:bg-white dark:hover:bg-white  dark:hover:text-black  dark:text-white  text-black transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
                   Contenidos
                 </Link>
-                <Link href="/juegos" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                <Link href="/juegos" className="bg-[var(--aside-card-background)]  hover:bg-white dark:hover:bg-white  dark:hover:text-black  dark:text-white  text-black transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
                   Juegos
                 </Link>
-                <Link href="/noticias" className="bg-[var(--aside-card-background)] hover:bg-white hover:text-[var(--aside-card-background)] transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
+                <Link href="/noticias" className="bg-[var(--aside-card-background)]  hover:bg-white dark:hover:bg-white  dark:hover:text-black  dark:text-white  text-black transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
                   Noticias
                 </Link>
               </div>

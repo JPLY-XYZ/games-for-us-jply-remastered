@@ -18,7 +18,8 @@ async function  FormularioContenido({ tipo , gameId, content=null }) {
         case "VIDEO":
             return <FormularioTipoVideo gameId={gameId} user={user} content={content}/>
         case "NOTICIA":
-            if (session?.user?.role !== "DESARROLLADOR") redirect("/");
+            if (session?.user?.role !== "DESARROLLADOR" && session?.user?.role !== "ADMINISTRADOR") redirect("/")
+
             return <FormularioTipoNoticia gameId={gameId} user={user} content={content}/>
         default:
             return "Tipo de contenido no válido"

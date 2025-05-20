@@ -61,15 +61,15 @@ export default function ContentClient({ initialContents, session }) {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)]  min-w-[100%] md:min-w-[80%] mx-auto p-4 gap-4">
+    <div className="flex flex-col h-[calc(100vh-80px)]  max-w-[100%] md:max-w-[80%] min-w-[100%] md:min-w-[80%] mx-auto p-4 gap-4">
       <div className="relative w-full">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-400" />
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none ">
+          <Search className="h-5 w-5 text-gray-400 " />
         </div>
         <input
           type="text"
           placeholder="Buscar contenido..."
-          className="pl-10 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          className=" bg-white dark:bg-[var(--aside-card-background)]  pl-10 w-full p-3 border border-gray-300 dark:border-black rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
           value={search}
           onChange={e => {
             setSearch(e.target.value);
@@ -88,7 +88,7 @@ export default function ContentClient({ initialContents, session }) {
         </div>
       ) : (
         <div className="flex-grow flex items-center justify-center">
-          <p className="text-gray-500 dark:text-gray-400 text-lg">
+          <p className="text-black dark:text-gray-400 text-lg">
             No se encontraron contenidos que coincidan con tu búsqueda
           </p>
         </div>

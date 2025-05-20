@@ -57,7 +57,7 @@ function FavoriteButton({ id, tipo, owner }) {
     }
 
     if (owner) {
-        return <><ThumbsUp className="w-6 h-6" /> {likes}</>
+        return <div className="dark:text-white  text-black"><ThumbsUp className="w-6 h-6 dark:text-white  text-black" /> {likes}</div>
     }
     return (
 
@@ -66,9 +66,9 @@ function FavoriteButton({ id, tipo, owner }) {
             type="button"
             disabled={owner || pending}
             onClick={handleFavoriteToggle}
-            className={`cursor-pointer focus:outline-none ${favorite ? 'text-green-500' : 'text-white opacity-60 hover:opacity-100'}`}
+            className={`cursor-pointer focus:outline-none ${favorite ? 'text-green-500' : 'dark:text-white  text-black opacity-60 hover:opacity-100'}`}
         >
-            {pending ? <Loader className="text-white w-6 h-6 animate-spin" /> :<> <ThumbsUp className="w-6 h-6" /> {likes}</>}
+            {pending ? <Loader className="dark:text-white  text-black  w-6 h-6 animate-spin" /> :<> <ThumbsUp className="w-6 h-6 " /> {likes}</>}
         </button>
     )
 }

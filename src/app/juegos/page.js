@@ -7,5 +7,5 @@ export default async function Page() {
   const games = await getAllGames();
   const visibleGames = games.filter(game => game.visible === true);
 
-  return <div className="max-w-[100%] md:max-w-[80%]"><JuegosClient initialGames={visibleGames} session={session} /></div>;
+  return <div className="max-w-[100%] md:max-w-[80%] min-w-[100%] md:min-w-[80%]"><JuegosClient initialGames={visibleGames} session={session} /></div>;
 }
