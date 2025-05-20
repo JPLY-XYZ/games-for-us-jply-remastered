@@ -64,7 +64,7 @@ export async function login(prevState, formData) {
   }
   if (!user.emailVerified) {
     return {
-      error: 'Tu cuenta no está verificada. Revisa tu correo electrónico.',
+      error: 'Comprueba tu dirección de correo electrónico para verificar tu cuenta, Revisa tu carpeta de correo no deseado o spam.',
       fields: Object.fromEntries(formData.entries())
     }
   }

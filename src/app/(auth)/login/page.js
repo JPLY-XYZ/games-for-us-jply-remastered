@@ -13,7 +13,7 @@ errors.set('OAuthCreateAccount', "No se pudo crear un usuario proveedor de OAuth
 errors.set('EmailCreateAccount', "No se pudo crear un usuario de proveedor de correo electrónico en la base de datos.");
 errors.set('Callback', "Error en la ruta del controlador de devolución de llamada de OAuth.");
 errors.set('OAuthAccountNotLinked', "Este email ya está registrado con otro proveedor.");
-errors.set('EmailSignin', "Comprueba tu dirección de correo electrónico para verificar tu cuenta.");
+errors.set('EmailSignin', "Comprueba tu dirección de correo electrónico para verificar tu cuenta, Revisa tu carpeta de correo no deseado o spam.");
 errors.set('CredentialsSignin', "Fallo al iniciar sesion. Verifique que los datos que proporcionó sean correctos.");
 errors.set('AccessDenied', "Su cuenta esta bloqueada. Comuniquese con el administrador.");
 errors.set('SessionRequired', "El usuario no existe");
