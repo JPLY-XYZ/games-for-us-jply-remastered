@@ -35,7 +35,7 @@ export async function updateUser(userId, name, bio, birthdate, country) {
     if (birthdate) updateData.birthDate = new Date(birthdate).toISOString();
     if (country) updateData.country = country;
 
-    updateData.emailVerified = new Date().toISOString();
+    
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
@@ -57,8 +57,7 @@ export async function updateUserProfilePerfileImagen(userId, imagenPerfil) {
     if (imagenPerfil) updateData.image = imagenPerfil;
   
 
-    updateData.emailVerified = new Date().toISOString();
-
+   
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: updateData,
@@ -82,7 +81,7 @@ console.log('🔥 imagenFondo:', imagenFondo);
 
     if (imagenFondo) updateData.backgroundImage = imagenFondo;
 
-    updateData.emailVerified = new Date().toISOString();
+  
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },

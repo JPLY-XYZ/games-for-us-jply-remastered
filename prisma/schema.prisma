@@ -24,11 +24,13 @@ model User {
   bio             String?
   birthDate       DateTime?
   country         String?
-  active          Boolean?  @default(true)
+  active          Boolean?  @default(false)
   backgroundImage String? @default("https://placehold.co/600x600/orange/white?text=Games For Us")
   createdAt       DateTime  @default(now())
   lastLogin       DateTime?
   reportCount     Int       @default(0)
+
+  verificationToken String? 
 
   accounts       Account[]
   contents       Content[]

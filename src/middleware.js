@@ -8,6 +8,7 @@ const PUBLIC_PATHS = [
   '/',             // Página de inicio
   '/login',        // Login
   '/register',     // Registro
+  '/verificar',    // Verificación de correo
 ];
 
 export default auth((req) => {

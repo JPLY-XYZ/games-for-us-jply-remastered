@@ -8,6 +8,7 @@ import { uploadFile } from './files';
 import { updateUser, updateUserProfileBackImagen, updateUserProfilePerfileImagen } from './games/data';
 import { profile } from 'console';
 import { redirect } from 'next/navigation';
+import { SendVerifyEmail } from './email/action';
 
 
 // REGISTER
@@ -30,7 +31,7 @@ export async function register(prevState, formData) {
   const hashedPassword = await bcrypt.hash(password, 10)
 
   // Guardamos credenciales en base datos
-  await prisma.user.create({
+ const newUser = await prisma.user.create({
     data: {
       name,
       email,
@@ -38,11 +39,9 @@ export async function register(prevState, formData) {
     }
   })
 
-  await signIn('credentials',
-    {
-      email, password,
-      redirectTo: "/"
-    })
+  await SendVerifyEmail(email, newUser.id)
+
+redirect("/login?error=EmailSignin");
 
   return { success: "Registro correcto" }
 }
@@ -63,6 +62,12 @@ export async function login(prevState, formData) {
       fields: Object.fromEntries(formData.entries())
     }
   }
+  if (!user.emailVerified) {
+    return {
+      error: 'Tu cuenta no está verificada. Revisa tu correo electrónico.',
+      fields: Object.fromEntries(formData.entries())
+    }
+  }
   if (!user.active) {
     return {
       error: 'Tu cuenta está desactivada. Contacta con el administrador.',
@@ -77,7 +82,6 @@ export async function login(prevState, formData) {
     await signIn('credentials',
       {
         email, password,
-        redirectTo: "/"
       })
     return { success: "Inicio de sesión correcto" }
   } else {
@@ -91,33 +95,24 @@ export async function login(prevState, formData) {
 
 // LOGIN google
 export async function loginGoogle() {
-  try {
+  
     await signIn('google', { redirectTo: "/" })
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
+  
 }
 
 // LOGIN steam
 export async function loginReddit() {
-  try {
+ 
     await signIn('reddit', { redirectTo: "/" })
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
+ 
 }
 
 
 // LOGIN discord
 export async function loginDiscord() {
-  try {
+  
     await signIn('discord', { redirectTo: "/" })
-  } catch (error) {
-    console.log(error);
-    throw error
-  }
+ 
 }
 
 
