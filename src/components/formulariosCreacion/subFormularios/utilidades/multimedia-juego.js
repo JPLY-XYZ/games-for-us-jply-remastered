@@ -78,15 +78,15 @@ export function MultimediaJuego() {
                 </div>
 
                 <div className="flex justify-center space-x-4 mt-4">
-                    {!screenshots.some(s => !s) && (
-                        <button
-                            type="button"
-                            onClick={addScreenshot}
-                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                        >
-                            Añadir Screenshot
-                        </button>
-                    )}
+                  { !screenshots.some(s => !s) && !screenshots.length > 0 && (
+    <button
+        type="button"
+        onClick={addScreenshot}
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+    >
+        Añadir Screenshot
+    </button>
+)}
 
                     {screenshots.length > 0 && (
                         <button
