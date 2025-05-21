@@ -1,5 +1,5 @@
 "use client"
-import React, { useActionState } from 'react';
+import React, { useActionState, useState } from 'react';
 import { RequisitosJuego } from './subFormularios/utilidades/requisitos-juego';
 import { MultimediaJuego } from './subFormularios/utilidades/multimedia-juego';
 import { createOrUpdateGameAction } from '@/lib/actions';
@@ -8,6 +8,24 @@ import { LoaderCircle } from 'lucide-react';
 function FormularioJuego({userId}) {
 
 const [state, action, pending] = useActionState(createOrUpdateGameAction, {})
+  const [imagePreviews, setImagePreviews] = useState({
+        thumbUrl: "",
+        bannerUrl: "",
+        coverUrl: "",
+    });
+
+
+const handleImageChange = (event, field) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreviews((prev) => ({ ...prev, [field]: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
 
     return (
         <div className="bg-slate-100 dark:bg-slate-900 min-h-screen px-4 py-10 flex justify-center">
@@ -27,7 +45,7 @@ const [state, action, pending] = useActionState(createOrUpdateGameAction, {})
 
                     <div>
                         <label className={labelClass}>Descripción corta</label>
-                        <input name="shortDesc" className={inputClass} placeholder="Breve resumen del juego" />
+                        <input required name="shortDesc" className={inputClass} placeholder="Breve resumen del juego" />
                     </div>
 
                  
@@ -35,6 +53,7 @@ const [state, action, pending] = useActionState(createOrUpdateGameAction, {})
                     <div className="md:col-span-2">
                         <label className={labelClass}>Descripción larga</label>
                         <textarea
+                        required
                             name="longDesc"
                             rows={5}
                             className={inputClass}
@@ -44,12 +63,12 @@ const [state, action, pending] = useActionState(createOrUpdateGameAction, {})
 
                     <div>
                         <label className={labelClass}>Fecha de lanzamiento</label>
-                        <input type="date" name="releaseDate" className={inputClass} />
+                        <input required type="date" name="releaseDate" className={inputClass} />
                     </div>
 
                     <div>
                         <label className={labelClass}>Precio (€)</label>
-                        <input type="number" step="0.01" name="price" className={inputClass} placeholder="Ej: 59.99" />
+                        <input required type="number" step="0.01" name="price" className={inputClass} placeholder="Ej: 59.99" />
                     </div>
 
                     {/* Requisitos */}
@@ -59,6 +78,75 @@ const [state, action, pending] = useActionState(createOrUpdateGameAction, {})
 
                     {/* Multimedia y enlaces */}
                     <div className="md:col-span-2">
+                         {/* Banner */}
+            <div>
+                <label className="label">Banner</label>
+                <input
+                    required
+                    name='banner'
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 'bannerUrl')}
+                    className={inputClass}
+                />
+                {imagePreviews.bannerUrl && (
+                    <img
+                        src={imagePreviews.bannerUrl}
+                        alt="Banner Preview"
+                        className="mt-2 w-full aspect-[18/5] object-cover"
+                    />
+                )}
+            </div>
+
+            {/* Video + Thumbnail */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Cover */}
+                <div>
+                    <label className="label">Cover</label>
+                    <input
+                        required
+                        name='cover'
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageChange(e, 'coverUrl')}
+                        className={inputClass}
+                    />
+                    {imagePreviews.coverUrl && (
+                        <img
+                            src={imagePreviews.coverUrl}
+                            alt="Cover Preview"
+                            className="mt-2 w-full aspect-[15/9] object-cover"
+                        />
+                    )}
+                </div>
+
+                {/* Thumbnail */}
+                <div>
+                    <label className="label">Thumbnail</label>
+                    <input
+                        required
+                        name='thumbnail'
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageChange(e, 'thumbUrl')}
+                        className={inputClass}
+                    />
+                    {imagePreviews.thumbUrl && (
+                        <img
+                            src={imagePreviews.thumbUrl}
+                            alt="Thumbnail Preview"
+                            className="mt-2 w-full aspect-[3/4] object-cover"
+                        />
+                    )}
+                </div>
+            </div>
+
+            {/* Enlace tienda */}
+            <div>
+                <label className="label">Enlace tienda</label>
+                <input required name="shopLink" placeholder="Enlace tienda" className={inputClass} />
+            </div>
+
                         <MultimediaJuego />
                     </div>
 
