@@ -1,6 +1,6 @@
 'use client'
 import { updateUserProfileImagen } from '@/lib/actions';
-import { Pencil, Save, X } from 'lucide-react';
+import { Loader, Pencil, Save, X } from 'lucide-react';
 import { useActionState, useEffect, useState } from 'react';
 
 function EditImagePerfil({ user, ownership }) {
@@ -56,9 +56,9 @@ function EditImagePerfil({ user, ownership }) {
                             <button
                                 type="submit"
                                 disabled={pending || !modified}
-                                className="absolute bottom-2 left-2 dark:text-gray-300 text-black p-1 rounded-full hover:text-green-500 cursor-pointer transition"
+                                className={`absolute bottom-2 left-2 dark:text-gray-300 text-black p-1 rounded-full transition ${pending || !modified ? '' : 'hover:text-green-500 cursor-pointer'}`}
                             >
-                                <Save className="w-8 h-8" />
+                                {!pending ? <Save className="w-8 h-8" /> : <Loader className="w-8 h-8 animate-spin" />}
                             </button>
                         </form>
                         <button
