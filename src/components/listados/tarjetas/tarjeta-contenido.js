@@ -103,7 +103,7 @@ export default function TarjetaContenido({ contenido, sesion }) {
 
             {esNoticia ? (
               <>
-                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">
                   {contenido.text}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">
