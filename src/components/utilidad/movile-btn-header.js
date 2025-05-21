@@ -28,7 +28,7 @@ export default function MobileMenuButton() {
           >
             &times;
           </button>
-          <Link href="/">
+          <Link  onClick={() => setOpen(false)} href="/">
             <p className="mb-30 text-4xl text-center flex flex-col items-center justify-center dark:text-white  text-black  ">
               <Gamepad2 className="w-20 h-20 dark:text-white  text-black" />
               <span>GAMES FOR US</span>
@@ -52,7 +52,7 @@ export default function MobileMenuButton() {
             href="https://github.com/JPLY-XYZ"
             className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition"
           >
-            GAMES FOR US REMASTERED BY JPLY - V-1
+            GAMES FOR US REMASTERED BY JPLY - V-1.1
           </a>
 
         </div>

@@ -8,14 +8,14 @@ async function NuevosContenidos() {
   const session = await auth();
   const listaContenido = await getLatestContents();
 
-  if (listaContenido.length === 0) {
+  if (listaContenido.length == 0) {
     return (
   <div className="relative ">
     <FallbackTresItems />
 
     <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
       <h1 className="text-2xl font-bold text-center bg-white/80 dark:bg-black/50 p-4 rounded">
-        No hay juegos para mostrar
+        No hay contenidos para mostrar
       </h1>
     </div>
   </div>

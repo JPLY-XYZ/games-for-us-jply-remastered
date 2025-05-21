@@ -1,8 +1,10 @@
 'use client'
 
 import { updateUserData } from '@/lib/actions';
+
 import { Pencil } from 'lucide-react';
 import { useActionState, useEffect, useState } from 'react';
+
 
 function EditUserInfoForm({ user, ownership }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -16,6 +18,7 @@ function EditUserInfoForm({ user, ownership }) {
     useEffect(() => {
         if (!pending && state?.success) {
             // Cerrar el modal solo si el envío fue exitoso
+
             setIsEditing(false)
         }
     }, [pending, state?.success, setIsEditing]); // Dependencias para cuando cambian
@@ -48,8 +51,9 @@ function EditUserInfoForm({ user, ownership }) {
                     <select
                         name="country"
                         defaultValue={user.country || ""}
-                        className="text-gray-700 dark:text-gray-100 bg-transparent border-b-2 border-gray-300 dark:border-gray-600 focus:outline-none w-full"
+                        className="w-full px-3 py-2 text-sm  text-gray-800 dark:text-white bg-white dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-150"
                     >
+
                         <option value="">Selecciona un país</option>
                         <option value="Argentina">Argentina</option>
                         <option value="Brasil">Brasil</option>
@@ -67,7 +71,7 @@ function EditUserInfoForm({ user, ownership }) {
                     <button
                         disabled={pending}
                         type="submit"
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
                     >
                         Guardar
                     </button>
@@ -75,7 +79,7 @@ function EditUserInfoForm({ user, ownership }) {
                         disabled={pending}
                         type="button"
                         onClick={() => setIsEditing(false)}
-                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 cursor-pointer"
                     >
                         Cancelar
                     </button>
@@ -85,13 +89,13 @@ function EditUserInfoForm({ user, ownership }) {
     }
 
     return (
-        <div  className="flex-1 flex flex-col justify-center text-center md:text-left relative p-4">
-            {ownership &&  <button
+        <div className="flex-1 flex flex-col justify-center text-center md:text-left relative p-4">
+            {ownership && <button
                 onClick={() => setIsEditing(true)}
                 className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
                 title="Editar"
             >
-                <Pencil className="w-5 h-5" />
+                <Pencil className="w-5 h-5 cursor-pointer" />
             </button>}
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{user.name}</h1>
             <p className="mt-4 text-gray-600 dark:text-gray-300 wrap-anywhere">{user.bio}</p>

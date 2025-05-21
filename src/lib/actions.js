@@ -11,6 +11,8 @@ import { redirect } from 'next/navigation';
 import { SendVerifyEmail } from './email/action';
 
 
+
+
 // REGISTER
 export async function register(prevState, formData) {
   const name = formData.get('name')
@@ -156,6 +158,7 @@ export async function enviarComentario(prevState, formData) {
     ...(gameId ? { game: { connect: { id: gameId } } } : {}),
     ...(contentId ? { content: { connect: { id: contentId } } } : {})
   };
+
 
   revalidatePath(path)
 

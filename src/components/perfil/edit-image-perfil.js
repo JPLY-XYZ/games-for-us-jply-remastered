@@ -1,7 +1,9 @@
 'use client'
 import { updateUserProfileImagen } from '@/lib/actions';
+
 import { Pencil, Save, X } from 'lucide-react';
 import { useActionState, useEffect, useState } from 'react';
+
 
 function EditImagePerfil({ user, ownership }) {
     const [isEditing, setIsEditing] = useState(false);
@@ -20,6 +22,8 @@ function EditImagePerfil({ user, ownership }) {
 
     useEffect(() => {
         if (!pending && state?.success) {
+          
+             
             setIsEditing(false)
         }
     }, [pending, state?.success, setIsEditing]);
@@ -48,7 +52,7 @@ function EditImagePerfil({ user, ownership }) {
                             <input type="hidden" name="id" value={user.id} />
                             <button
                                  disabled={pending || !image}
-                                className="absolute bottom-2 left-2 text-white  p-1 rounded-full hover:text-green-500 cursor-pointer transition"
+                                className="absolute bottom-2 left-2  dark:text-gray-300 text-black  p-1 rounded-full hover:text-green-500 cursor-pointer transition"
                             >
                                 <Save className="w-8 h-8" />
                             </button>
@@ -57,9 +61,9 @@ function EditImagePerfil({ user, ownership }) {
                         <button
                             disabled={pending}
                             onClick={() => setIsEditing(false)}
-                            className="absolute bottom-2 right-2 text-white   p-1 rounded-full hover:text-red-500 cursor-pointer transition"
+                            className="absolute bottom-2 right-2 dark:text-gray-300 text-black  p-1 rounded-full hover:text-red-500 cursor-pointer transition"
                         >
-                            <X className="w-8 h-8" />
+                            <X className="w-8 h-8  cursor-pointer" />
                         </button>
                     </div>
                 ) : (
@@ -76,7 +80,7 @@ function EditImagePerfil({ user, ownership }) {
                             onClick={() => setIsEditing(true)}
                             className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
                         >
-                            <Pencil className="w-5 h-5" />
+                            <Pencil className="w-5 h-5 cursor-pointer" />
                         </button>}
                     </div>
                 )}

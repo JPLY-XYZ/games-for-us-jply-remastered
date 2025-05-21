@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma'
 import { ContentType } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
+
+
 export async function getUserById(id) {
   const user = await prisma.user.findUnique({
     where: { id },
@@ -338,6 +340,7 @@ export async function reportComment(commentId) {
 
 // Hacer flip-flop del estado visible de un juego
 export async function toggleVisibleGame(gameId) {
+  
   const game = await prisma.game.findUnique({
     where: { id: gameId },
   });
@@ -371,7 +374,6 @@ export async function toggleVisibleContent(contentId) {
       visible: newVisibleState,
     },
   });
-
   return { status: newVisibleState ? 'Visible' : 'Oculto' };
 }
 
@@ -421,6 +423,7 @@ export async function deleteUser(userId) {
       where: { id: userId },
     }),
   ]);
+
 }
 
 // BORRAR UN JUEGO
@@ -684,6 +687,7 @@ export async function setFavoriteThink(tipo, id, sumar) {
 export const newComment = async (data) => {
   try {
     return await prisma.comment.create({ data });
+    
   } catch (error) {
     console.error('Error al crear el comentario:', error);
     throw new Error('No se pudo crear el comentario.');
@@ -779,7 +783,7 @@ export async function createNewContent(data) {
     text,
     urls,
     moreInfo,
-    score,
+    score = 1,
   } = data;
 
   if (!userId || !gameId || !title || !type) {
@@ -794,13 +798,13 @@ export async function createNewContent(data) {
       game: {
         connect: { id: gameId }
       },
-      type,
-      title,
-      shortTitle,
-      text,
-      urls,
-      moreInfo,
-      score,
+      type : type,
+      title : title,
+      shortTitle : shortTitle,
+      text : text,
+      urls : urls,
+      moreInfo : moreInfo,
+      score: score ?? 0,
     },
   });
 }

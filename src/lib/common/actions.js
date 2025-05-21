@@ -4,8 +4,9 @@
 
 import { revalidatePath } from "next/cache";
 import { deactivateAcount, deleteComment, deleteContent, deleteGame, deleteUser, reportComment, reportContent, reportGame, reportUser, setFavoriteGame, setFavoriteThink, toggleVisibleComment, toggleVisibleContent, toggleVisibleGame } from "../data";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+
 
 
 
@@ -82,7 +83,7 @@ export async function deleteAction(prevState, formData) {
     throw error;
   }
   finally {
-    redirect('/');
+    revalidatePath('/');
   }
 }
 
@@ -100,7 +101,7 @@ export async function togleVisibilitiAction(prevState, formData) {
 
   try {
     switch (tipo) {
-      case 'GAME':
+      case 'GAME':  
         await toggleVisibleGame(+id);
         break;
       case 'CONTENT':
@@ -160,3 +161,5 @@ export async function toggleFavoriteAny({ tipo, id, sumar }) {
   const result = await setFavoriteThink(tipo, id, sumar)
   return result // { status: 'added' | 'removed' }
 }
+
+

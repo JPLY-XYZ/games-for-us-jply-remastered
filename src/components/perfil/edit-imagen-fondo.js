@@ -1,7 +1,9 @@
 'use client'
 import { updateUserBackImagen, updateUserProfileImagen } from '@/lib/actions';
+
 import { Pencil, Save, X } from 'lucide-react';
 import { useActionState, useEffect, useId, useRef, useState } from 'react';
+
 
 function EditImageFondo({ user, ownership, children }) {
 
@@ -15,6 +17,7 @@ function EditImageFondo({ user, ownership, children }) {
 
     useEffect(() => {
         if (!pending && state?.success) {
+
             setIsEditing(false);
         }
     }, [pending, state?.success]);
@@ -64,7 +67,7 @@ function EditImageFondo({ user, ownership, children }) {
                         <button
                             type="submit"
                             disabled={pending || !fileInputRef.current?.files.length}
-                            className="text-white hover:text-green-500 p-1 rounded-full disabled:opacity-50"
+                            className="text-green-700 cursor-pointer hover:text-green-500 p-1 rounded-full disabled:opacity-50"
                             title="Guardar cambios"
                         >
                             <Save className="w-6 h-6" />
@@ -75,7 +78,7 @@ function EditImageFondo({ user, ownership, children }) {
                                 setIsEditing(false);
                                 setImagePreview(user.backgroundImage);
                             }}
-                            className="text-white hover:text-red-500 p-1 rounded-full"
+                            className="text-red-700 cursor-pointer hover:text-red-500 p-1 rounded-full"
                             title="Cancelar"
                         >
                             <X className="w-6 h-6" />
@@ -87,7 +90,7 @@ function EditImageFondo({ user, ownership, children }) {
             {!isEditing && ownership && (
                 <button
                     onClick={() => setIsEditing(true)}
-                    className="absolute top-2 right-2 text-white hover:text-blue-400 p-1 rounded-full"
+                    className="absolute top-2 right-2 text-white cursor-pointer hover:text-gray-300 p-1 rounded-full"
                     title="Editar fondo"
                 >
                     <Pencil className="w-6 h-6" />

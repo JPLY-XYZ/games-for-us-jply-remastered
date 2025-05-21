@@ -10,6 +10,9 @@ import Buscador from '@/components/utilidad/buscador/buscador'
 import { auth } from '@/auth'
 import MobileMenuButton from '@/components/utilidad/movile-btn-header'
 
+
+
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -25,6 +28,7 @@ export default async function RootLayout({ children }) {
     <html lang="es">
       <SessionProvider>
         <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
+         
           <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-0 md:px-10 sticky top-0 z-50">
             <div className="flex items-center">
               <div className="hidden md:block mr-3">
@@ -65,13 +69,13 @@ export default async function RootLayout({ children }) {
             <main className="flex items-center justify-center w-full overflow-y-auto">
               {children}
             </main>
-            
+
           </div>
-         <footer className=" hidden md:block fixed bottom-0 right-0 z-50">
-  <a href="https://github.com/JPLY-XYZ" className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition">
-    GAMES FOR US REMASTERED BY JPLY - V1.0
-  </a>
-</footer>
+          <footer className=" hidden md:block fixed bottom-0 right-0 z-50">
+            <a href="https://github.com/JPLY-XYZ" className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition">
+              GAMES FOR US REMASTERED BY JPLY - V1.1
+            </a>
+          </footer>
 
         </body>
       </SessionProvider>
