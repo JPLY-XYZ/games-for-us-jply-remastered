@@ -23,15 +23,24 @@ export default function FormularioTipoVideo({ gameId, user }) {
   }, [state]);
 
   const handlePreview = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const file = e.target.files[0];
+  if (file) {
+    const maxSizeMB = 50;
+    if (file.size > maxSizeMB * 1024 * 1024) {
+      alert(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
+      e.target.value = ""; // limpia el input para que el usuario pueda elegir otro archivo
+      setPreview(null); // limpia la vista previa si quieres
+      return;
     }
-  };
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
 
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center justify-center px-4 py-12  min-w-auto sm:min-w-[700px] md:min-w-[1200px]">
@@ -60,6 +69,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
                 name="shortTitle"
                 className={inputClass}
                 placeholder="Resumen del título"
+                required
               />
             </div>
           </div>

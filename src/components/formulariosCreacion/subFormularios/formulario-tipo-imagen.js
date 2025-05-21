@@ -73,6 +73,7 @@ export default function FormularioTipoImagen({ gameId, user, content }) {
                 className={inputClass}
                 placeholder="Resumen del título"
                 defaultValue={content?.shortTitle || ""}
+                required
               />
             </div>
           </div>
@@ -94,6 +95,7 @@ export default function FormularioTipoImagen({ gameId, user, content }) {
             previewAspectRatio="16/9"
             defaultImage={content?.urls?.img || ""}
             customStyles={{ inputClass, labelClass }}
+            required={true}
           />
 
           <div className="pt-4">

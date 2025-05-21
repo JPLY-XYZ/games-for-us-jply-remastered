@@ -85,6 +85,8 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
                 className={inputClass}
                 placeholder="Resumen del título"
                 defaultValue={existingResena?.shortTitle || ""}
+                                required
+
               />
             </div>
           </div>
@@ -110,6 +112,8 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
               accept="image/*"
               onChange={(e) => handleImageChange(e, setBannerPreview)}
               className={inputClass}
+                              required
+
             />
             {bannerPreview && (
               <>
@@ -132,6 +136,8 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
               accept="image/*"
               onChange={(e) => handleImageChange(e, setThumbnailPreview)}
               className={inputClass}
+                              required
+
             />
             {thumbnailPreview && (
               <>
@@ -158,6 +164,8 @@ export default function FormularioTipoResenia({ user, gameId, existingResena }) 
                       accept="image/*"
                       onChange={(e) => handleImageChange(e, () => {}, index)}
                       className="w-full p-3 rounded-md dark:bg-slate-700 dark:text-white"
+                                      required
+
                     />
                     {index > 0 && (
                       <div className="flex items-center space-x-2">

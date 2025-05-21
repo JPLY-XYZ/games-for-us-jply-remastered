@@ -103,7 +103,7 @@ function Buscador() {
                       alt={item.name}
                       width={36}
                       height={36}
-                      className="rounded-full object-cover"
+                      className="rounded-full object-cover h-8 w-8" 
                     />
                   )}
 

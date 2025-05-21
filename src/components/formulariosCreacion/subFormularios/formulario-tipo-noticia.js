@@ -76,6 +76,7 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
                 className={inputClass}
                 placeholder="Título principal"
                 defaultValue={content?.title || ""}
+                required
               />
             </div>
             <div className="w-full sm:w-1/2">
@@ -86,6 +87,7 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
                 className={inputClass}
                 placeholder="Resumen del título"
                 defaultValue={content?.shortTitle || ""}
+                required
               />
             </div>
           </div>
@@ -98,13 +100,14 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
               required
               placeholder="Escribe tu reseña aquí..."
               defaultValue={content?.text || ""}
+              
             />
           </div>
 
           <div>
             <label className={labelClass}>Banner principal</label>
             <FileUploaderInput
-              required={false}
+              required={true}
               name="banner"
               label="Selecciona un banner"
               accept="image/*"
@@ -113,13 +116,14 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
               defaultImage={bannerPreview}
               onChange={(e) => handleImageChange(e, setBannerPreview)}
               customStyles={{ inputClass, labelClass }}
+              
             />
           </div>
 
           <div>
             <label className={labelClass}>Thumbnail principal</label>
             <FileUploaderInput
-              required={false}
+              required={true}
               name="thumbnail"
               label="Selecciona un thumbnail"
               accept="image/*"
@@ -143,6 +147,7 @@ export default function FormularioTipoNoticia({ user, gameId, content }) {
                       accept="image/*"
                       onChange={(e) => handleScreenshotChange(index, e.target.files[0])}
                       className="w-full p-3 rounded-md dark:bg-slate-700 dark:text-white"
+                      required
                     />
                     {index > 0 && (
                       <div className="flex items-center space-x-2">
