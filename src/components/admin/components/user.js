@@ -27,7 +27,7 @@ function UserListCard({ user }) {
             </div>
             <div>
                 <p className="font-bold">{user.name}</p>
-                <p className="text-sm">{user.correo}</p>
+                <p className="text-sm">{user.email}</p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                     Último login: {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString('es-ES') : new Date(user.createdAt).toLocaleDateString('es-ES')}
                 </p>
