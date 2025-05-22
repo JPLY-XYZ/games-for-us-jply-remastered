@@ -8,12 +8,14 @@
     import { getUserById, isOwner } from '@/lib/data';
     import { Cable } from 'lucide-react';
     import Link from 'next/link';
-    import { Suspense } from 'react';
 
 
-    export default async function PerfilUsuario({ params }) {
+    export default async function Page({ params }) {
     const session = await auth();
     const { id } = await params;
+
+    
+
     let ownership = false;
 
     if (session && session.user) {
@@ -27,6 +29,7 @@
             <div className="flex flex-col items-center justify-center min-h-screen text-center">
                 <Cable className="w-36 h-36 animate-bounce mx-auto" />
                 <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4">Usuario no encontrado</h1>
+                <h1 className="text-1xl mb-4">El identificador proporcionado no es valido</h1>
                 <Link href="/" className="text-blue-500 underline">Volver Atrás</Link>
             </div>
         );

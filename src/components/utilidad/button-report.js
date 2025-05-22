@@ -6,7 +6,7 @@ import { useActionState } from "react";
 import { useState, useEffect } from "react";
 import { startTransition } from "react";
 
-function ReportButton({ id, tipo }) {
+function ButtonReport({ id, tipo }) {
     const [state, action, pending] = useActionState(reportAction, {});
     const [reported, setReported] = useState(false);
 
@@ -64,4 +64,4 @@ function ReportButton({ id, tipo }) {
     );
 }
 
-export default ReportButton;
+export default ButtonReport;

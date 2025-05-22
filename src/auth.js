@@ -39,10 +39,7 @@ export const options = {
   callbacks: {
     async signIn({ user, account }) {
       // Si es OAuth (no credenciales), no chequea email ni activo
-      if (account && account.type !== "credentials") {
-        return true;
-        
-      }
+      
 
       // Validación solo para login con credenciales
       const dbUser = await getUserByEmail(user.email);
@@ -51,14 +48,23 @@ export const options = {
         return true;
       }
 
+       if (account && account.type !== "credentials") {
+      if (!dbUser.active) {
+        console.log("Usuario inactivo");
+        return "/login?error=AccessDenied";
+      }
+      }
       if (!dbUser.emailVerified) {
+        console.log("Usuario inactivo");
         return "/login?error=EmailSignin";
       }
 
       if (!dbUser.active) {
+        console.log("Usuario inactivo");
         return "/login?error=AccessDenied";
       }
 
+     
       return true;
     },
 

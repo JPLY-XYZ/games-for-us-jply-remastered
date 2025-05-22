@@ -2,23 +2,22 @@
 
 import { toggleFavoriteAction } from "@/lib/actions"
 import { ThumbsUp, Loader } from "lucide-react"
-import { useActionState } from "react"
 import { useState } from "react"
 import Link from "next/link"
 
 function FavoriteGameButton({ game, isFavorite, userId }) {
   const [favorite, setFavorite] = useState(isFavorite)
   const [gameCount, setGameCount] = useState(Number(game._count.fans))
-  const [pending, setPending] = useState(false) // Track the loading state
+  const [pending, setPending] = useState(false) 
 
   const handleFavoriteToggle = async (event) => {
     event.preventDefault()
 
     if (!userId) {
-      return; // Early return if no user is logged in
+      return; 
     }
 
-    setPending(true) // Set pending to true while the action is processing
+    setPending(true) 
 
     try {
       const result = await toggleFavoriteAction({
@@ -28,15 +27,15 @@ function FavoriteGameButton({ game, isFavorite, userId }) {
 
       if (result?.status === 'added') {
         setFavorite(true)
-        setGameCount((prevCount) => prevCount + 1) // Increment fan count
+        setGameCount((prevCount) => prevCount + 1) 
       } else if (result?.status === 'removed') {
         setFavorite(false)
-        setGameCount((prevCount) => prevCount - 1) // Decrement fan count
+        setGameCount((prevCount) => prevCount - 1) 
       }
     } catch (error) {
       console.error("Error toggling favorite:", error)
     } finally {
-      setPending(false) // Reset the pending state after the action
+      setPending(false) 
     }
   }
 
@@ -65,7 +64,7 @@ function FavoriteGameButton({ game, isFavorite, userId }) {
         )}
       </form>
 
-      <p className="text-xl">{gameCount}</p> {/* Muestra el contador actualizado de fans */}
+      <p className="text-xl">{gameCount}</p> 
     </>
   )
 }

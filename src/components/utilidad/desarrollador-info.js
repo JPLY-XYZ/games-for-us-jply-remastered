@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -42,7 +41,7 @@ export default function DesarrolladorInfo({ user }) {
   return (
     <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md">
       {/* Header */}
-      <Link href={"/perfil/"+user.id} className="flex items-center gap-4 mb-6">
+      <Link href={"/perfil/" + user.id} className="flex items-center gap-4 mb-6">
         <img
           src={user.image || "/placeholder-avatar.png"}
           alt={`Avatar de ${name}`}
@@ -61,7 +60,7 @@ export default function DesarrolladorInfo({ user }) {
 
       {/* Estadísticas */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center mb-6">
-        <Link href={"/perfil/"+user.id+"/juegospublicados"} className="flex flex-col items-center">
+        <Link href={"/perfil/" + user.id + "/juegospublicados"} className="flex flex-col items-center">
           <p className="text-xl font-semibold text-blue-600 dark:text-blue-400">{developedGames?.length || 0}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Juegos creados</p>
         </Link>
@@ -69,7 +68,7 @@ export default function DesarrolladorInfo({ user }) {
           <p className="text-xl font-semibold text-green-600 dark:text-green-400">{comments?.length || 0}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Comentarios</p>
         </div>
-        <Link href={"/perfil/"+user.id+"/juegosfavoritos"} className="flex flex-col items-center">
+        <Link href={"/perfil/" + user.id + "/juegosfavoritos"} className="flex flex-col items-center">
           <p className="text-xl font-semibold text-purple-600 dark:text-purple-400">{favoriteGames?.length || 0}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Juegos favoritos</p>
         </Link>
@@ -110,14 +109,14 @@ export default function DesarrolladorInfo({ user }) {
                       className="rounded-md object-cover w-32 h-16"
                     />
                     <div className="flex-1">
-                     <p className="font-medium text-gray-800 dark:text-white break-words max-w-full">
-  {game.name}
-</p>
+                      <p className="font-medium text-gray-800 dark:text-white break-words max-w-full">
+                        {game.name}
+                      </p>
 
 
                       <p className="text-sm text-gray-600 dark:text-gray-400">€{game.price?.toFixed(2) || 'Gratis'}</p>
                       <p className="text-sm text-yellow-500">
-                        ⭐ {averageScore || "0" }
+                        ⭐ {averageScore || "0"}
                       </p>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {game.platforms?.map((platform) => (

@@ -32,10 +32,10 @@ export function MultimediaJuego() {
     
     return (
         <div className="space-y-6">
-            {/* El resto igual, solo la parte screenshots la muestro para foco */}
 
             <div className="space-y-2 text-center">
                 <label className="label text-gray-700 mx-auto dark:text-gray-300">Screenshots</label>
+                <h1 className='text-xs text-gray-400'>No es obligatorio la publicacion de imagenes adicionales</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
                     {screenshots.length === 0 && (
                         <p className="text-gray-500 mx-auto dark:text-gray-400">No hay screenshots añadidos.</p>

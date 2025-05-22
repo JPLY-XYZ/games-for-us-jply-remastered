@@ -3,7 +3,7 @@ import FormularioJuego from "@/components/formulariosCreacion/FomularioJuego";
 import { redirect } from "next/navigation";
 
 
-async function PageNuevoJuego() {
+async function Page() {
     const session = await auth()
 
     if (session?.user?.role !== "DESARROLLADOR") redirect("/");
@@ -11,4 +11,4 @@ async function PageNuevoJuego() {
     return ( <FormularioJuego userId={session.user?.id} /> );
 }
 
-export default PageNuevoJuego;
+export default Page;

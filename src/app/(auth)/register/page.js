@@ -17,7 +17,7 @@ errors.set('SessionRequired', "Error al iniciar sesión. Verifique que los detal
 errors.set('Default', "No se puede iniciar sesión.");
 
 
-async function PaginaRegister({ searchParams }) {
+async function Page({ searchParams }) {
   const { error, callbackUrl } = await searchParams
   globalThis.callbackUrl = callbackUrl
 
@@ -32,4 +32,4 @@ async function PaginaRegister({ searchParams }) {
   )
 }
 
-export default PaginaRegister
+export default Page

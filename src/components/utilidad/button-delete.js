@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { startTransition } from "react";
 
-function ActionsButton({ id, tipo, subtipo }) {
+function ButtonDelete({ id, tipo }) {
   const [state, actionDelete, pendingDelete] = useActionState(deleteAction, {});
 
 
@@ -27,21 +27,8 @@ function ActionsButton({ id, tipo, subtipo }) {
         )}
       </button>
     </form>
-
-
-{/* 
-    {subtipo != "VIDEO" || tipo != "USER"  && <Link
-      href={"/contenido/" + id + "/edit"}
-      replace
-      className="opacity-60 text-white hover:opacity-100 focus:outline-none cursor-pointer"
-    >
-
-      <Pencil className="w-6 h-6" />
-
-    </Link>} */}
-
   </>
   );
 }
 
-export default ActionsButton;
+export default ButtonDelete;

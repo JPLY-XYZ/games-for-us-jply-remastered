@@ -9,6 +9,5 @@ export default async function Page() {
   content => content.visible === true && content.type == "NOTICIA"
 );
 
-
   return <ContentClient initialContents={visiblesContent} session={session} />;
 }

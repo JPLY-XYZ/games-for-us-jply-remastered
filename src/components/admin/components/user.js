@@ -1,8 +1,7 @@
 'use client'
 
 import { deleteAction, suspenderAcount } from "@/lib/common/actions";
-import { deactivateAcount } from "@/lib/data";
-import { Eye, Loader, RefreshCcw, Shield, ShieldOff, Trash2 } from "lucide-react";
+import { Eye, Loader, Shield, ShieldOff, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useActionState, useState } from "react";
 
@@ -43,12 +42,6 @@ function UserListCard({ user }) {
             <Link href={`/perfil/${user.id}`} title="Ver perfil">
                 <Eye className="w-5 h-5" />
             </Link>
-            {/* <form action="actionResetPasswd">
-                <input type="hidden" value={user.id} />
-                <button title="Resetear contraseña">
-                    <RefreshCcw className="w-5 h-5" />
-                </button>
-            </form> */}
             <form action={actionDesactivarCuenta}>
                 <input type="hidden" name="id" value={user.id} />
                 <button className="cursor-pointer" onClick={() => setUserActive(!userActive)} title={!userActive ? "Activar" : "Desactivar"}>

@@ -23,7 +23,7 @@ errors.set('LoginAgain', "Vuelva a iniciar sesión.");
 
 
 
-async function PaginaLogin({ searchParams }) {
+async function Page({ searchParams }) {
   const { error, callbackUrl } = await searchParams
   globalThis.callbackUrl = callbackUrl || "/"
 
@@ -38,4 +38,4 @@ async function PaginaLogin({ searchParams }) {
   )
 }
 
-export default PaginaLogin
+export default Page

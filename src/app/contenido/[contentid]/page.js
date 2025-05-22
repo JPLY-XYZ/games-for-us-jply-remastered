@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import {
   Gamepad, Brain, Image as IconImage, DollarSign, Cpu, Clock,
@@ -8,7 +7,7 @@ import {
 import Comentarios from "@/components/comentarios/comentarios";
 import { auth } from "@/auth";
 import { getContentById } from "@/lib/data";
-import ClienteCarrusel from "@/components/carrusel";
+import ImageClienCarrusel from "@/components/image-client-carrusel";
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
 import ButtonFavorite from "@/components/utilidad/button-favorite";
 import Link from "next/link";
@@ -67,7 +66,7 @@ export default async function Page({ params }) {
       );
     }
     if ((content.type === "RESEÑA" || content.type === "NOTICIA") && content.urls?.imgs) {
-      const { thumbnail, banner, otherImages } = content.urls.imgs;
+      const { banner, otherImages } = content.urls.imgs;
 
       return (
         <>
@@ -83,7 +82,7 @@ export default async function Page({ params }) {
             </p>
           )}
 
-          {otherImages?.length > 0 && <ClienteCarrusel screenshots={otherImages} />}
+          {otherImages?.length > 0 && <ImageClienCarrusel screenshots={otherImages} />}
         </>
       );
     }

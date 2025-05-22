@@ -24,7 +24,8 @@ async function NuevosContenidos() {
 
   }
 
-  return (<ListadoTresItems>
+  return (
+  <ListadoTresItems>
     {listaContenido.map((contenido) => (
       <TarjetaContenido key={contenido.id} contenido={contenido} sesion={session} />
     ))}

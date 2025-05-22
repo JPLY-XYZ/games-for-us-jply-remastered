@@ -5,7 +5,7 @@ import { getContentLikesById } from "@/lib/data"
 import { ThumbsUp, Loader } from "lucide-react"
 import { useState, useEffect } from "react"
 
-function FavoriteButton({ id, tipo, owner }) {
+function FavoriteThinkLocalStorage({ id, tipo, owner }) {
     const [favorite, setFavorite] = useState(false)
     const [pending, setPending] = useState(false)
     const [likes, setLikes] = useState(0)
@@ -36,14 +36,12 @@ function FavoriteButton({ id, tipo, owner }) {
                 console.log(`Favorito eliminado: ${tipo}-${id}`)
                 updatedFavorites = favorites.filter(fav => !(fav.id === id && fav.tipo === tipo))
                 setFavorite(false)
-                // Llamar a la acción para eliminar el favorito
                 await toggleFavoriteAny({ tipo, id, sumar: false });
                 setLikes(likes - 1)
             } else { 
                 console.log(`Favorito añadido: ${tipo}-${id}`)
                 updatedFavorites = [...favorites, { id, tipo }]
                 setFavorite(true)
-                // Llamar a la acción para agregar el favorito
                 await toggleFavoriteAny({ tipo, id, sumar: true });
                 setLikes(likes + 1)
             }
@@ -73,4 +71,4 @@ function FavoriteButton({ id, tipo, owner }) {
     )
 }
 
-export default FavoriteButton
+export default FavoriteThinkLocalStorage

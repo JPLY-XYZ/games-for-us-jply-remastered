@@ -9,7 +9,6 @@ export default function MobileMenuButton() {
 
   return (
     <>
-      {/* Solo visible en móvil */}
       <button
         onClick={() => setOpen(true)}
         className="md:hidden p-2"
@@ -18,7 +17,6 @@ export default function MobileMenuButton() {
         <Gamepad2 className="w-8 h-8 dark:text-white  text-black" />
       </button>
 
-      {/* Menú fullscreen overlay */}
       {open && (
         <div className="fixed  inset-0 bg-[var(--aside-card-background)] z-[400] flex flex-col items-center justify-center gap-6 text-white text-2xl">
           <button
@@ -28,7 +26,7 @@ export default function MobileMenuButton() {
           >
             &times;
           </button>
-          <Link  onClick={() => setOpen(false)} href="/">
+          <Link onClick={() => setOpen(false)} href="/">
             <p className="mb-30 text-4xl text-center flex flex-col items-center justify-center dark:text-white  text-black  ">
               <Gamepad2 className="w-20 h-20 dark:text-white  text-black" />
               <span>GAMES FOR US</span>
@@ -36,7 +34,7 @@ export default function MobileMenuButton() {
           </Link>
 
 
-         
+
           <Link href="/contenidos" onClick={() => setOpen(false)} className=" dark:text-white  text-black px-6 py-3 hover:bg-white hover:text-[var(--aside-card-background)] rounded transition">
             Contenidos
           </Link>
@@ -52,7 +50,7 @@ export default function MobileMenuButton() {
             href="https://github.com/JPLY-XYZ"
             className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition"
           >
-            GAMES FOR US REMASTERED BY JPLY - V-1.1
+            GAMES FOR US REMASTERED BY JPLY - V-1.2
           </a>
 
         </div>

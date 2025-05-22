@@ -1,15 +1,10 @@
 'use client'
-import { useActionState, useState } from "react";
-import {
-  Pencil, Trash2, Megaphone, Eye, RefreshCcw, ShieldOff, EyeOff, MoveUp, BookUp,
+import {useState } from "react";
+import { BookUp,
   BookDown,
   CalendarArrowDown,
   CalendarArrowUp,
-  Loader,
 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { deleteAction } from "@/lib/common/actions";
 import UserListCard from "./components/user";
 import ContentListCard from "./components/content";
 import GameListCard from "./components/game";
@@ -25,8 +20,8 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
   const [contentSortDirection, setContentSortDirection] = useState("desc");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [userSortField, setUserSortField] = useState("reportCount"); // Por defecto, ordenar por reportes
-  const [userSortDirection, setUserSortDirection] = useState("desc"); // Por defecto, descendente
+  const [userSortField, setUserSortField] = useState("reportCount"); 
+  const [userSortDirection, setUserSortDirection] = useState("desc"); 
 
 
   const [gameSearchTerm, setGameSearchTerm] = useState("");
@@ -41,7 +36,7 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedComment, setSelectedComment] = useState(null);
 
-  // Funciónes para el modal
+
   const openModal = (comentario) => {
     setSelectedComment(comentario);
     setIsModalOpen(true);

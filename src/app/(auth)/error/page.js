@@ -7,7 +7,7 @@ errors.set('Verification', "El token ha caducado o ya ha sido utilizado. Relacio
 errors.set('Default', "Ocurrió un error inesperado.");
 
 
-async function page(props) {
+async function Page(props) {
   const searchParams = await props.searchParams;
   const { error } = searchParams;
 
@@ -20,4 +20,4 @@ async function page(props) {
   )
 }
 
-export default page
+export default Page

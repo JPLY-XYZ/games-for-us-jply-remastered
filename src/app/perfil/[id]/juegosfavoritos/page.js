@@ -1,11 +1,23 @@
 import { auth } from "@/auth";
 import JuegosClient from "@/components/listados/juegos-listado";
-import ListadoJuegoPaginado from "@/components/listados/listado-juegos-paginado";
-import { getAllGames } from "@/lib/data";
+import { getAllGames, getUserById } from "@/lib/data";
 
-export default async function PageNuevoContenido({ params }) {
+export default async function Page({ params }) {
   const session = await auth();
   const { id } = await params;
+
+  const user = await getUserById(id);
+
+    if (!user) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen text-center">
+                <Cable className="w-36 h-36 animate-bounce mx-auto" />
+                <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4">Usuario no encontrado</h1>
+                <h1 className="text-1xl mb-4">El identificador proporcionado no es valido</h1>
+                <Link href="/" className="text-blue-500 underline">Volver Atrás</Link>
+            </div>
+        );
+    }
 
   const games = await getAllGames();
     const visibleGames = games.filter(game =>

@@ -74,27 +74,27 @@ export default function AuthButtons({ session }) {
   }
 
   return (
-   <div className="relative" ref={menuRef}>
-  <button
-    onClick={() => setOpen(!open)}
-    className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-200 transition cursor-pointer"
-  >
-    {session.user?.image ? (
-    <div className="w-8 h-8 rounded-full overflow-hidden">
-  <Image
-    src={session.user.image}
-    alt="Avatar"
-    width={32}
-    height={32}
-    className="w-full h-full object-cover"
-    unoptimized
-  />
-</div>
-    ) : (
-      <SquareUser className="w-8 h-8 text-gray-600" />
-    )}
-    <ChevronDown className="w-4 h-4 text-gray-600 hidden md:block" />
-  </button>
+    <div className="relative" ref={menuRef}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-gray-200 transition cursor-pointer"
+      >
+        {session.user?.image ? (
+          <div className="w-8 h-8 rounded-full overflow-hidden">
+            <img
+              src={session.user.image}
+              alt="Avatar"
+              width={32}
+              height={32}
+              className="w-full h-full object-cover"
+              
+            />
+          </div>
+        ) : (
+          <SquareUser className="w-8 h-8 text-gray-600" />
+        )}
+        <ChevronDown className="w-4 h-4 text-gray-600 hidden md:block" />
+      </button>
 
       {open && (
         <div className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-md shadow-lg z-50">

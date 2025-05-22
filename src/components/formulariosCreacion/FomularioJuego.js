@@ -28,7 +28,6 @@ function FormularioJuego({ userId }) {
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen px-4 py-10 flex justify-center">
       <div className="relative w-full max-w-5xl bg-white dark:bg-slate-800 p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl space-y-10">
 
-        {/* Superposición si está pendiente */}
         {pending && (
           <div className="absolute inset-0 bg-white/60 dark:bg-slate-800/60 z-20 flex items-center justify-center rounded-3xl">
             <LoaderCircle className="w-12 h-12 text-blue-600 animate-spin" />

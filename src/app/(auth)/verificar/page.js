@@ -2,7 +2,7 @@ import { getUserByEmail } from "@/lib/data";
 import { verifyEmail } from "@/lib/email/action";
 
 
-async function page({ searchParams }) {
+async function Page({ searchParams }) {
     const params = await searchParams; // espera que se resuelva
     const token = params?.token || null;
     const userEmail = params?.userEmail || null;
@@ -62,4 +62,4 @@ async function page({ searchParams }) {
     );
 }
 
-export default page;
+export default Page;

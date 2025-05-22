@@ -81,7 +81,6 @@ export default function FormularioTipoVideo({ gameId, user }) {
 
   const toggleUseYoutube = () => {
     setUseYoutube(!useYoutube);
-    // Limpiar inputs cuando cambias modo
     setLocalVideoFile(null);
     setLocalPreview(null);
     setYoutubeUrl("");
@@ -91,7 +90,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center justify-center px-4 py-12  min-w-auto sm:min-w-[700px] md:min-w-[1200px]">
       <div className="relative bg-white dark:bg-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
-        {/* Overlay cuando está pending */}
+
         {pending && (
           <div className="absolute inset-0 bg-white/60 dark:bg-slate-800/60 z-20 flex items-center justify-center rounded-3xl">
             <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
@@ -147,7 +146,8 @@ export default function FormularioTipoVideo({ gameId, user }) {
 
           {!useYoutube && (
             <div>
-              <label className={labelClass}>Selecciona un video local (máx 50MB)</label>
+              <label className={labelClass}>Selecciona un video local</label>
+              <h1 className="text-xs text-gray-500">El tamaño maximo de subida son 50MB</h1>
               <input
                 type="file"
                 name="video"
@@ -163,6 +163,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
           {useYoutube && (
             <div>
               <label className={labelClass}>Pega una URL de YouTube</label>
+              <h1 className="text-xs text-gray-500">Solo se permiten Urls de Youtube</h1>
               <input
                 type="url"
                 name="youtubeUrl"

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 
-function ClienteCarrusel({ screenshots }) {
+function ImageClienCarrusel({ screenshots }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextImage = () => {
@@ -57,4 +57,4 @@ function ClienteCarrusel({ screenshots }) {
     );
 }
 
-export default ClienteCarrusel;
+export default ImageClienCarrusel;

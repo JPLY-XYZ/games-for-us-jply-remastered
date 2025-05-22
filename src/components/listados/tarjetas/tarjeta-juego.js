@@ -1,7 +1,6 @@
 'use client';
 
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
-import LikeButton from "@/components/utilidad/like-button";
 import { Star } from "lucide-react";
 import Link from "next/link";
 

@@ -3,9 +3,7 @@ import AdminPageComp from "@/components/admin/admin-page-comp";
 import { getAllCommentsSimple, getAllContentsSimple, getAllGamesSimple, getAllUsersSimple } from "@/lib/data";
 import { redirect } from "next/navigation";
 
-import { Suspense } from "react";
-
-async function page() {
+async function Page() {
 
 
   const session = await auth();
@@ -19,13 +17,9 @@ async function page() {
   const juegos = await getAllGamesSimple();
   const comments = await getAllCommentsSimple();
 
-  console.log(users, "users")
-  console.log(contents, "contents")
-  console.log(juegos, "juegos")
-  console.log(comments, "comments") 
 
   return <AdminPageComp users={users} contents={contents} juegos={juegos} comments={comments} />
 
 }
 
-export default page;
+export default Page;

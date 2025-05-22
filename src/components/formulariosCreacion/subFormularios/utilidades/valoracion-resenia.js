@@ -33,7 +33,7 @@ export default function ValoracionResenia({ moreInfo }) {
     modos: moreInfo?.modos || []
   });
 
-  // Handle Select Change
+
   const handleSelectChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({
@@ -42,7 +42,7 @@ export default function ValoracionResenia({ moreInfo }) {
     }));
   };
 
-  // Handle Checkbox Change
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setFormValues((prevValues) => {

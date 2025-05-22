@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Youtube, Gamepad2, MessageCircle, Loader, ThumbsUpIcon } from "lucide-react";
+import { Youtube, Gamepad2, MessageCircle, ThumbsUpIcon } from "lucide-react";
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
 
 

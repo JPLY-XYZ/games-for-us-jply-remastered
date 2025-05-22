@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import ButtonReportConfig from "./utilidad/button-report-config";
 
-export default function Contenidos({ game, session }) {
+export default function ListadoContenidosDesplegable({ game, session }) {
   const [mostrar, setMostrar] = useState(3);
   const [orden, setOrden] = useState({ campo: "fecha", asc: false });
   const [haExpandido, setHaExpandido] = useState(false);
@@ -17,7 +17,7 @@ export default function Contenidos({ game, session }) {
 
   const searchParams = useSearchParams();
   const tipoFiltro = searchParams.get("tipo");
-const contenidosVisibles = game.contents.filter(c => c.visible);
+  const contenidosVisibles = game.contents.filter(c => c.visible);
 
   let contenidos = [...(contenidosVisibles || [])];
   if (tipoFiltro && tipoFiltro !== "TODOS") {
@@ -112,8 +112,8 @@ const contenidosVisibles = game.contents.filter(c => c.visible);
           <div className="flex flex-wrap gap-2">
             {["fecha", "puntuacion", "comentarios"].map(tipo => {
               const icon = tipo === "fecha" ? <Calendar className="inline w-4 h-4 mr-1" /> :
-                          tipo === "puntuacion" ? <Star className="inline w-4 h-4 mr-1" /> :
-                          <MessageSquare className="inline w-4 h-4 mr-1" />;
+                tipo === "puntuacion" ? <Star className="inline w-4 h-4 mr-1" /> :
+                  <MessageSquare className="inline w-4 h-4 mr-1" />;
 
               const activo = orden.campo === tipo;
               const direccion = activo && (orden.asc ? "↑" : "↓");
@@ -121,9 +121,8 @@ const contenidosVisibles = game.contents.filter(c => c.visible);
               return (
                 <button
                   key={tipo}
-                  className={`text-sm px-3 py-1 rounded flex items-center gap-1 ${
-                    activo ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
-                  }`}
+                  className={`text-sm px-3 py-1 rounded flex items-center gap-1 ${activo ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white"
+                    }`}
                   onClick={() => cambiarOrden(tipo)}
                 >
                   {icon} {tipo[0].toUpperCase() + tipo.slice(1)} {activo && direccion}
@@ -235,7 +234,7 @@ const contenidosVisibles = game.contents.filter(c => c.visible);
       ) : (
         <p className="text-gray-600 dark:text-gray-400 mt-6">No hay contenidos disponibles.</p>
       )}
-      
+
       {(quedanPorMostrar || haExpandido) && (
         <div className="flex justify-center items-center gap-4 mt-6">
           {quedanPorMostrar && !haExpandido && (

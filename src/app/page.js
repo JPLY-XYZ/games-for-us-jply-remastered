@@ -6,7 +6,7 @@ import NuevosLanzamientos from "@/components/nuevo/nuevos-lanzamientos";
 import UltimasNoticias from "@/components/nuevo/ultimas-noticias";
 import NuevosContenidos from "@/components/nuevo/nuevos-contenidos";
 
-export default function Home() {
+export default function Page() {
 
 
   return (

@@ -8,7 +8,5 @@ export default async function Page() {
   const visiblesContent = contents.filter(
   content => content.visible === true && content.type !== "NOTICIA"
 );
-
-
   return <ContentClient initialContents={visiblesContent} session={session} />;
 }

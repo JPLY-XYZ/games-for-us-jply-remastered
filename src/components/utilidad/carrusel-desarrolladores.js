@@ -23,7 +23,7 @@ export default function CarruselDesarrolladores({ developers }) {
   return (
     <div className="max-w-3xl mx-auto mt-10">
       <div className="flex justify-between items-center mb-4">
-        {developers.length >1 && <button
+        {developers.length > 1 && <button
           onClick={prev}
           className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
         >
@@ -34,7 +34,7 @@ export default function CarruselDesarrolladores({ developers }) {
           Desarrollador
         </h2>
 
-       {developers.length >1 && <button
+        {developers.length > 1 && <button
           onClick={next}
           className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
         >

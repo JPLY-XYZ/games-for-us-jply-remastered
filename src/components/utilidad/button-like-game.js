@@ -1,24 +1,16 @@
 'use client'
 
 import { toggleFavoriteGameAction } from "@/lib/common/actions";
-import { LogIn, RefreshCw, ThumbsUp, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { RefreshCw, ThumbsUp, X } from "lucide-react";
+
 
 import { useActionState } from "react";
 
-function LikeButton({ game, user }) {
+function ButtonLikeGame({ game, user }) {
 
     const [state, action, pending] = useActionState(toggleFavoriteGameAction, {});
 
-    const pathname = usePathname();
 
-
-const handleBuscar = () => {
-  if (pathname !== "/" && !pathname.startsWith("/juego/")) {
-    window.location.reload();
-  }
-};
 
 
 
@@ -33,7 +25,6 @@ const handleBuscar = () => {
             <input type="hidden" name="gameid" value={game.id} />
             <input type="hidden" name="userid" value={user.id} />
             <button
-                onClick={handleBuscar}
                 className={`cursor-pointer px-6 py-3 text-sm rounded-full shadow-lg transition-all flex items-center gap-2 
                 ${isFavorite ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} 
                 ${pending ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -48,4 +39,4 @@ const handleBuscar = () => {
     );
 }
 
-export default LikeButton;
+export default ButtonLikeGame;

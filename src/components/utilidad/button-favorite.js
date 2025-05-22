@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { isOwner } from "@/lib/data";
 import { Loader } from 'lucide-react';
-import FavoriteButton from './favorite-btn';
+import FavoriteThinkLocalStorage from './favorite-think-local-storage';
 
 function ButtonFavorite({ id, tipo, session}) {
 
@@ -28,7 +28,7 @@ function ButtonFavorite({ id, tipo, session}) {
     }
 
    
-       return <> <FavoriteButton id={id} tipo={tipo} owner={isUserOwner} /></>
+       return <> <FavoriteThinkLocalStorage id={id} tipo={tipo} owner={isUserOwner} /></>
     
     
 }

@@ -1,6 +1,6 @@
 'use client'
 import { useActionState } from 'react'
-import { loginDiscord, loginGoogle, loginSteam, register } from '@/lib/actions'
+import { register } from '@/lib/actions'
 import Link from 'next/link'
 import OauthButtons from './oauth-buttons'
 

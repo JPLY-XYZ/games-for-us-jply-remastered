@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { isOwner } from "@/lib/data";
-import ActionsButton from "./actions-btn";
-import ReportButton from "./ReportBtn";
+import ButtonDelete from "./button-delete";
+import ButtonReport from "./button-report";
 import {  Loader, LogIn } from 'lucide-react';
 import Link from 'next/link';
 
-function ButtonReportConfig({ id, tipo, session, subtipo }) {
+function ButtonReportConfig({ id, tipo, session }) {
 
        const [isUserOwner, setIsUserOwner] = useState(null);
 
@@ -31,9 +31,9 @@ function ButtonReportConfig({ id, tipo, session, subtipo }) {
     }
 
     if (isUserOwner) {
-        return <ActionsButton id={id} tipo={tipo} subtipo={subtipo} />;
+        return <ButtonDelete id={id} tipo={tipo}/>;
     } else {
-        return <ReportButton id={id} tipo={tipo} />;
+        return <ButtonReport id={id} tipo={tipo} />;
     }
 }
 

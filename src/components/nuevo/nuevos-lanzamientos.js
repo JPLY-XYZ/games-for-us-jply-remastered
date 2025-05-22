@@ -24,7 +24,8 @@ async function NuevosLanzamientos() {
 
 
     }
-    return (<ListadoTresItems>
+    return (
+    <ListadoTresItems>
         {listaJuegos.map((game) => (
             <TarjetaJuego key={game.id} game={game} session={session} />
         ))}
