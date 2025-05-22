@@ -12,35 +12,44 @@ export const options = {
     signIn: "/login",
     signOut: "/logout",
     error: "/login",
-    newUser: '/login?error=EmailSignin'
+    newUser: "/login?error=EmailSignin",
   },
 
   events: {
-    async createUser({ user }) {
-      // Este evento se dispara solo al crearse el usuario por primera vez
-      if (user?.email && user?.id) {
+    async createUser({ user, account }) {
+
+      // Se dispara al crear usuario por primera vez
+      if (account && account.type == "credentials") {
+        if (user?.email && user?.id) {
         await SendVerifyEmail(user.email, user.id);
-       
       }
+      }
+      
     },
 
     async linkAccount({ user }) {
-      // Solo para OAuth: si conecta una cuenta externa, marca el email como verificado
+      // Cuando conecta cuenta externa, marca email como verificado
       await prisma.user.update({
         where: { id: user.id },
-        data: { emailVerified: new Date() },
+        data: { emailVerified: new Date(), active: true },
       });
     },
   },
 
   callbacks: {
-    async signIn({ user }) {
-      
-       const dbUser = await getUserByEmail(user.email);
+    async signIn({ user, account }) {
+      // Si es OAuth (no credenciales), no chequea email ni activo
+      if (account && account.type !== "credentials") {
+        return true;
+        
+      }
 
-    if (!dbUser) {
-      return true
-    }
+      // Validación solo para login con credenciales
+      const dbUser = await getUserByEmail(user.email);
+
+      if (!dbUser) {
+        return true;
+      }
 
       if (!dbUser.emailVerified) {
         return "/login?error=EmailSignin";
