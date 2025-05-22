@@ -31,6 +31,7 @@ function ImageClienCarrusel({ screenshots }) {
                 </div>
             </div>
 
+{screenshots.length > 1 && <>
             <button
                 onClick={prevImage}
                 className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full"
@@ -43,8 +44,7 @@ function ImageClienCarrusel({ screenshots }) {
             >
                 &#10095;
             </button>
-
-            <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 pb-4">
+           <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 pb-4">
                 {screenshots.map((_, index) => (
                     <button
                         key={index}
@@ -53,7 +53,11 @@ function ImageClienCarrusel({ screenshots }) {
                     />
                 ))}
             </div>
+                        </>
+}
+ 
         </div>
+        
     );
 }
 
