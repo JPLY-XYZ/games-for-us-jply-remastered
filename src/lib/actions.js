@@ -33,7 +33,7 @@ export async function register(prevState, formData) {
   const hashedPassword = await bcrypt.hash(password, 10)
 
   // Guardamos credenciales en base datos
- const newUser = await prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
       name,
       email,
@@ -43,7 +43,7 @@ export async function register(prevState, formData) {
 
   await SendVerifyEmail(email, newUser.id)
 
-redirect("/login?error=EmailSignin");
+  redirect("/login?error=EmailSignin");
 
   return { success: "Registro correcto" }
 }
@@ -97,24 +97,24 @@ export async function login(prevState, formData) {
 
 // LOGIN google
 export async function loginGoogle() {
-  
-    await signIn('google', { redirectTo: "/" })
-  
+
+  await signIn('google', { redirectTo: "/" })
+
 }
 
 // LOGIN steam
 export async function loginReddit() {
- 
-    await signIn('reddit', { redirectTo: "/" })
- 
+
+  await signIn('reddit', { redirectTo: "/" })
+
 }
 
 
 // LOGIN discord
 export async function loginDiscord() {
-  
-    await signIn('discord', { redirectTo: "/" })
- 
+
+  await signIn('discord', { redirectTo: "/" })
+
 }
 
 
@@ -223,7 +223,7 @@ export async function createImageContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content.id);
-    revalidatePath("/juego/"+gameId);
+    revalidatePath("/juego/" + gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createImageContentAction:", error);
@@ -231,37 +231,45 @@ export async function createImageContentAction(prevState, formData) {
   }
 }
 
-export async function createVideoContentAction(prevState, formData) {
+  export async function createVideoContentAction(prevState, formData) {
   try {
     console.log("📥 Recibido formData");
 
-    console.log(formData);
     const userId = formData.get("userId");
     const gameId = parseInt(formData.get("gameId"));
     const type = formData.get("type");
     const title = formData.get("title");
     const shortTitle = formData.get("shortTitle") || null;
+    const youtubeUrl = formData.get("youtubeUrl");
+    const File = formData.get("video");
 
-    console.log("🧾 Extraídos datos:");
-    console.log({ userId, gameId, type, title, shortTitle });
+    console.log("🧾 Extraídos datos:", { userId, gameId, type, title, shortTitle, youtubeUrl });
 
     if (type !== "VIDEO") {
       console.warn("⚠️ Tipo de contenido no es VIDEO, abortando.");
       return { error: "Tipo de contenido no válido" };
     }
 
-    const File = formData.get("video");
+    let urls = {};
 
-    if (!File || typeof File === "string") {
-      console.error("🚫 Archivo de video no encontrado o inválido");
-      return { error: "Falta el archivo de video" };
+    if (youtubeUrl && youtubeUrl.trim() !== "") {
+     const embedUrl = buildYoutubeEmbedUrl(youtubeUrl.trim());
+  if (!embedUrl) {
+    return { error: "URL de YouTube no válida" };
+  }
+  urls.video = embedUrl;
+  console.log("▶️ Usando URL embebida de YouTube:", embedUrl);
+    } else {
+      // No hay URL, subimos archivo
+      if (!File || typeof File === "string") {
+        console.error("🚫 Archivo de video no encontrado o inválido");
+        return { error: "Falta el archivo de video" };
+      }
+      console.log("🎥 Subiendo video...");
+      const videoUrl = await uploadFile(File, userId);
+      console.log("✅ Video subido:", videoUrl);
+      urls.video = videoUrl;
     }
-
-    console.log("🎥 Subiendo video...");
-    const videoUrl = await uploadFile(File, userId);
-    console.log("✅ Video subido:", videoUrl);
-
-    const urls = { video: videoUrl };
 
     console.log("🛠 Creando nuevo contenido en base de datos...");
     const content = await createNewContent({
@@ -277,11 +285,38 @@ export async function createVideoContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content.id);
-    revalidatePath("/juego/"+gameId);
+    revalidatePath("/juego/" + gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createVideoContentAction:", error);
     return { error: error.message || "Error desconocido" };
+  }
+}
+
+
+function buildYoutubeEmbedUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+    if (
+      parsedUrl.hostname === "www.youtube.com" ||
+      parsedUrl.hostname === "youtube.com"
+    ) {
+      const id = parsedUrl.searchParams.get("v");
+      let start = parsedUrl.searchParams.get("t") || parsedUrl.searchParams.get("start");
+      if (start && start.endsWith("s")) start = start.slice(0, -1);
+      const startParam = start ? `?start=${parseInt(start, 10)}` : "";
+      return id ? `https://www.youtube.com/embed/${id}${startParam}` : null;
+    }
+    if (parsedUrl.hostname === "youtu.be") {
+      const id = parsedUrl.pathname.slice(1);
+      let start = parsedUrl.searchParams.get("t");
+      if (start && start.endsWith("s")) start = start.slice(0, -1);
+      const startParam = start ? `?start=${parseInt(start, 10)}` : "";
+      return id ? `https://www.youtube.com/embed/${id}${startParam}` : null;
+    }
+    return null;
+  } catch {
+    return null;
   }
 }
 
@@ -342,11 +377,18 @@ export async function createResenaContentAction(prevState, formData) {
 
     // Subir imágenes (img_0, img_1, etc.)
     for (let [key, value] of formData.entries()) {
-      if (key.startsWith("img_") && value && typeof value !== "string") {
+      if (
+        key.startsWith("img_") &&
+        value &&
+        typeof value !== "string" &&
+        value.size > 0
+      ) {
         console.log(`📸 Subiendo imagen ${key}...`);
         const url = await uploadFile(value, userId);
         urls.imgs.otherImages.push(url);
         console.log(`✅ Imagen ${key} subida:`, url);
+      } else if (key.startsWith("img_")) {
+        console.log(`⚠️ Imagen ${key} ignorada (vacía o inválida)`);
       }
     }
     const moreInfo = {
@@ -383,7 +425,7 @@ export async function createResenaContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content?.id);
-    revalidatePath("/juego/"+ gameId);
+    revalidatePath("/juego/" + gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createResenaContentAction:", error);
@@ -449,11 +491,18 @@ export async function createNoticiaContentAction(prevState, formData) {
 
     // Subir imágenes (img_0, img_1, etc.)
     for (let [key, value] of formData.entries()) {
-      if (key.startsWith("img_") && value && typeof value !== "string") {
+      if (
+        key.startsWith("img_") &&
+        value &&
+        typeof value !== "string" &&
+        value.size > 0
+      ) {
         console.log(`📸 Subiendo imagen ${key}...`);
         const url = await uploadFile(value, userId);
         urls.imgs.otherImages.push(url);
         console.log(`✅ Imagen ${key} subida:`, url);
+      } else if (key.startsWith("img_")) {
+        console.log(`⚠️ Imagen ${key} ignorada (vacía o inválida)`);
       }
     }
 
@@ -471,7 +520,7 @@ export async function createNoticiaContentAction(prevState, formData) {
     });
 
     console.log("🎉 Contenido creado con éxito:", content?.id);
-    revalidatePath("/juego/"+gameId);
+    revalidatePath("/juego/" + gameId);
     return { success: true, content };
   } catch (error) {
     console.error("❌ Error en createNoticiaContentAction:", error);
@@ -951,15 +1000,15 @@ export async function createOrUpdateGameAction(prevState, formData) {
       }
     }
 
-  const multimedia = {
-  images: {
-    cover: coverUrl,     // asegúrate de tener esta variable
-    banner: bannerUrl,
-    thumbnail: thumbnailUrl,
-    screenshots: otherImages // array de URLs
-  },
-  shopLink: shopLink
-};
+    const multimedia = {
+      images: {
+        cover: coverUrl,     // asegúrate de tener esta variable
+        banner: bannerUrl,
+        thumbnail: thumbnailUrl,
+        screenshots: otherImages // array de URLs
+      },
+      shopLink: shopLink
+    };
 
 
     // Guardar en la base de datos
@@ -971,7 +1020,7 @@ export async function createOrUpdateGameAction(prevState, formData) {
         releaseDate: releaseDate || null,
         price: price ? parseFloat(price) : null,
         requirements: requisitos,
-       urls: multimedia,
+        urls: multimedia,
         developers: {
           connect: { id: userId }
         }
@@ -981,8 +1030,8 @@ export async function createOrUpdateGameAction(prevState, formData) {
 
 
     console.log("✅ Juego creado:", nuevoJuego.id);
-idJuego = nuevoJuego.id;
-    
+    idJuego = nuevoJuego.id;
+
 
     return { success: true, game: nuevoJuego };
 
@@ -990,7 +1039,7 @@ idJuego = nuevoJuego.id;
     console.error("❌ Error al guardar el juego:", error);
     return { error: "Error inesperado al guardar el juego" };
   }
-  finally{
-    redirect('/juego/'+ idJuego);
+  finally {
+    redirect('/juego/' + idJuego);
   }
 }

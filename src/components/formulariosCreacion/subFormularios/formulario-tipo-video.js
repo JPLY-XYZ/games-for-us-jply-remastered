@@ -11,9 +11,31 @@ const inputClass =
 const labelClass =
   "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
 
+function extractYouTubeId(url) {
+  try {
+    const parsedUrl = new URL(url);
+    if (
+      parsedUrl.hostname === "www.youtube.com" ||
+      parsedUrl.hostname === "youtube.com"
+    ) {
+      return parsedUrl.searchParams.get("v");
+    }
+    if (parsedUrl.hostname === "youtu.be") {
+      return parsedUrl.pathname.slice(1);
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export default function FormularioTipoVideo({ gameId, user }) {
   const [state, action, pending] = useActionState(createVideoContentAction, {});
-  const [preview, setPreview] = useState(null);
+  const [useYoutube, setUseYoutube] = useState(false);
+  const [localVideoFile, setLocalVideoFile] = useState(null);
+  const [localPreview, setLocalPreview] = useState(null);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [youtubeId, setYoutubeId] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,29 +44,60 @@ export default function FormularioTipoVideo({ gameId, user }) {
     }
   }, [state]);
 
-  const handlePreview = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const maxSizeMB = 50;
-    if (file.size > maxSizeMB * 1024 * 1024) {
-      alert(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
-      e.target.value = ""; // limpia el input para que el usuario pueda elegir otro archivo
-      setPreview(null); // limpia la vista previa si quieres
+  const handleLocalVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const maxSizeMB = 50;
+      if (file.size > maxSizeMB * 1024 * 1024) {
+        alert(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
+        e.target.value = "";
+        setLocalVideoFile(null);
+        setLocalPreview(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLocalPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setLocalVideoFile(file);
+    }
+  };
+
+  const handleYoutubeUrlChange = (e) => {
+    const url = e.target.value.trim();
+    setYoutubeUrl(url);
+    if (url === "") {
+      setYoutubeId(null);
       return;
     }
+    const id = extractYouTubeId(url);
+    if (id) {
+      setYoutubeId(id);
+    } else {
+      setYoutubeId(null);
+    }
+  };
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  }
-};
-
+  const toggleUseYoutube = () => {
+    setUseYoutube(!useYoutube);
+    // Limpiar inputs cuando cambias modo
+    setLocalVideoFile(null);
+    setLocalPreview(null);
+    setYoutubeUrl("");
+    setYoutubeId(null);
+  };
 
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center justify-center px-4 py-12  min-w-auto sm:min-w-[700px] md:min-w-[1200px]">
-      <div className="bg-white dark:bg-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
+      <div className="relative bg-white dark:bg-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
+        {/* Overlay cuando está pending */}
+        {pending && (
+          <div className="absolute inset-0 bg-white/60 dark:bg-slate-800/60 z-20 flex items-center justify-center rounded-3xl">
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white text-center">
           Subir video
         </h1>
@@ -78,27 +131,76 @@ export default function FormularioTipoVideo({ gameId, user }) {
           <input type="hidden" name="gameId" defaultValue={gameId} />
           <input type="hidden" name="type" defaultValue="VIDEO" />
 
-          <div>
-            <label className={labelClass}>Selecciona un video</label>
+          <div className="flex items-center space-x-2 mb-4">
             <input
-              type="file"
-              name="video"
-              accept="video/*"
-              className={inputClass}
-              required
-              onChange={handlePreview}
+              id="toggleUseYoutube"
+              type="checkbox"
+              checked={useYoutube}
+              onChange={toggleUseYoutube}
+              className="w-5 h-5"
+              disabled={pending}
             />
+            <label htmlFor="toggleUseYoutube" className="select-none text-gray-700 dark:text-gray-300">
+              Usar URL de YouTube en lugar de subir un video
+            </label>
           </div>
 
-          {preview && (
+          {!useYoutube && (
             <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">Previsualización:</p>
+              <label className={labelClass}>Selecciona un video local (máx 50MB)</label>
+              <input
+                type="file"
+                name="video"
+                accept="video/*"
+                className={inputClass}
+                onChange={handleLocalVideoChange}
+                required={!useYoutube}
+                disabled={pending}
+              />
+            </div>
+          )}
+
+          {useYoutube && (
+            <div>
+              <label className={labelClass}>Pega una URL de YouTube</label>
+              <input
+                type="url"
+                name="youtubeUrl"
+                className={inputClass}
+                placeholder="https://www.youtube.com/watch?v=..."
+                value={youtubeUrl}
+                onChange={handleYoutubeUrlChange}
+                required={useYoutube}
+                disabled={pending}
+              />
+            </div>
+          )}
+
+          {localPreview && !useYoutube && (
+            <div>
+              <p className="text-gray-700 dark:text-gray-300 mb-2">Previsualización del video local:</p>
               <div className="aspect-video w-full overflow-hidden rounded-xl shadow-md bg-slate-200 dark:bg-slate-700">
                 <video
-                  src={preview}
+                  src={localPreview}
                   controls
                   className="w-full h-full object-contain rounded-xl"
                 />
+              </div>
+            </div>
+          )}
+
+          {youtubeId && useYoutube && (
+            <div>
+              <p className="text-gray-700 dark:text-gray-300 mb-2">Previsualización de YouTube:</p>
+              <div className="aspect-video w-full overflow-hidden rounded-xl shadow-md bg-black">
+                <iframe
+                  className="w-full h-full rounded-xl"
+                  src={`https://www.youtube.com/embed/${youtubeId}`}
+                  title="YouTube video preview"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           )}

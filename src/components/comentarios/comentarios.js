@@ -94,7 +94,7 @@ const contenidosVisibles = comentariosArr.filter(c => c.visible);
                             <div className="flex items-center flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 {/* Nombre del usuario */}
                                 <img src={comment.user.image} alt="" className="w-6 h-6 rounded-full" />
-                                <Link href={"/profile?userid=" + comment.user.id}> <span>{comment.user.name}</span></Link>
+                                <Link href={"/perfil/" + comment.user.id}> <span>{comment.user.name}</span></Link>
                                 {/* Estrellas para la calificación */}
                                 {EsPuntuacion && <div className="flex items-center gap-1">
                                     {[...Array(5)].map((_, index) => {

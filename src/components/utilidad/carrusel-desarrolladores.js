@@ -23,23 +23,23 @@ export default function CarruselDesarrolladores({ developers }) {
   return (
     <div className="max-w-3xl mx-auto mt-10">
       <div className="flex justify-between items-center mb-4">
-        <button
+        {developers.length >1 && <button
           onClick={prev}
           className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-
+        }
         <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white flex-1">
           Desarrollador
         </h2>
 
-        <button
+       {developers.length >1 && <button
           onClick={next}
           className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
         >
           <ArrowRight className="w-5 h-5" />
-        </button>
+        </button>}
       </div>
 
       <DesarrolladorInfo user={developers[index]} />

@@ -23,7 +23,7 @@ export default async function Page({ params }) {
         <Cable className="w-24 h-24 animate-bounce mx-auto" />
         <h1 className="text-4xl mb-4">Contenido no encontrado</h1>
         <Link href="/">
-          <a className="text-blue-600 hover:underline">Volver Atrás</a>
+          <div className="text-blue-600 hover:underline">Volver Atrás</div>
         </Link>
       </div>
     );
@@ -38,7 +38,7 @@ export default async function Page({ params }) {
         <Cable className="w-24 h-24 animate-bounce mx-auto" />
         <h1 className="text-4xl mb-4">Contenido no encontrado</h1>
         <Link href="/">
-          <a className="text-blue-600 hover:underline">Volver Atrás</a>
+          <div className="text-blue-600 hover:underline">Volver Atrás</div>
         </Link>
       </div>
     );

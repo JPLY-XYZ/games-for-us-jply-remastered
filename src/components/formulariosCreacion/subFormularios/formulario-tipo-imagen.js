@@ -41,9 +41,18 @@ export default function FormularioTipoImagen({ gameId, user, content }) {
     </>
   );
 
+  const isPending = createPending || editPending;
+
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen flex items-center justify-center px-4 py-12 min-w-auto md:min-w-[1200px]">
-      <div className="bg-white dark:bg-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
+      <div className="relative bg-white dark:bg-slate-800 p-6 md:p-10 rounded-3xl shadow-2xl w-full max-w-4xl space-y-6">
+        {/* Superposición sobre el formulario */}
+        {isPending && (
+          <div className="absolute inset-0 bg-white/60 dark:bg-slate-800/60 z-20 flex items-center justify-center rounded-3xl">
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white text-center">
           {content ? "Editar imagen" : "Subir imagen"}
         </h1>
@@ -54,7 +63,7 @@ export default function FormularioTipoImagen({ gameId, user, content }) {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className={labelClass}>Título *</label>
+              <label className={labelClass}>Título</label>
               <input
                 type="text"
                 name="title"
@@ -102,7 +111,7 @@ export default function FormularioTipoImagen({ gameId, user, content }) {
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl text-lg font-semibold shadow-md transition-all"
-              disabled={content ? editPending : createPending}
+              disabled={isPending}
             >
               {content
                 ? editPending

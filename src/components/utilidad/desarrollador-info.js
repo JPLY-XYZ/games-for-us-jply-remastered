@@ -42,7 +42,7 @@ export default function DesarrolladorInfo({ user }) {
   return (
     <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <Link href={"/perfil/"+user.id} className="flex items-center gap-4 mb-6">
         <img
           src={user.image || "/placeholder-avatar.png"}
           alt={`Avatar de ${name}`}
@@ -54,25 +54,25 @@ export default function DesarrolladorInfo({ user }) {
           <h3 className="text-xl font-bold text-gray-900 dark:text-white">{name}</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">Miembro desde {new Date(createdAt).toLocaleDateString()}</p>
         </div>
-      </div>
+      </Link>
 
       {/* Bio */}
       {bio && <p className="mb-6 text-gray-700 dark:text-gray-300">{bio}</p>}
 
       {/* Estadísticas */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center mb-6">
-        <div>
+        <Link href={"/perfil/"+user.id+"/juegospublicados"} className="flex flex-col items-center">
           <p className="text-xl font-semibold text-blue-600 dark:text-blue-400">{developedGames?.length || 0}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Juegos creados</p>
-        </div>
+        </Link>
         <div>
           <p className="text-xl font-semibold text-green-600 dark:text-green-400">{comments?.length || 0}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Comentarios</p>
         </div>
-        <div>
+        <Link href={"/perfil/"+user.id+"/juegosfavoritos"} className="flex flex-col items-center">
           <p className="text-xl font-semibold text-purple-600 dark:text-purple-400">{favoriteGames?.length || 0}</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Juegos favoritos</p>
-        </div>
+        </Link>
       </div>
 
       {/* Carrusel de juegos */}
@@ -117,7 +117,7 @@ export default function DesarrolladorInfo({ user }) {
 
                       <p className="text-sm text-gray-600 dark:text-gray-400">€{game.price?.toFixed(2) || 'Gratis'}</p>
                       <p className="text-sm text-yellow-500">
-                        ⭐ {averageScore ?? 'Sin puntuar'}
+                        ⭐ {averageScore || "0" }
                       </p>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {game.platforms?.map((platform) => (
