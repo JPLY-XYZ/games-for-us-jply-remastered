@@ -26,7 +26,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="es">
-      <SessionProvider>
+      
         <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
          
           <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-0 md:px-10 sticky top-0 z-50">
@@ -78,7 +78,7 @@ export default async function RootLayout({ children }) {
           </footer>
 
         </body>
-      </SessionProvider>
+      
     </html>
   )
 }

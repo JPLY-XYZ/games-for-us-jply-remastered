@@ -9,7 +9,6 @@ import Comentarios from "@/components/comentarios/comentarios";
 import { auth } from "@/auth";
 import { getContentById } from "@/lib/data";
 import ClienteCarrusel from "@/components/carrusel";
-import ActionsButton from "@/components/utilidad/actions-btn";
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
 import ButtonFavorite from "@/components/utilidad/button-favorite";
 import Link from "next/link";

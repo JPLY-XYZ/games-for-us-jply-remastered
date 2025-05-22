@@ -1,35 +1,24 @@
 import { auth } from "@/auth";
+import JuegosClient from "@/components/listados/juegos-listado";
 import ListadoJuegoPaginado from "@/components/listados/listado-juegos-paginado";
+import { getAllGames } from "@/lib/data";
 
 export default async function PageNuevoContenido({ params }) {
   const session = await auth();
   const { id } = await params;
 
-
-  const isOwner = session?.user?.id === id;
+  const games = await getAllGames();
+    const visibleGames = games.filter(game =>
+      game.fans.some(fan => fan.id == id)
+    );
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen w-full sm:w-[80%] md:w-[70%] p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="flex justify-end items-center mb-6"></div>
-
-        {/* Juegos Favoritos List Section */}
-        <ListadoJuegoPaginado
-          key={id}
-          where={{
-            visible: true,
-            fans: {
-              some: {
-                id: id,
-              },
-            },
-          }}
-          titulo="Juegos Favoritos"
-          isOwner={isOwner}
-          session={session}
-        />
+    
+      <div className="max-w-[100%] md:max-w-[80%] min-w-[100%] md:min-w-[80%]">
+        {/* Header Section */} 
+        {/* Juegos List Section */}
+        <JuegosClient initialGames={visibleGames} title={"Juegos favoritos de " + session.user.name}  session={session} />
       </div>
-    </div>
+    
   );
 }

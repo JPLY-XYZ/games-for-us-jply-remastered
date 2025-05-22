@@ -2,7 +2,6 @@ import  Juego from '@/components/juego';
 import { getGameById } from '@/lib/data'; // Importa tu función para obtener el juego
 import { Cable } from 'lucide-react';
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 export default async function page({ params }) {
    

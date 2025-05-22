@@ -1,6 +1,8 @@
 
 import { auth } from "@/auth";
+import JuegosClient from "@/components/listados/juegos-listado";
 import ListadoJuegoPaginado from "@/components/listados/listado-juegos-paginado";
+import { getAllGames } from "@/lib/data";
 import Link from "next/link";
 
 export default async function PageJuegosPublicados({ params }) {
@@ -9,35 +11,22 @@ export default async function PageJuegosPublicados({ params }) {
 
   const isOwner = session?.user?.id === id;
 
-  return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen w-full sm:w-[80%] md:w-[70%] p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="flex justify-end items-center mb-6">
-         
-
-          {isOwner && <Link
-            href={"/perfil/"+id+"/juegospublicados/nuevojuego"}
-              className="inline-block w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200 text-center"
-          >
-            Nuevo Juego
-          </Link>}
-        </div>
-
-        {/* Juegos List Section */}
-        <ListadoJuegoPaginado
-          where={{
-            developers: {
-              some: {
-                id: id,
-              },
-            },
-          }}
-          titulo="Juegos Publicados"
-          isOwner={isOwner}
-          session={session}
-        />
-      </div>
-    </div>
+  const games = await getAllGames();
+  const visibleGames = games.filter(game =>
+    game.developers.some(developer => developer.id == id)
   );
+
+return (
+  
+    <div className="max-w-[100%] md:max-w-[80%] min-w-[100%] md:min-w-[80%]">
+      {/* Header Section */}
+      
+       
+
+      {/* Juegos List Section */}
+      <JuegosClient initialGames={visibleGames} isOwner={isOwner} title={"Juegos publicados por " + session.user.name} session={session} />
+    </div>
+  
+);
+
 }

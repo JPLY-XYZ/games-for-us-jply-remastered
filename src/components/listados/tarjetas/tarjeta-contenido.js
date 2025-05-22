@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Youtube, Gamepad2, MessageCircle, Loader, ThumbsUpIcon } from "lucide-react";
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
-import { Suspense } from "react";
+
 
 // Animación CSS para borde inferior que sale desde el centro
 const borderBottomAnimation = `
@@ -148,14 +148,14 @@ export default function TarjetaContenido({ contenido, sesion }) {
             </div>
           )}
 
-          <Suspense fallback={<Loader className="animate-spin text-gray-500" />}>
+          
             <ButtonReportConfig
               id={contenido.id}
               tipo="CONTENT"
               session={sesion}
               subtipo={contenido.type}
             />
-          </Suspense>
+        
 
           {/* Borde animado abajo */}
           <span
