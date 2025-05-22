@@ -58,11 +58,11 @@ export function ModalComentario({ setModalAbierto, game = null, content = null, 
                         {game && <input type="hidden" name="gameId" value={game} />}
                         {content && <input type="hidden" name="contentId" value={content} />}
 
-                        <div className="flex justify-end gap-3">
+                        <div className="flex justify-end  gap-3">
                             <button
                                 type="button"
                                 onClick={() => setModalAbierto(false)}
-                                className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                                className="text-sm mt-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                             >
                                 Cancelar
                             </button>
@@ -77,7 +77,7 @@ export function ModalComentario({ setModalAbierto, game = null, content = null, 
                         </div>
 
                         {state?.error && (
-                            <p className="text-red-500 text-sm mt-2">{state?.error}</p>
+                            <p className="text-red-500 text-sm ">{state?.error}</p>
                         )}
                     </div>
                 </form>

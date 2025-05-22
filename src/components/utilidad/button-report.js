@@ -46,7 +46,7 @@ function ButtonReport({ id, tipo }) {
     };
 
     if (!tipo) {
-        return null; 
+        return null;
     }
 
     return (
@@ -58,8 +58,13 @@ function ButtonReport({ id, tipo }) {
                 type="submit"
                 className={`opacity-60 focus:outline-none   ${reported ? 'text-orange-500 cursor-default' : 'dark:text-white text-gray-900'} ${reported ? 'cursor-default' : 'hover:opacity-100 cursor-pointer'}`}
             >
-                {pending ? <Loader className="animate-spin text-white" /> : <AlertTriangle className="w-6 h-6" />}
-            </button>
+                {pending ? <Loader className="animate-spin text-white" /> : <div className="relative inline-block group ">
+                    <AlertTriangle className="w-6 h-6" />
+                    <div className="absolute  left-1/3  bottom-full mb-2 -translate-x-1/2 hidden rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap ">
+                       {!reported ? 'Reportar' : 'Reportado'}
+                    </div>
+                </div>}
+            </button>   
         </form>
     );
 }
