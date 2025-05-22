@@ -73,7 +73,7 @@ export default async function RootLayout({ children }) {
           </div>
           <footer className=" hidden md:block fixed bottom-0 right-0 z-50">
             <a href="https://github.com/JPLY-XYZ" className="px-6 py-3 text-xs cursor-pointer text-gray-400 hover:text-gray-200 transition">
-              GAMES FOR US REMASTERED BY JPLY - V1.1
+              GAMES FOR US REMASTERED BY JPLY - V1.2
             </a>
           </footer>
 

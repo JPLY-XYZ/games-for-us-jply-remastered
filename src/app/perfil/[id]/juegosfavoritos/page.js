@@ -21,8 +21,9 @@ export default async function Page({ params }) {
 
   const games = await getAllGames();
     const visibleGames = games.filter(game =>
-      game.fans.some(fan => fan.id == id)
-    );
+  game.visible && game.fans.some(fan => fan.id == id)
+);
+
 
   return (
     
