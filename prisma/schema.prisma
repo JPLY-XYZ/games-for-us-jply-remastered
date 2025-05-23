@@ -138,10 +138,10 @@ model Comment {
   visible     Boolean?  @default(true)
   reportCount Int       @default(0)
 
-  //@@check((gameId IS NOT NULL AND contentId IS NULL) OR (gameId IS NULL AND contentId IS NOT NULL))
+  //@@check((gameId IS NOT NULL AND contentId IS NULL) OR (gameId IS NULL AND contentId IS NOT NULL)) NO SE PUEDE USAR ESTO EN PRISMA YA QUE NO SE PUEDEN HACER CHECKS EN LA VERSION ACTUAL DE PRISMA
 
   /**
-   * HAY QUE APLICAR ESTAS REGLAS O VERIFICAR DESDE EL CODIGO QUE ESTA O UNA U OTRA
+   * HAY QUE APLICAR ESTAS REGLAS DESDE UNA CONSOLA DE POSTGRESQL:
    * ALTER TABLE Comment
    * ADD CONSTRAINT check_comment_target
    * CHECK (

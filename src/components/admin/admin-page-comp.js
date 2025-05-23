@@ -210,8 +210,8 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                     if (userSortDirection === "asc") return valA > valB ? 1 : -1;
                     return valA < valB ? 1 : -1;
                   })
-                  .map((user, idx) => (
-<UserListCard user={user} key={idx} />
+                  .map((user) => (
+<UserListCard user={user} key={user.id} />
                   ))}
                   
               </div>
@@ -264,8 +264,8 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                     if (contentSortDirection === "asc") return valA > valB ? 1 : -1;
                     return valA < valB ? 1 : -1;
                   })
-                  .map((content, idx) => (
-                    <ContentListCard content={content} key={idx} />
+                  .map((content) => (
+                    <ContentListCard content={content} key={content.id} />
                   ))}
               </div>
             </div>
@@ -306,8 +306,8 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                     if (gameSortDirection === "asc") return valA > valB ? 1 : -1;
                     return valA < valB ? 1 : -1;
                   })
-                  .map((juego, idx) => (
-                    <GameListCard juego={juego} key={idx} />
+                  .map((juego) => (
+                    <GameListCard juego={juego} key={juego.id} />
                   ))}
               </div>
             </div>
@@ -345,8 +345,8 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
                     if (commentSortDirection === "asc") return valA > valB ? 1 : -1;
                     return valA < valB ? 1 : -1;
                   })
-                  .map((comentario, idx) => (
-                    <CommentListCard comentario={comentario} key={idx} btnVer={() => openModal(comentario)}/>
+                  .map((comentario) => (
+                    <CommentListCard comentario={comentario} key={comentario.id} btnVer={() => openModal(comentario)}/>
                   ))}
               </div>
             </div>
