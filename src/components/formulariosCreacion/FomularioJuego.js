@@ -13,16 +13,23 @@ function FormularioJuego({ userId }) {
     coverUrl: "",
   });
 
-  const handleImageChange = (event, field) => {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreviews((prev) => ({ ...prev, [field]: reader.result }));
-      };
-      reader.readAsDataURL(file);
+const handleImageChange = (event, field) => {
+  const file = event.target.files[0];
+  if (file) {
+    if (!file.type.startsWith("image/")) return;
+
+    if (file.size > 4 * 1024 * 1024) { // 4 MB en bytes
+      alert("La imagen no puede pesar más de 4 MB.");
+      return;
     }
-  };
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreviews((prev) => ({ ...prev, [field]: reader.result }));
+    };
+    reader.readAsDataURL(file);
+  }
+};
 
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen px-4 py-10 flex justify-center">

@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export function MultimediaJuego() {
     const [screenshots, setScreenshots] = useState([]);
@@ -14,20 +15,31 @@ export function MultimediaJuego() {
     };
 
     const handleScreenshotChange = (index, files) => {
-        if (!files || files.length === 0) return;
+  if (!files || files.length === 0) return;
 
-        const validFiles = Array.from(files).filter(file => file.type.startsWith("image/"));
-        if (validFiles.length === 0) return;
+  const validFiles = Array.from(files).filter(file => {
+    if (!file.type.startsWith("image/")) return false;
 
-        if (validFiles.length === 1 && index !== null && index < screenshots.length) {
-            const updated = [...screenshots];
-            updated[index] = validFiles[0];
-            setScreenshots(updated);
-        } else {
-            const filteredScreenshots = screenshots.filter(s => s);
-            setScreenshots([...filteredScreenshots, ...validFiles]);
-        }
-    };
+    if (file.size > 4 * 1024 * 1024) {
+      alert(`La imagen "${file.name}" supera los 4 MB y no se añadirá.`);
+      return false;
+    }
+
+    return true;
+  });
+
+  if (validFiles.length === 0) return;
+
+  if (validFiles.length === 1 && index !== null && index < screenshots.length) {
+    const updated = [...screenshots];
+    updated[index] = validFiles[0];
+    setScreenshots(updated);
+  } else {
+    const filteredScreenshots = screenshots.filter(s => s);
+    setScreenshots([...filteredScreenshots, ...validFiles]);
+  }
+};
+
 
     
     return (

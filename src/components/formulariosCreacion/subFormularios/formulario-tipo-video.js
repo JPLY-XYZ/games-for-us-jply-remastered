@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";
 import { createVideoContentAction } from "@/lib/actions";
+import toast from "react-hot-toast";
 
 const inputClass =
   "w-full p-3 text-base rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
@@ -49,7 +50,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
     if (file) {
       const maxSizeMB = 50;
       if (file.size > maxSizeMB * 1024 * 1024) {
-        alert(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
+        toast.error(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
         e.target.value = "";
         setLocalVideoFile(null);
         setLocalPreview(null);

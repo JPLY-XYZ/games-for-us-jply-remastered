@@ -6,6 +6,7 @@ import { useActionState } from 'react';
 import { createResenaContentAction } from '@/lib/actions';
 import ValoracionResenia from './utilidades/valoracion-resenia';
 import { MultimediaJuego } from './utilidades/multimedia-juego';
+import toast from 'react-hot-toast';
 
 const inputClass = "w-full p-3 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white";
 const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
@@ -24,6 +25,11 @@ export default function FormularioTipoResenia({ user, gameId }) {
 
   const handleImageChange = (e, setPreview) => {
     const file = e.target.files[0];
+    if (file.size > 4 * 1024 * 1024) { // 4 MB en bytes
+      toast.error("La imagen no puede pesar más de 4 MB.");
+      return;
+    }
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {

@@ -2,6 +2,7 @@
 import { updateUserBackImagen } from '@/lib/actions';
 import { Loader, Pencil, Save, X } from 'lucide-react';
 import { useActionState, useEffect, useId, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
 function EditImageFondo({ user, ownership, children }) {
     const key = useId();
@@ -19,6 +20,11 @@ function EditImageFondo({ user, ownership, children }) {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
+        if (file.size > 4 * 1024 * 1024) { // 4 MB en bytes
+       toast.error("La imagen no puede pesar más de 4 MB.");
+      return;
+    }
+
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => setImagePreview(reader.result);

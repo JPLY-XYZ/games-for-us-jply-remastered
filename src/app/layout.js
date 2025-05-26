@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Buscador from '@/components/utilidad/buscador/buscador'
 import { auth } from '@/auth'
 import MobileMenuButton from '@/components/utilidad/movile-btn-header'
+import { Toaster } from 'react-hot-toast'
 
 
 
@@ -28,7 +29,7 @@ export default async function RootLayout({ children }) {
     <html lang="es">
       
         <body className={`bg-slate-100 ${inter.className} min-h-screen flex flex-col`}>
-         
+         <div><Toaster/></div>
           <header className="h-14 bg-[var(--aside-card-background)] text-white flex justify-between items-center px-0 md:px-10 sticky top-0 z-50">
             <div className="flex items-center">
               <div className="hidden md:block mr-3">

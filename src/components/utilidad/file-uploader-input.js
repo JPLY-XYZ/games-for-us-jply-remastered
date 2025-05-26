@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function FileUploaderInput({
   name = "file",
@@ -21,7 +22,13 @@ export default function FileUploaderInput({
 
   const handleChange = (e) => {
     const file = e.target.files[0];
+    if (file.size > 4 * 1024 * 1024) { // 4 MB en bytes
+       toast.error("La imagen no puede pesar más de 4 MB.");
+      return;
+    }
+
     if (file && showPreview) {
+      
       setPreview(URL.createObjectURL(file));
     }
   };
