@@ -12,11 +12,10 @@ export default function Error({ error, reset }) {
     return (
         <div className='grid place-content-center min-h-screen'>
             <Cable className="w-36 h-36 animate-bounce mx-auto" />
-                <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4">ERROR</h1>
-                <Link href="/" className="text-blue-500 underline">Volver Atrás</Link>
-            <p>{error.message}</p>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4">ERROR</h1>
+            <p>Probablemente has intentado subir una imagen o video con un tamaño superior a 4Mb o el tiempo de respuesta se a excedido.</p>
 
-           
+            <p>Comprueba tu conexion.</p>
 
             <button
                 onClick={() => reset()}

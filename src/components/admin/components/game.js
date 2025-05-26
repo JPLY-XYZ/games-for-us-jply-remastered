@@ -12,6 +12,7 @@ function GameListCard({ juego }) {
     const [juegoVisible, setJuegoVisible] = useState(juego?.visible);
 
     return (<div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow flex justify-between items-center">
+        {/* Se utiliza LINK para que al hacer click lleva al contendo */}
         <Link href={`/juego/${juego.id}`} className="flex flex-row items-center gap-3">
             <img
                 src={juego.urls.images.cover}
@@ -25,7 +26,7 @@ function GameListCard({ juego }) {
             </div>
         </Link>
         <div className="flex gap-2 ">
-           <form action={actionDesactivarJuego}>
+           <form action={actionDesactivarJuego}> {/* Al pulsar el boton se ejecuta la accion y se elimina el juego tras hacer un tiempo de espera */}
                 <input type="hidden" name="id" value={juego.id} />
                 <input type="hidden" name="tipo" value="GAME" />
                 <button disabled={pendingDesactivarJuego} className="cursor-pointer" onClick={() => setJuegoVisible(!juegoVisible)} title={!juegoVisible ? "Mostrar" : "Ocultar"}>
