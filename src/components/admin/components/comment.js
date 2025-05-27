@@ -20,7 +20,7 @@ function CommentListCard({ btnVer, comentario }) {
                     Fecha creacion: {new Date(comentario.publishedAt).toLocaleDateString('es-ES')}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Fecha edicion: {comentario.editedAt ? new Date(comentario.editedAt).toLocaleDateString('es-ES') : new Date(comentario.createdAt).toLocaleDateString('es-ES')}
+                    {/* Fecha edicion: {comentario.editedAt ? new Date(comentario.editedAt).toLocaleDateString('es-ES') : new Date(comentario.createdAt).toLocaleDateString('es-ES')} */}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Reportes: {comentario.reportCount}</p>
             </div>
