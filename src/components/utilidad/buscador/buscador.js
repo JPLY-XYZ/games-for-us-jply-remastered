@@ -65,14 +65,14 @@ function Buscador() {
 
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full  mx-auto">
       <div className="flex">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar..."
-          className="flex-grow px-4 py-2 rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
+          className=" w-full flex-grow px-4 py-2 rounded-none sm:rounded-l-xl border dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-white focus:outline-none"
         />
         <button
           className="hidden sm:inline px-4 py-2 rounded-r-xl bg-blue-600 hover:bg-blue-700 text-white transition"

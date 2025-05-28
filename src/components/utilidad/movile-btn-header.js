@@ -11,10 +11,11 @@ export default function MobileMenuButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="md:hidden p-2"
+        className="md:hidden flex p-2"
         aria-label="Abrir menú"
       >
         <Gamepad2 className="w-8 h-8 dark:text-white  text-black" />
+        <span className='hidden sm:block text-2xl ml-1'>GAMES FOR US</span>
       </button>
 
       {open && (

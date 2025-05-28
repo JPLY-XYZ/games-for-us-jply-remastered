@@ -38,7 +38,7 @@ export default async function RootLayout({ children }) {
                 </Link>
               </div>
               <MobileMenuButton />
-              <Link href="/" className="text-xl font-bold md:text-4xl hidden sm:inline ml-4 dark:text-white  text-black">
+              <Link href="/" className="text-xl font-bold xl:text-4xl hidden   lg:inline ml-4 dark:text-white  text-black">
                 GAMES FOR US
               </Link>
             </div>
@@ -56,7 +56,7 @@ export default async function RootLayout({ children }) {
                 </Link>
               </div>
 
-              <div className="ml-auto">
+              <div className=" w-full mx-auto lg:w-[26rem] md:w-[18rem] md:mx-0 md:ml-auto">
                 <Buscador />
               </div>
             </div>
