@@ -15,6 +15,7 @@
                 <p>Probablemente has intentado subir una imagen o video con un tamaño superior a 4Mb o el tiempo de respuesta se a excedido.</p>
 
                 <p>Comprueba tu conexion.</p>
+                <p>{error}</p>
 
                 <button
                     onClick={() => reset()}
