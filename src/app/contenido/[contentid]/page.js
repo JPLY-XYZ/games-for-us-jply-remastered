@@ -15,6 +15,7 @@ import Link from "next/link";
 export default async function Page({ params }) {
   const { contentid } = await params;
 
+
   if (isNaN(Number(contentid))) {
     return (
       <div className="p-6 text-center">
@@ -29,6 +30,9 @@ export default async function Page({ params }) {
 
   const content = await getContentById(+contentid);
   const session = await auth();
+  const game  = content.game;
+
+  console.log("content", content);
 
   if (!content) {
     return (
@@ -184,6 +188,7 @@ export default async function Page({ params }) {
         <div className="flex flex-col sm:flex-row items-center mx-auto gap-6 mb-6">
           <ButtonFavorite id={content.id} tipo="CONTENT" session={session} />
 
+<div className="flex flex-col justify-between sm:flex-row w-full gap-3  ">
           <Link href={"/perfil/"+content.userId} className="flex flex-col sm:flex-row items-center gap-4 text-sm text-gray-700 dark:text-gray-300">
             {/* Avatar */}
             <div className="flex flex-col items-center">
@@ -207,6 +212,43 @@ export default async function Page({ params }) {
               {content.editedAt && <p>Editado el: {new Date(content.editedAt).toLocaleDateString()}</p>}
             </div>
           </Link>
+          <hr className="w-full sm:hidden " /> 
+           <h1 className="sm:hidden ">JUEGO RELACIONADO</h1>
+          
+          <Link
+                    href={`/juego/${game.id}`}
+                    key={game.id}
+                    className="flex items-center gap-4 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                  >
+                    <img
+                      src={game.urls.images.cover || "/placeholder-game.png"}
+                      alt={game.name}
+                      className="rounded-md object-cover w-32 h-16"
+                    />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-800 dark:text-white break-words max-w-full">
+                        {game.name}
+                      </p>
+
+
+                      <p className="text-sm text-gray-600 dark:text-gray-400">€{game.price?.toFixed(2) || 'Gratis'}</p>
+                      <p className="text-sm text-yellow-500">
+                       
+                      </p>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {game.platforms?.map((platform) => (
+                          <span
+                            key={platform.id}
+                            className="text-xs px-2 py-0.5 bg-blue-200 dark:bg-blue-700 text-blue-900 dark:text-white rounded-full"
+                          >
+                            {platform.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </Link>
+                  </div>
+
         </div>
 
         {/* Valoraciones si es reseña */}
