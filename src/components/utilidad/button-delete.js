@@ -22,7 +22,7 @@ function ButtonDelete({ id, tipo, recargaUrl }) {
         className="opacity-60 dark:text-white hover:opacity-100 focus:outline-none cursor-pointer"
       >
         {pendingDelete ? (
-          <Loader className="animate-spin text-white" />
+          <Loader className="animate-spin dark:text-white text-black" />
         ) : (
           tipo !== "USER" && <Trash2 className="w-6 h-6" />
         )}

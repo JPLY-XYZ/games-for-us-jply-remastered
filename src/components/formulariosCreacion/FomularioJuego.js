@@ -5,7 +5,6 @@ import { MultimediaJuego } from './subFormularios/utilidades/multimedia-juego';
 import { createOrUpdateGameAction } from '@/lib/actions';
 import { LoaderCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
 
 function FormularioJuego({ userId }) {
   const [state, action, pending] = useActionState(createOrUpdateGameAction, {});
@@ -15,17 +14,7 @@ function FormularioJuego({ userId }) {
     coverUrl: "",
   });
 
-   const router = useRouter();
-
-  useEffect(() => {
-    if (state?.success && state?.gameId) {
-      toast.success("Juego creado correctamente");
-      router.push(`/juego/${state.gameId}`);
-    } else if (state?.error) {
-      toast.error(state.error);
-    }
-  }, [state, router]);
-
+   
 const handleImageChange = (event, field) => {
   const file = event.target.files[0];
   if (file) {

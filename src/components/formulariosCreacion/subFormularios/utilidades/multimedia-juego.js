@@ -25,6 +25,12 @@ export function MultimediaJuego() {
             if (inputElement) inputElement.value = ""; 
             return;
         }
+        
+        if (fileArray.length > 5) {
+            toast.error(`Solo se pueden añadir 6 imágenes como máximo.`);
+            if (inputElement) inputElement.value = "";
+            return;
+        }
 
         const validFiles = fileArray.filter(file => file.type.startsWith("image/"));
         if (validFiles.length === 0) {

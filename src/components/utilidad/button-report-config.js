@@ -27,7 +27,7 @@ function ButtonReportConfig({ id, tipo, session, recargaUrl }) {
 
 
     if (isUserOwner === null) {
-        return <Loader className="animate-spin text-white" />; // O cualquier indicador de carga
+        return <Loader className="animate-spin dark:text-white text-black" />; // O cualquier indicador de carga
     }
 
     if (isUserOwner) {
