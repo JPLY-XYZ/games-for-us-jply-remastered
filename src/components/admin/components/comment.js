@@ -28,7 +28,7 @@ function CommentListCard({ btnVer, comentario }) {
         <div className="flex gap-2">
             <form onSubmit={(e) => e.preventDefault()}>
                 <button className="cursor-pointer" title="Ver perfil" onClick={btnVer}>
-                    <BookOpenText  className="w-5 h-5 text-white" />
+                    <BookOpenText  className="w-5 h-5 dark:text-white text-black" />
                 </button>
             </form>
             <form action={actionDesactivarComentario}>
@@ -39,7 +39,7 @@ function CommentListCard({ btnVer, comentario }) {
                         <Loader className="animate-spin" />
                     ) : (
                         comentarioVisible ? (
-                            <Eye className="w-5 h-5 text-white" />
+                            <Eye className="w-5 h-5 dark:text-white text-black" />
                         ) : (
                             <EyeOff className="w-5 h-5 text-yellow-500" />
                         )

@@ -43,7 +43,7 @@ function ContentListCard({ content }) {
                         <Loader className="animate-spin" />
                     ) : (
                         contentVisible ? (
-                            <Eye className="w-5 h-5 text-white" />
+                            <Eye className="w-5 h-5 dark:text-white text-black " />
                         ) : (
                             <EyeOff className="w-5 h-5 text-yellow-500" />
                         )
