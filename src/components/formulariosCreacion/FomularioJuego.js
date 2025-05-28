@@ -34,8 +34,8 @@ const handleImageChange = (event, field) => {
       return;
     }
 
-    if (file.size > 4 * 1024 * 1024) { // 4 MB
-      toast.error("La imagen seleccionada no puede pesar más de 4 MB.");
+    if (file.size > 1 * 1024 * 1024) { // 4 MB
+      toast.error("La imagen seleccionada no puede pesar más de 1 MB.");
       event.target.value = ""; // Resetear el input
        setImagePreviews((prev) => ({ ...prev, [field]: null }));
       return;

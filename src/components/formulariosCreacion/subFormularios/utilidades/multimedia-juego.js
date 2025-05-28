@@ -19,9 +19,9 @@ export function MultimediaJuego() {
 
         const fileArray = Array.from(files);
 
-        const oversizeFile = fileArray.find(file => file.size > 4 * 1024 * 1024);
+        const oversizeFile = fileArray.find(file => file.size > 1 * 1024 * 1024);
         if (oversizeFile) {
-            toast.error(`Alguna imagen supera los 4 MB. No se añadirá ningún archivo.`);
+            toast.error(`Alguna imagen supera los 1 MB. No se añadirá ningún archivo.`);
             if (inputElement) inputElement.value = ""; 
             return;
         }
@@ -51,6 +51,7 @@ export function MultimediaJuego() {
             <div className="space-y-2 text-center">
                 <label className="label text-gray-700 mx-auto dark:text-gray-300">Screenshots</label>
                 <h1 className='text-xs text-gray-400'>No es obligatorio la publicacion de imagenes adicionales</h1>
+                <h1 className='text-xs text-gray-400'>Puedes seleccionar mas de una imagen</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
                     {screenshots.length === 0 && (
                         <p className="text-gray-500 mx-auto dark:text-gray-400">No hay screenshots añadidos.</p>

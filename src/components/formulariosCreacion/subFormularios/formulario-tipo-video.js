@@ -48,7 +48,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
   const handleLocalVideoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const maxSizeMB = 4;
+      const maxSizeMB = 1;
       if (file.size > maxSizeMB * 1024 * 1024) {
         toast.error(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
         e.target.value = "";

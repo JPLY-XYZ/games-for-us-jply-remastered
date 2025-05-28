@@ -22,8 +22,8 @@ export default function FileUploaderInput({
 
   const handleChange = (e) => {
     const file = e.target.files[0];
-    if (file.size > 4 * 1024 * 1024) { // 4 MB en bytes
-       toast.error("La imagen no puede pesar más de 4 MB.");
+    if (file.size > 1 * 1024 * 1024) { // 4 MB en bytes
+       toast.error("La imagen no puede pesar más de 1 MB.");
         setPreview(null);
         e.target.value = "";
       return;
