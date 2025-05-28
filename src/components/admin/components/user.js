@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteAction, suspenderAcount } from "@/lib/common/actions";
+import { changeRolOfUserAction, deleteAction, suspenderAcount } from "@/lib/common/actions";
 import { Eye, Loader, Shield, ShieldOff, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useActionState, useState } from "react";
@@ -10,6 +10,7 @@ function UserListCard({ user }) {
     console.log(user);
 
     const [stateEliminarCuenta, actionEliminarCuenta, pendingEliminarCuenta] = useActionState(deleteAction, {})
+    const [statechangeRolCuenta, actionChangeRolCuenta, pendingChangeRolCuenta] = useActionState(changeRolOfUserAction, {})
     const [stateDesactivarCuenta, actionDesactivarCuenta, pendingDesactivarCuenta] = useActionState(suspenderAcount, {})
     const [userActive, setUserActive] = useState(user.active);
 
@@ -49,13 +50,35 @@ function UserListCard({ user }) {
                         <Loader className="animate-spin" />
                     ) : (
                         userActive ? (
-                            <Shield className="w-5 h-5 text-white" />
+                            <Shield title="Desactivar" className="w-5 h-5 text-white" />
                         ) : (
-                            <ShieldOff className="w-5 h-5 text-yellow-500" />
+                            <ShieldOff title="Activar" className="w-5 h-5 text-yellow-500" />
                         )
                     )}
 
                 </button>
+            </form>
+            <form action={actionChangeRolCuenta}>
+                <input type="hidden" name="id" value={user.id} />
+
+                <select
+                    name="rol"
+                    value={user.role}
+                    onChange={(e) => {
+                        e.target.form.requestSubmit();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }}
+                    disabled={pendingChangeRolCuenta}
+                    className="border rounded px-2 py-1 text-sm cursor-pointer disabled:opacity-50 text-gray-800 dark:text-white bg-white dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-150"
+                >
+                    <option value="USUARIO">USUARIO</option>
+                    <option value="DESARROLLADOR">DESARROLLADOR</option>
+                </select>
+
+
+                {pendingChangeRolCuenta && <Loader className="animate-spin inline-block ml-2" />}
             </form>
             <form action={actionEliminarCuenta}>
                 <input type="hidden" name="id" value={user.id} />

@@ -78,7 +78,7 @@ export async function deleteAction(prevState, formData) {
       default:
         throw new Error('Tipo no soportado');
     }
- 
+
   } catch (error) {
     console.error('Error en deleteAction:', error);
     throw error;
@@ -105,7 +105,7 @@ export async function togleVisibilitiAction(prevState, formData) {
 
   try {
     switch (tipo) {
-      case 'GAME':  
+      case 'GAME':
         await toggleVisibleGame(+id);
         break;
       case 'CONTENT':
@@ -123,7 +123,7 @@ export async function togleVisibilitiAction(prevState, formData) {
     console.error('Error en togleVisibilitiAction:', error);
     throw error;
   }
-  
+
 }
 
 export async function suspenderAcount(prevState, formData) {
@@ -148,9 +148,9 @@ export async function toggleFavoriteGameAction(prevState, formData) {
   }
 
   const result = await setFavoriteGame(userId, gameId)
- 
-  return result 
-  
+
+  return result
+
 }
 
 export async function toggleFavoriteAny({ tipo, id, sumar }) {
@@ -167,3 +167,24 @@ export async function toggleFavoriteAny({ tipo, id, sumar }) {
 }
 
 
+export async function changeRolOfUserAction(prevState, formData) {
+
+  const id = formData.get('id')
+  const rol = formData.get('rol')
+
+
+    await prisma.user.updateMany({
+      where: {
+        id: id,
+      },
+      data: {
+        role: rol,
+      },
+    });
+
+revalidatePath('/');
+
+
+
+
+}
