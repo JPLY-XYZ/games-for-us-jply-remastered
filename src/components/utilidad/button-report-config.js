@@ -6,7 +6,7 @@ import ButtonReport from "./button-report";
 import {  Loader, LogIn } from 'lucide-react';
 import Link from 'next/link';
 
-function ButtonReportConfig({ id, tipo, session }) {
+function ButtonReportConfig({ id, tipo, session, recargaUrl }) {
 
        const [isUserOwner, setIsUserOwner] = useState(null);
 
@@ -31,7 +31,7 @@ function ButtonReportConfig({ id, tipo, session }) {
     }
 
     if (isUserOwner) {
-        return <ButtonDelete id={id} tipo={tipo}/>;
+        return <ButtonDelete id={id} tipo={tipo} recargaUrl={recargaUrl}/>;
     } else {
         return <ButtonReport id={id} tipo={tipo} />;
     }

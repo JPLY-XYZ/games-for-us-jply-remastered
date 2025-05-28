@@ -48,7 +48,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
   const handleLocalVideoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const maxSizeMB = 50;
+      const maxSizeMB = 4;
       if (file.size > maxSizeMB * 1024 * 1024) {
         toast.error(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB} MB.`);
         e.target.value = "";
@@ -148,7 +148,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
           {!useYoutube && (
             <div>
               <label className={labelClass}>Selecciona un video local</label>
-              <h1 className="text-xs text-gray-500">El tamaño maximo de subida son 50MB</h1>
+              <h1 className="text-xs text-gray-500">El tamaño maximo de subida son 4MB</h1>
               <input
                 type="file"
                 name="video"

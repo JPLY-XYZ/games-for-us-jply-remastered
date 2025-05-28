@@ -1,9 +1,10 @@
-"use client"
+'use client';
 import React, { useActionState, useState } from 'react';
 import { RequisitosJuego } from './subFormularios/utilidades/requisitos-juego';
 import { MultimediaJuego } from './subFormularios/utilidades/multimedia-juego';
 import { createOrUpdateGameAction } from '@/lib/actions';
 import { LoaderCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 function FormularioJuego({ userId }) {
   const [state, action, pending] = useActionState(createOrUpdateGameAction, {});
@@ -16,10 +17,15 @@ function FormularioJuego({ userId }) {
 const handleImageChange = (event, field) => {
   const file = event.target.files[0];
   if (file) {
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/")) {
+      event.target.value = ""; // Resetear el input
+      return;
+    }
 
-    if (file.size > 4 * 1024 * 1024) { // 4 MB en bytes
-      alert("La imagen no puede pesar más de 4 MB.");
+    if (file.size > 4 * 1024 * 1024) { // 4 MB
+      toast.error("La imagen seleccionada no puede pesar más de 4 MB.");
+      event.target.value = ""; // Resetear el input
+       setImagePreviews((prev) => ({ ...prev, [field]: null }));
       return;
     }
 
@@ -29,7 +35,10 @@ const handleImageChange = (event, field) => {
     };
     reader.readAsDataURL(file);
   }
+
+ 
 };
+
 
   return (
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen px-4 py-10 flex justify-center">

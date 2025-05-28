@@ -3,23 +3,23 @@ import authConfig from "@/auth.config";
 
 const { auth } = NextAuth(authConfig);
 
-// Rutas públicas que no requieren autenticación
+// rutas publicas que no requieren autenticacion
 const PUBLIC_PATHS = [
-  '/',             // Página de inicio
-  '/login',        // Login
-  '/register',     // Registro
-  '/verificar',    // Verificación de correo
+  '/',             
+  '/login',        
+  '/register',     
+  '/verificar',    // ruta para verificar el email
 ];
 
 export default auth((req) => {
   const { pathname, search } = req.nextUrl;
 
-  // Verificamos si es una ruta pública
+  // si la ruta es pública, deja pasar
   const isPublic = PUBLIC_PATHS.some(
     (path) => pathname === path || pathname.startsWith(path + '/')
   );
 
-  // Si no está autenticado y no es pública, redirige a login
+  // si la ruta no es publica y no esta autenticado, redirige a la pagina de inicio de sesion
   if (!req.auth && !isPublic) {
     const callbackUrl = pathname + search;
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
@@ -30,10 +30,11 @@ export default auth((req) => {
 
 
 
-  // Si está autenticado o es una ruta pública, deja pasar
+  // si la ruta es publica y esta autenticado, redirige a la pagina de inicio
   return null;
 });
 
+//macher para dejar acceso a imagenes, iconos, y demas cosas necesarias para un correcto funcionamiento de la aplicacion
 export const config = {
   matcher: [
     '/((?!_next/static|/error*|_next/image|favicon.ico|manifest.json|sitemap.xml|robots.txt|api|images|icons|screenshots|auth).*)',

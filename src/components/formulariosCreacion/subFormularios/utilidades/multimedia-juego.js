@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 export function MultimediaJuego() {
     const [screenshots, setScreenshots] = useState([]);
-  
+
     const addScreenshot = () => {
         if (screenshots.some(s => !s)) return;
         setScreenshots([...screenshots, null]);
@@ -14,34 +14,37 @@ export function MultimediaJuego() {
         setScreenshots([]);
     };
 
-    const handleScreenshotChange = (index, files) => {
-  if (!files || files.length === 0) return;
+    const handleScreenshotChange = (index, files, inputElement) => {
+        if (!files || files.length === 0) return;
 
-  const validFiles = Array.from(files).filter(file => {
-    if (!file.type.startsWith("image/")) return false;
+        const fileArray = Array.from(files);
 
-    if (file.size > 4 * 1024 * 1024) {
-      alert(`La imagen "${file.name}" supera los 4 MB y no se añadirá.`);
-      return false;
-    }
+        const oversizeFile = fileArray.find(file => file.size > 4 * 1024 * 1024);
+        if (oversizeFile) {
+            toast.error(`Alguna imagen supera los 4 MB. No se añadirá ningún archivo.`);
+            if (inputElement) inputElement.value = ""; 
+            return;
+        }
 
-    return true;
-  });
+        const validFiles = fileArray.filter(file => file.type.startsWith("image/"));
+        if (validFiles.length === 0) {
+            if (inputElement) inputElement.value = "";
+            return;
+        }
 
-  if (validFiles.length === 0) return;
+        if (validFiles.length === 1 && index !== null && index < screenshots.length) {
+            const updated = [...screenshots];
+            updated[index] = validFiles[0];
+            setScreenshots(updated);
+        } else {
+            const filteredScreenshots = screenshots.filter(s => s);
+            setScreenshots([...filteredScreenshots, ...validFiles]);
+        }
 
-  if (validFiles.length === 1 && index !== null && index < screenshots.length) {
-    const updated = [...screenshots];
-    updated[index] = validFiles[0];
-    setScreenshots(updated);
-  } else {
-    const filteredScreenshots = screenshots.filter(s => s);
-    setScreenshots([...filteredScreenshots, ...validFiles]);
-  }
-};
+    };
 
 
-    
+
     return (
         <div className="space-y-6">
 
@@ -59,16 +62,15 @@ export function MultimediaJuego() {
                             className="relative w-full aspect-video border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden dark:bg-slate-700"
                         >
                             <input
-                            
+
                                 id={`screenshot_${index}`}
                                 name={`img_${index}`}
                                 type="file"
                                 accept="image/*"
                                 multiple={index === screenshots.length - 1}
-                                onChange={(e) => handleScreenshotChange(index, e.target.files)}
-                                className={` absolute inset-0 w-full h-full z-10 ${
-                                    file ? 'opacity-0 pointer-events-none' : 'opacity-0 cursor-pointer'
-                                }`}
+                                onChange={(e) => handleScreenshotChange(index, e.target.files, e.target)}
+                                className={` absolute inset-0 w-full h-full z-10 ${file ? 'opacity-0 pointer-events-none' : 'opacity-0 cursor-pointer'
+                                    }`}
                             />
 
                             {file ? (
@@ -90,15 +92,15 @@ export function MultimediaJuego() {
                 </div>
 
                 <div className="flex justify-center space-x-4 mt-4">
-                  { !screenshots.some(s => !s) && !screenshots.length > 0 && (
-    <button
-        type="button"
-        onClick={addScreenshot}
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-    >
-        Añadir Screenshot
-    </button>
-)}
+                    {!screenshots.some(s => !s) && !screenshots.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={addScreenshot}
+                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                        >
+                            Añadir Screenshot
+                        </button>
+                    )}
 
                     {screenshots.length > 0 && (
                         <button

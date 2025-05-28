@@ -73,7 +73,7 @@ const hasScreenshots = game.urls?.images?.screenshots?.length > 0
           />
         )}
         <div className="absolute top-4 right-4 text-white opacity-75 hover:opacity-100">
-          <ButtonReportConfig id={game.id} tipo="GAME" session={session} />
+          <ButtonReportConfig recargaUrl={"/perfil/"+session.user.id+"/juegospublicados"} id={game.id} tipo="GAME" session={session} />
         </div>
       </div>
 

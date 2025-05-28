@@ -55,6 +55,7 @@ export async function deleteAction(prevState, formData) {
 
   const id = formData.get('id');
   const tipo = formData.get('tipo');
+  const recarga = formData.get('recarga');
 
   if (!id || !tipo) {
     throw new Error('Datos incompletos');
@@ -83,6 +84,9 @@ export async function deleteAction(prevState, formData) {
     throw error;
   }
   finally {
+    if (recarga) {
+      redirect(recarga);
+    }
     revalidatePath('/');
   }
 }
