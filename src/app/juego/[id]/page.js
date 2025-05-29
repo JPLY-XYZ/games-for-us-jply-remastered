@@ -100,7 +100,7 @@ const hasScreenshots = game.urls?.images?.screenshots?.length > 0
         <strong>Precio:</strong> {game.price !== null && game.price !== undefined ? `${game.price} €` : "Gratis"}
       </span>
       <span className="flex-1 min-w-[60px] flex items-center justify-end gap-1">
-        <Star className="w-4 h-4 text-yellow-500" /> {averageScore ?? "N/A"}
+        <Star className="w-4 h-4 text-yellow-500" /> {averageScore.toFixed(1) ?? "N/A"}
       </span>
     </div>
 
