@@ -1,14 +1,33 @@
 'use client'
 
+import { ConfirmToast } from "@/components/utilidad/confirm-toast";
 import { deleteAction, togleVisibilitiAction } from "@/lib/common/actions";
 import { Eye, EyeOff, Loader, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState } from "react";
+import toast from "react-hot-toast";
 
 function ContentListCard({ content }) {
 
     const [stateEliminarContenido, actionEliminarContenido, pendingEliminarContenido] = useActionState(deleteAction, {})
     const [stateDesactivarContenido, actionDesactivarContenido, pendingDesactivarContenido] = useActionState(togleVisibilitiAction, {})
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+    
+      ConfirmToast(
+        "¿Estás seguro de que quieres borrar esto?",
+        () => {
+          startTransition(() => {
+            actionEliminarContenido(formData);
+            setTimeout(() => {
+            toast.success("Contenido eliminado con éxito");
+            }, 1000);
+          });
+        }
+      );
+    }
 
     const [contentVisible, setContentVisible] = useState(content.visible);
 
@@ -51,7 +70,7 @@ function ContentListCard({ content }) {
 
                 </button>
             </form>
-            <form action={actionEliminarContenido}>
+            <form onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={content.id} />
                 <input type="hidden" name="tipo" value="CONTENT" />
                 <button disabled={pendingEliminarContenido} title="Eliminar" className="cursor-pointer">

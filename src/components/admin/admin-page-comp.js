@@ -358,14 +358,9 @@ export default function AdminPageComp({ users, contents, juegos, comments }) {
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
             <div className="bg-white dark:bg-slate-800 p-6 rounded-lg max-w-lg w-full">
               <h3 className="text-xl font-semibold mb-4">Comentario de {selectedComment?.user.name}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                <strong>Fecha de creación:</strong> {new Date(selectedComment?.createdAt).toLocaleDateString('es-ES')}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                <strong>Fecha de edición:</strong> {selectedComment?.updatedAt ? new Date(selectedComment?.updatedAt).toLocaleDateString('es-ES') : "No editado"}
-              </p>
-              <p className="text-sm text-gray-600 dark:bg-gray-900 rounded-2xl   bg-gray-400 dark:text-gray-400 mb-4">
-                <strong></strong> {selectedComment?.text}
+              
+              <p className="py-6 text-sm text-gray-600 dark:bg-gray-900 rounded-2xl   bg-gray-400 dark:text-gray-400 mb-4">
+                 {selectedComment?.text}
               </p>
               <div className="flex justify-end">
                 <button onClick={closeModal} className="px-4 py-2 bg-red-500 text-white rounded-lg">

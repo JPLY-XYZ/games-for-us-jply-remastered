@@ -1,13 +1,32 @@
 'use client'
+import { ConfirmToast } from "@/components/utilidad/confirm-toast";
 import { deleteAction, togleVisibilitiAction } from "@/lib/common/actions";
 import { BookOpenText, Eye, EyeOff, Loader,  Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState } from "react";
+import toast from "react-hot-toast";
 
 function CommentListCard({ btnVer, comentario }) {
 
     const [stateEliminarComentario, actionEliminarComentario, pendingEliminarComentario] = useActionState(deleteAction, {})
     const [stateDesactivarComentario, actionDesactivarComentario, pendingDesactivarComentario] = useActionState(togleVisibilitiAction, {})
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+    
+      ConfirmToast(
+        "¿Estás seguro de que quieres borrar esto?",
+        () => {
+          startTransition(() => {
+            actionEliminarComentario(formData);
+            setTimeout(() => {
+            toast.success("Comentario eliminado con éxito");
+            }, 1000);
+          });
+        }
+      );
+    }
 
     const [comentarioVisible, setComentarioVisible] = useState(comentario?.visible);
 
@@ -18,9 +37,6 @@ function CommentListCard({ btnVer, comentario }) {
 
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                     Fecha creacion: {new Date(comentario.publishedAt).toLocaleDateString('es-ES')}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {/* Fecha edicion: {comentario.editedAt ? new Date(comentario.editedAt).toLocaleDateString('es-ES') : new Date(comentario.createdAt).toLocaleDateString('es-ES')} */}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Reportes: {comentario.reportCount}</p>
             </div>
@@ -47,7 +63,7 @@ function CommentListCard({ btnVer, comentario }) {
 
                 </button>
             </form>
-            <form action={actionEliminarComentario}>
+            <form onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={comentario.id} />
                 <input type="hidden" name="tipo" value="COMMENT" />
                 <button disabled={pendingEliminarComentario} title="Eliminar" className="cursor-pointer">

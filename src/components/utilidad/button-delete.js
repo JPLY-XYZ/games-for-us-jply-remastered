@@ -1,21 +1,35 @@
-'use client'
+'use client';
 
 import { deleteAction } from "@/lib/common/actions";
 import { Trash2, Loader } from "lucide-react";
-import { useActionState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-
+import { useActionState } from "react";
+import { usePathname } from "next/navigation";
+import { ConfirmToast } from "./confirm-toast";
+import { startTransition } from "react";
 
 function ButtonDelete({ id, tipo, recargaUrl }) {
   const [state, actionDelete, pendingDelete] = useActionState(deleteAction, {});
   const pathname = usePathname();
 
+function handleSubmit(e) {
+  e.preventDefault();
+  const formData = new FormData(e.currentTarget);
+
+  ConfirmToast(
+    "¿Estás seguro de que quieres borrar esto?",
+    () => {
+      startTransition(() => {
+        actionDelete(formData);
+      });
+    }
+  );
+}
 
   return (
-    <form action={actionDelete}>
+    <form onSubmit={handleSubmit}>
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="tipo" value={tipo} />
-       <input type="hidden" name="recarga" value={recargaUrl} />
+      <input type="hidden" name="recarga" value={recargaUrl} />
       <button
         disabled={pendingDelete}
         type="submit"
@@ -32,3 +46,4 @@ function ButtonDelete({ id, tipo, recargaUrl }) {
 }
 
 export default ButtonDelete;
+

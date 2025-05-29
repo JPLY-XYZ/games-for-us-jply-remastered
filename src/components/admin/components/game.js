@@ -1,7 +1,9 @@
+import { ConfirmToast } from "@/components/utilidad/confirm-toast";
 import { deleteAction, togleVisibilitiAction } from "@/lib/common/actions";
 import { Eye, EyeOff, Loader, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState } from "react";
+import toast from "react-hot-toast";
 
 function GameListCard({ juego }) {
 
@@ -9,6 +11,23 @@ function GameListCard({ juego }) {
     const [stateEliminarJuego, actionEliminarJuego, pendingEliminarJuego] = useActionState(deleteAction, {})
     const [stateDesactivarJuego, actionDesactivarJuego, pendingDesactivarJuego] = useActionState(togleVisibilitiAction, {})
 
+    function handleSubmit(e) {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+    
+      ConfirmToast(
+        "¿Estás seguro de que quieres borrar esto?",
+        () => {
+          startTransition(() => {
+            actionEliminarJuego(formData);
+            setTimeout(() => {
+            toast.success("Juego eliminado con éxito");
+           }, 1000);
+          });
+        }
+      );
+    }
+    
     const [juegoVisible, setJuegoVisible] = useState(juego?.visible);
 
     return (<div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow flex justify-between items-center">
@@ -42,7 +61,7 @@ function GameListCard({ juego }) {
 
                 </button>
             </form>
-            <form action={actionEliminarJuego}>
+            <form onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={juego.id} />
                 <input type="hidden" name="tipo" value="GAME" />
                 <button disabled={pendingEliminarJuego} title="Eliminar" className="cursor-pointer">

@@ -58,7 +58,7 @@ export default function ValoracionResenia({ moreInfo }) {
 
   return (
     <div className="space-y-6 bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Valoraciones del juego</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Valoraciones del juego*</h2>
 
       {/* Selects */}
       {["sonido", "errores", "graficos", "historia", "requisitos", "precioCalidad", "recomendacion"].map((campo) => (

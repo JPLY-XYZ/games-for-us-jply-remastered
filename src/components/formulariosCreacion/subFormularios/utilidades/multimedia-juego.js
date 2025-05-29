@@ -56,8 +56,9 @@ export function MultimediaJuego() {
 
             <div className="space-y-2 text-center">
                 <label className="label text-gray-700 mx-auto dark:text-gray-300">Screenshots</label>
-                <h1 className='text-xs text-gray-400'>No es obligatorio la publicacion de imagenes adicionales</h1>
-                <h1 className='text-xs text-gray-400'>Puedes seleccionar mas de una imagen</h1>
+                <h1 className='text-xs text-gray-400'>Puedes subir una lista de imagenes la cual se cargara en un carrusel.</h1>
+                <h1 className='text-xs text-gray-400'>No es obligatorio la subida de imagenes adicionales.</h1>
+                <h1 className='text-xs text-gray-400'>Puedes seleccionar hasta 6 imagenes de menos de 1Mb cada una.</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
                     {screenshots.length === 0 && (
                         <p className="text-gray-500 mx-auto dark:text-gray-400">No hay screenshots añadidos.</p>
@@ -91,8 +92,9 @@ export function MultimediaJuego() {
                                     htmlFor={`screenshot_${index}`}
                                     className="flex items-center justify-center w-full h-full border-2 border-dashed border-gray-400 dark:border-gray-600 text-gray-500 dark:text-white text-sm cursor-pointer"
                                 >
-                                    Añadir screenshot
+                                    Añadir screenshots
                                 </label>
+                                
                             )}
                         </div>
                     ))}
@@ -105,7 +107,7 @@ export function MultimediaJuego() {
                             onClick={addScreenshot}
                             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                         >
-                            Añadir Screenshot
+                            Añadir Screenshots
                         </button>
                     )}
 
@@ -115,7 +117,7 @@ export function MultimediaJuego() {
                             onClick={removeAllScreenshots}
                             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                         >
-                            Eliminar todos
+                            Eliminar todos los Screenshots
                         </button>
                     )}
                 </div>

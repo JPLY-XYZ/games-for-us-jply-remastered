@@ -14,31 +14,31 @@ function FormularioJuego({ userId }) {
     coverUrl: "",
   });
 
-   
-const handleImageChange = (event, field) => {
-  const file = event.target.files[0];
-  if (file) {
-    if (!file.type.startsWith("image/")) {
-      event.target.value = ""; // Resetear el input
-      return;
+
+  const handleImageChange = (event, field) => {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        event.target.value = ""; // Resetear el input
+        return;
+      }
+
+      if (file.size > 1 * 1024 * 1024) { // 4 MB
+        toast.error("La imagen seleccionada no puede pesar más de 1 MB.");
+        event.target.value = ""; // Resetear el input
+        setImagePreviews((prev) => ({ ...prev, [field]: null }));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews((prev) => ({ ...prev, [field]: reader.result }));
+      };
+      reader.readAsDataURL(file);
     }
 
-    if (file.size > 1 * 1024 * 1024) { // 4 MB
-      toast.error("La imagen seleccionada no puede pesar más de 1 MB.");
-      event.target.value = ""; // Resetear el input
-       setImagePreviews((prev) => ({ ...prev, [field]: null }));
-      return;
-    }
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreviews((prev) => ({ ...prev, [field]: reader.result }));
-    };
-    reader.readAsDataURL(file);
-  }
-
- 
-};
+  };
 
 
   return (
@@ -59,17 +59,17 @@ const handleImageChange = (event, field) => {
           <input type="hidden" name="userId" value={userId} />
 
           <div>
-            <label className={labelClass}>Nombre</label>
+            <label className={labelClass}>Nombre*</label>
             <input name="name" required className={inputClass} placeholder="Ej: God of War" />
           </div>
 
           <div>
-            <label className={labelClass}>Descripción corta</label>
+            <label className={labelClass}>Descripción corta*</label>
             <input required name="shortDesc" className={inputClass} placeholder="Breve resumen del juego" />
           </div>
 
           <div className="md:col-span-2">
-            <label className={labelClass}>Descripción larga</label>
+            <label className={labelClass}>Descripción larga*</label>
             <textarea
               required
               name="longDesc"
@@ -80,13 +80,13 @@ const handleImageChange = (event, field) => {
           </div>
 
           <div>
-            <label className={labelClass}>Fecha de lanzamiento</label>
+            <label className={labelClass}>Fecha de lanzamiento*</label>
             <input required type="date" name="releaseDate" className={inputClass} />
           </div>
 
           <div>
-            <label className={labelClass}>Precio (€)</label>
-            <input required type="number" step="0.01" name="price" className={inputClass} placeholder="Ej: 59.99" />
+            <label className={labelClass}>Precio* (€)</label>
+            <input required type="number" step="0.01" max={999} name="price" className={inputClass} placeholder="Ej: 59.99" />
           </div>
 
           <div className="md:col-span-2">
@@ -96,7 +96,8 @@ const handleImageChange = (event, field) => {
           <div className="md:col-span-2">
             {/* Banner */}
             <div>
-              <label className="label">Banner</label>
+              <label className="label">Banner*</label>
+              <h1 className='text-xs text-gray-400'>Esta es la  imagen que sale en la cabezera de la pagina. Debe ser una imagen de almenos 1900*600.</h1>
               <input
                 required
                 name='banner'
@@ -117,7 +118,8 @@ const handleImageChange = (event, field) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Cover */}
               <div>
-                <label className="label">Cover</label>
+                <label className="label">Cover*</label>
+                <h1 className='text-xs text-gray-400'>Esta es la caratula del juego, la cual sale en los listados. Debe ser una imagen de almenos 1000*600.</h1>
                 <input
                   required
                   name='cover'
@@ -137,7 +139,9 @@ const handleImageChange = (event, field) => {
 
               {/* Thumbnail */}
               <div>
-                <label className="label">Thumbnail</label>
+                <label className="label">Thumbnail*</label>
+                <h1 className='text-xs text-gray-400'>Este es el icono del juego, la cual sale en alguno de los listados. Debe ser una imagen de almenos 600*600.</h1>
+
                 <input
                   required
                   name='thumbnail'
@@ -150,14 +154,16 @@ const handleImageChange = (event, field) => {
                   <img
                     src={imagePreviews.thumbUrl}
                     alt="Thumbnail Preview"
-                    className="mt-2 w-full aspect-[3/4] object-cover"
+                    className="mt-2 w-full aspect-[1/1] object-cover"
                   />
                 )}
               </div>
             </div>
 
             <div>
-              <label className="label">Enlace tienda</label>
+              <label className="label">Enlace tienda*</label>
+              <h1 className='text-xs text-gray-400'>Link relacionado con el juego ya sea a tienda o pagina web oficial.</h1>
+
               <input required name="shopLink" placeholder="Enlace tienda" className={inputClass} />
             </div>
 
@@ -172,6 +178,9 @@ const handleImageChange = (event, field) => {
             >
               {!pending ? "Crear juego" : <LoaderCircle className="mx-auto animate-spin" />}
             </button>
+            <h1 className='mt-1 text-xs text-gray-400'>Los campos marcados con * son obligatorios.</h1>
+             <h1 className='mt-1 text-xs text-gray-400'>Debido a las limitaciones de los servicios gratuitos utilizados en el despliegue se pueden producir errores deribados de la red, subida de archivos, se recomienda realizar copia de los datos rellenados en este formulario.</h1>
+
           </div>
         </form>
       </div>

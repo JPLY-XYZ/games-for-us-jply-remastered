@@ -32,7 +32,7 @@ function extractYouTubeId(url) {
 
 export default function FormularioTipoVideo({ gameId, user }) {
   const [state, action, pending] = useActionState(createVideoContentAction, {});
-  const [useYoutube, setUseYoutube] = useState(false);
+  const [useYoutube, setUseYoutube] = useState(true);
   const [localVideoFile, setLocalVideoFile] = useState(null);
   const [localPreview, setLocalPreview] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
@@ -105,7 +105,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
         <form className="space-y-6" action={action}>
           <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
             <div className="w-full md:w-1/2">
-              <label className={labelClass}>Título *</label>
+              <label className={labelClass}>Título*</label>
               <input
                 type="text"
                 name="title"
@@ -116,7 +116,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
             </div>
 
             <div className="w-full md:w-1/2">
-              <label className={labelClass}>Título corto</label>
+              <label className={labelClass}>Título corto*</label>
               <input
                 type="text"
                 name="shortTitle"
@@ -148,7 +148,7 @@ export default function FormularioTipoVideo({ gameId, user }) {
           {!useYoutube && (
             <div>
               <label className={labelClass}>Selecciona un video local</label>
-              <h1 className="text-xs text-gray-500">El tamaño maximo de subida son 4MB</h1>
+              <h1 className="text-xs text-gray-500">El tamaño maximo de subida son 1MB</h1>
               <input
                 type="file"
                 name="video"
@@ -215,6 +215,8 @@ export default function FormularioTipoVideo({ gameId, user }) {
             >
               {pending ? "Subiendo video ..." : "Publicar"}
             </button>
+            <h1 className='mt-1 text-xs text-gray-400'>Los campos marcados con * son obligatorios.</h1>
+             <h1 className='mt-1 text-xs text-gray-400'>Debido a las limitaciones de los servicios gratuitos utilizados en el despliegue se pueden producir errores deribados de la red, subida de archivos, se recomienda realizar copia de los datos rellenados en este formulario.</h1>
           </div>
         </form>
       </div>

@@ -22,6 +22,17 @@ export async function getUserById(id) {
   return user;
 }
 
+
+export async function updateSessionDate(id) {
+  await prisma.user.update({
+    where: { id },
+    data: {
+      lastLogin: new Date(), 
+    },
+  });
+}
+
+
 export async function getAllUsersSimple() {
   const users = await prisma.user.findMany({});
   return users;

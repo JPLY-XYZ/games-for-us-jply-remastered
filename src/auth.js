@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import prisma from "@/lib/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { getUserByEmail, getUserById } from "@/lib/data";
+import { getUserByEmail, getUserById, updateSessionDate } from "@/lib/data";
 import authConfig from "@/auth.config";
 import { SendVerifyEmail } from "./lib/email/action";
 
@@ -74,6 +74,7 @@ export const options = {
         session.user.role = token.role;
         session.user.active = token.active;
       }
+       
       return session;
     },
 
@@ -82,6 +83,7 @@ export const options = {
 
       const user = await getUserById(token.sub);
       if (!user || user.active === false) return null;
+     await updateSessionDate(token.sub);
 
       token.role = user.role;
       token.active = user.active;

@@ -12,9 +12,8 @@
             <div className='grid place-content-center min-h-screen'>
                 <Cable className="w-36 h-36 animate-bounce mx-auto" />
                 <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4">ERROR</h1>
-                <p>Probablemente has intentado subir una imagen o video con un tamaño superior a 1Mb o el tiempo de respuesta se a excedido.</p>
-
-                <p>Comprueba tu conexion.</p>
+                <p>Se ha producido un error, ponte en contacto con el administrador.</p>
+                <p>Probablemente estes esperimentando alta latencia con el servidor.</p>
                 <p>{error}</p>
 
                 <button

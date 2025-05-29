@@ -1,9 +1,11 @@
 'use client'
 
+import { ConfirmToast } from "@/components/utilidad/confirm-toast";
 import { changeRolOfUserAction, deleteAction, suspenderAcount } from "@/lib/common/actions";
 import { Eye, Loader, Shield, ShieldOff, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useState } from "react";
+import toast from "react-hot-toast";
 
 function UserListCard({ user }) {
 
@@ -13,6 +15,23 @@ function UserListCard({ user }) {
     const [statechangeRolCuenta, actionChangeRolCuenta, pendingChangeRolCuenta] = useActionState(changeRolOfUserAction, {})
     const [stateDesactivarCuenta, actionDesactivarCuenta, pendingDesactivarCuenta] = useActionState(suspenderAcount, {})
     const [userActive, setUserActive] = useState(user.active);
+
+        function handleSubmit(e) {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+    
+      ConfirmToast(
+        "¿Estás seguro de que quieres borrar esto?",
+        () => {
+          startTransition(() => {
+            actionEliminarCuenta(formData);
+            setTimeout(() => {
+            toast.success("Usuario eliminado con éxito");
+           }, 1000);
+          });
+        }
+      );
+    }
 
     return (<div className="bg-white dark:bg-slate-800 p-3 shadow rounded-md flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
     {/* Sección izquierda: imagen e info */}
@@ -85,7 +104,7 @@ function UserListCard({ user }) {
                 </button>
             </form>
 
-            <form action={actionEliminarCuenta}>
+            <form onSubmit={handleSubmit}>
                 <input type="hidden" name="id" value={user.id} />
                 <input type="hidden" name="tipo" value="USER" />
                 <button disabled={pendingEliminarCuenta} title="Eliminar" className="cursor-pointer">

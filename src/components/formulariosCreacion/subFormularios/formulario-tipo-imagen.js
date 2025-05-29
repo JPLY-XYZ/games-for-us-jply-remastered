@@ -43,7 +43,7 @@ export default function FormularioTipoImagen({ gameId, user }) {
         <form className="space-y-6" action={createAction}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className={labelClass}>Título</label>
+              <label className={labelClass}>Título*</label>
               <input
                 type="text"
                 name="title"
@@ -54,7 +54,7 @@ export default function FormularioTipoImagen({ gameId, user }) {
             </div>
 
             <div>
-              <label className={labelClass}>Título corto</label>
+              <label className={labelClass}>Título corto*</label>
               <input
                 type="text"
                 name="shortTitle"
@@ -71,7 +71,7 @@ export default function FormularioTipoImagen({ gameId, user }) {
 
           <FileUploaderInput
             name="img"
-            label="Selecciona una imagen"
+            label="Selecciona una imagen*"
             accept="image/*"
             showPreview={true}
             previewAspectRatio="16/9"
@@ -87,6 +87,8 @@ export default function FormularioTipoImagen({ gameId, user }) {
             >
               {createPending ? "Subiendo imagen ..." : "Publicar"}
             </button>
+            <h1 className='mt-1 text-xs text-gray-400'>Los campos marcados con * son obligatorios.</h1>
+             <h1 className='mt-1 text-xs text-gray-400'>Debido a las limitaciones de los servicios gratuitos utilizados en el despliegue se pueden producir errores deribados de la red, subida de archivos, se recomienda realizar copia de los datos rellenados en este formulario.</h1>
           </div>
         </form>
       </div>

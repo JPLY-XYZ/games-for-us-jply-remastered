@@ -57,7 +57,7 @@ export default function FormularioTipoNoticia({ user, gameId }) {
         <form className="space-y-6" action={createAction}>
           <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-6 sm:space-y-0">
             <div className="w-full sm:w-1/2">
-              <label className={labelClass}>Título *</label>
+              <label className={labelClass}>Título*</label>
               <input
                 type="text"
                 name="titulo"
@@ -67,7 +67,7 @@ export default function FormularioTipoNoticia({ user, gameId }) {
               />
             </div>
             <div className="w-full sm:w-1/2">
-              <label className={labelClass}>Título corto</label>
+              <label className={labelClass}>Título corto*</label>
               <input
                 type="text"
                 name="tituloCorto"
@@ -79,7 +79,7 @@ export default function FormularioTipoNoticia({ user, gameId }) {
           </div>
 
           <div>
-            <label className={labelClass}>Texto *</label>
+            <label className={labelClass}>Texto*</label>
             <textarea
               name="texto"
               className={`${inputClass} resize-none min-h-[150px]`}
@@ -89,11 +89,13 @@ export default function FormularioTipoNoticia({ user, gameId }) {
           </div>
 
           <div>
-            <label className={labelClass}>Banner principal</label>
+            <label className={labelClass}>Banner principal*</label>
+            <h1 className='text-xs text-gray-400'>Esta es la  imagen que sale en la cabezera de la pagina. Debe ser una imagen de almenos 1900*600.</h1>
+
             <FileUploaderInput
               required={true}
               name="banner"
-              label="Selecciona un banner"
+              label=""
               accept="image/*"
               showPreview={true}
               previewAspectRatio="16/9"
@@ -104,11 +106,13 @@ export default function FormularioTipoNoticia({ user, gameId }) {
           </div>
 
           <div>
-            <label className={labelClass}>Thumbnail principal</label>
+            <label className={labelClass}>Thumbnail principal*</label>
+            <h1 className='text-xs text-gray-400'>Esta es la caratula de la reseña, la cual sale en los listados. Debe ser una imagen de almenos 1000*600.</h1>
+
             <FileUploaderInput
               required={true}
               name="thumbnail"
-              label="Selecciona un thumbnail"
+              label=""
               accept="image/*"
               showPreview={true}
               previewAspectRatio="16/9"
@@ -132,6 +136,8 @@ export default function FormularioTipoNoticia({ user, gameId }) {
             >
               {createPending ? "Subiendo noticia..." : "Publicar"}
             </button>
+            <h1 className='mt-1 text-xs text-gray-400'>Los campos marcados con * son obligatorios.</h1>
+             <h1 className='mt-1 text-xs text-gray-400'>Debido a las limitaciones de los servicios gratuitos utilizados en el despliegue se pueden producir errores deribados de la red, subida de archivos, se recomienda realizar copia de los datos rellenados en este formulario.</h1>
           </div>
         </form>
       </div>
