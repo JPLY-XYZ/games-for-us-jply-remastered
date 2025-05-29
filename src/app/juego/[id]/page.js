@@ -130,12 +130,12 @@ const hasScreenshots = game.urls?.images?.screenshots?.length > 0
       </div>
 
       {/* Contenido adicional */}
-      <div className="max-w-screen-xl mx-auto mt-12 px-6">
+      <div className="max-w-screen-xl mx-auto mb-10 mt-12 px-6">
         <ListadoContenidosDesplegable session={session} game={game} />
       </div>
 
       {/* Requisitos */}
-      {game.requirements && (
+      {game.requirements.minimum.storage != "" || game.requirements.minimum.storage != " " && (
         <div className="max-w-screen-xl mx-auto mt-12 px-6 mb-10">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Requisitos</h2>
 

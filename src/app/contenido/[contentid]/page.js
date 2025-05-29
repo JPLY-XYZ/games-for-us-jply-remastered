@@ -107,6 +107,7 @@ export default async function Page({ params }) {
   };
 
   const valoraciones = (valoraciones) => {
+    
     return (
       <div className="p-6 bg-white dark:bg-slate-900 rounded-lg shadow-lg max-w-screen-sm mx-auto">
         <ul className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -252,6 +253,7 @@ export default async function Page({ params }) {
         </div>
 
         {/* Valoraciones si es reseña */}
+        
         {content.type === "RESEÑA" && valoraciones(content.moreInfo)}
 
         {/* Comentarios */}
