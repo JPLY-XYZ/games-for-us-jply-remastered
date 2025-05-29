@@ -9,7 +9,7 @@ export function ConfirmToast(mensaje, onConfirmar, onCancelar) {
         <button
           onClick={() => {
             toast.dismiss(t.id);
-            onConfirmar?.(); // Ejecuta si existe
+            onConfirmar?.(); 
           }}
           className="cursor-pointer px-3 py-1 bg-green-500 text-white rounded"
         >
@@ -18,7 +18,7 @@ export function ConfirmToast(mensaje, onConfirmar, onCancelar) {
         <button
           onClick={() => {
             toast.dismiss(t.id);
-            onCancelar?.(); // Ejecuta si existe
+            onCancelar?.(); 
           }}
           className="cursor-pointer px-3 py-1 bg-red-500 text-white rounded"
         >
