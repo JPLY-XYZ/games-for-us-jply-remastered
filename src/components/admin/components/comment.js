@@ -31,8 +31,8 @@ function CommentListCard({ btnVer, comentario }) {
     const [comentarioVisible, setComentarioVisible] = useState(comentario?.visible);
 
     return (<div className="bg-white dark:bg-slate-800 p-3 shadow flex flex-row justify-between items-center">
-        <div className="flex flex-row items-center gap-3">
-            <div>
+        <div className="flex flex-row  gap-3">
+            <div className="text-left">
                 <p className="font-bold">Comentario de <Link href={`/perfil/${comentario.user.id}`}>{comentario.user.name}</Link></p>
 
                 <p className="text-xs text-gray-500 dark:text-gray-400">

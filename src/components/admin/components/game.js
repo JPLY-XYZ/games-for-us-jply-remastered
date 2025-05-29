@@ -30,22 +30,26 @@ function GameListCard({ juego }) {
     
     const [juegoVisible, setJuegoVisible] = useState(juego?.visible);
 
-    return (<div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow flex justify-between items-center">
-        {/* Se utiliza LINK para que al hacer click lleva al contendo */}
-        <Link href={`/juego/${juego.id}`} className="flex flex-row items-center gap-3">
-            <img
-                src={juego.urls.images.cover}
-                className="object-cover w-26 h-16 sm:w-46 sm:h-26"
-                alt="Imagen Juego"
-            />
-            <div>
-                <p className="font-bold">{juego.name}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Publicado: {new Date(juego.publishedAt).toLocaleDateString('es-ES')} </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Reportes: {juego.reportCount}</p>
-            </div>
-        </Link>
-        <div className="flex gap-2 ">
-           <form action={actionDesactivarJuego}> {/* Al pulsar el boton se ejecuta la accion y se elimina el juego tras hacer un tiempo de espera */}
+    return (<div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+  {/* Contenido con Link solo en imagen + texto */}
+  <Link href={`/juego/${juego.id}`} className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+    <img
+      src={juego.urls.images.cover}
+      className="object-cover aspect-video w-full max-w-xs h-auto sm:w-26 sm:h-16 md:w-46 md:h-26 rounded-md"
+      alt="Imagen Juego"
+    />
+    <div className="text-left w-full sm:w-auto">
+      <p className="font-bold truncate">{juego.name}</p>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        Publicado: {new Date(juego.publishedAt).toLocaleDateString('es-ES')}
+      </p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">Reportes: {juego.reportCount}</p>
+    </div>
+  </Link>
+
+  {/* Botones fuera del Link para mantener funcionalidad */}
+  <div className="flex gap-2 justify-center sm:justify-start w-full sm:w-auto mt-3 sm:mt-0">
+    <form action={actionDesactivarJuego}> {/* Al pulsar el boton se ejecuta la accion y se elimina el juego tras hacer un tiempo de espera */}
                 <input type="hidden" name="id" value={juego.id} />
                 <input type="hidden" name="tipo" value="GAME" />
                 <button disabled={pendingDesactivarJuego} className="cursor-pointer" onClick={() => setJuegoVisible(!juegoVisible)} title={!juegoVisible ? "Mostrar" : "Ocultar"}>
@@ -69,8 +73,9 @@ function GameListCard({ juego }) {
                     {pendingEliminarJuego ? <Loader className="animate-spin" /> : <Trash2 className="w-5 h-5 text-red-500" />}
                 </button>
             </form>
-        </div>
-    </div>);
+  </div>
+</div>
+);
 }
 
 export default GameListCard;

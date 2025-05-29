@@ -31,30 +31,36 @@ function ContentListCard({ content }) {
 
     const [contentVisible, setContentVisible] = useState(content.visible);
 
-    return (<div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow flex justify-between items-center">
-        <div className="flex flex-row items-center gap-3">
-            <img
-                src={
-                    content.type === 'VIDEO'
-                        ? "/images/video.png"
-                        : content.urls?.img || content.urls?.imgs?.thumbnail
-                }
-                className="object-cover w-26 h-16 sm:w-46 sm:h-26"
-                alt={content.type === 'VIDEO' ? "Video Preview" : "User Preview"}
-            />
-            <div>
-                <p className="font-bold"><Link className="cursor-pointer" href={`/contenido/${content.id}`}>{content.title}</Link></p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {content.type} de <Link href={`/perfil/${content.user.id}`}>{content.user.name}</Link>
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Fecha publicacion: {new Date(content.publishedAt).toLocaleDateString('es-ES')}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Reportes: {content.reportCount}</p>
-            </div>
-        </div>
-        <div className="flex gap-2">
-            <form action={actionDesactivarContenido}>
+    return (<div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+  <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 w-full sm:w-auto">
+    <img
+      src={
+        content.type === 'VIDEO'
+          ? "/images/video.png"
+          : content.urls?.img || content.urls?.imgs?.thumbnail
+      }
+      className="object-cover aspect-video w-full max-w-xs sm:w-26 sm:h-16 md:w-46 md:h-26 rounded-md"
+      alt={content.type === 'VIDEO' ? "Video Preview" : "User Preview"}
+      style={{ height: 'auto' }}
+    />
+    <div className="text-left w-full sm:w-auto">
+      <p className="font-bold">
+        <Link className="cursor-pointer" href={`/contenido/${content.id}`}>
+          {content.title}
+        </Link>
+      </p>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        {content.type} de <Link href={`/perfil/${content.user.id}`}>{content.user.name}</Link>
+      </p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        Fecha publicación: {new Date(content.publishedAt).toLocaleDateString('es-ES')}
+      </p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">Reportes: {content.reportCount}</p>
+    </div>
+  </div>
+
+  <div className="flex gap-2 justify-center sm:justify-start w-full sm:w-auto">
+   <form action={actionDesactivarContenido}>
                 <input type="hidden" name="id" value={content.id} />
                 <input type="hidden" name="tipo" value="CONTENT" />
                 <button disabled={pendingDesactivarContenido} className="cursor-pointer" onClick={() => setContentVisible(!contentVisible)} title={!contentVisible ? "Mostrar" : "Ocultar"}>
@@ -79,8 +85,9 @@ function ContentListCard({ content }) {
                 </button>
             </form>
 
-        </div>
-    </div>);
+  </div>
+</div>
+);
 }
 
 export default ContentListCard;
