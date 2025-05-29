@@ -30,7 +30,7 @@ export default async function Page({ params }) {
       <div className="max-w-[100%] md:max-w-[80%] min-w-[100%] md:min-w-[80%]">
         {/* Header Section */} 
         {/* Juegos List Section */}
-        <JuegosClient initialGames={visibleGames} title={"Juegos favoritos de " + session.user.name}  session={session} />
+        <JuegosClient initialGames={visibleGames} title={"Juegos favoritos de " + user.name}  session={session} />
       </div>
     
   );

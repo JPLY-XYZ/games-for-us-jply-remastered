@@ -36,7 +36,7 @@ return (
        
 
       {/* Juegos List Section */}
-      <JuegosClient initialGames={visibleGames} isOwner={isOwner} title={"Juegos publicados por " + session.user.name} session={session} />
+      <JuegosClient initialGames={visibleGames} isOwner={isOwner} title={"Juegos publicados por " + user.name} session={session} />
     </div>
   
 );
