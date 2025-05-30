@@ -135,7 +135,7 @@ const hasScreenshots = game.urls?.images?.screenshots?.length > 0
       </div>
 
       {/* Requisitos */}
-      {game.requirements.minimum.storage != "" || game.requirements.minimum.storage != " " && (
+      {game.requirements.minimum.storage != " " && (
         <div className="max-w-screen-xl mx-auto mt-12 px-6 mb-10">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Requisitos</h2>
 

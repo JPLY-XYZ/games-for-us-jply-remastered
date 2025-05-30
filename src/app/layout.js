@@ -42,7 +42,7 @@ export default async function RootLayout({ children }) {
               </Link>
             </div>
 
-            <div className="flex-1 flex items-center mx-4">
+            <aside className="flex-1 flex items-center mx-4">
               <div className="hidden md:flex gap-3">
                 <Link href="/contenidos" className="bg-[var(--aside-card-background)]  hover:bg-white dark:hover:bg-white  dark:hover:text-black  dark:text-white  text-black transition-colors duration-200 px-4 py-1 rounded-md font-semibold text-sm">
                   Contenidos
@@ -58,7 +58,7 @@ export default async function RootLayout({ children }) {
               <div className=" w-full mx-auto lg:w-[26rem] md:w-[18rem] md:mx-0 md:ml-auto">
                 <Buscador />
               </div>
-            </div>
+            </aside>
 
             <div className="flex items-center">
               <AuthButtons session={session} />

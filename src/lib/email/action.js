@@ -42,7 +42,7 @@ export async function SendVerifyEmail(email, id) {
       </a>
       <p>Si no has creado una cuenta, puedes ignorar este mensaje.</p>
       <div style="font-size: 12px; color: #888; margin-top: 30px; text-align: center;">
-        &copy; 2025 GAMES FOR US V 1.1. Todos los derechos reservados.
+        &copy; 2025 GAMES FOR US V 1.3. Todos los derechos reservados.
       </div>
     </div>
   </div>
