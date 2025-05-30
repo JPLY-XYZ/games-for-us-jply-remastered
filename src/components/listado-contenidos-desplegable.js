@@ -105,7 +105,7 @@ export default function ListadoContenidosDesplegable({ game, session }) {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto mt-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-screen-xl w-auto mx-auto mt-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Contenidos</h2>
@@ -182,7 +182,7 @@ export default function ListadoContenidosDesplegable({ game, session }) {
               <Link
                 href={`/contenido/${contenido.id}`}
                 key={contenido.id}
-                className="relative bg-white dark:bg-gray-800 rounded-xl shadow p-4 hover:shadow-lg transition block w-full h-full"
+                className="relative bg-white dark:bg-gray-800 rounded-xl shadow p-4 hover:shadow-lg transition block  w-[80vw] sm:w-full sm:h-full"
               >
                 <div
                   className="absolute top-3 right-3 z-10"
