@@ -5,6 +5,7 @@
 import { revalidatePath } from "next/cache";
 import { deactivateAcount, deleteComment, deleteContent, deleteGame, deleteUser, reportComment, reportContent, reportGame, reportUser, setFavoriteGame, setFavoriteThink, toggleVisibleComment, toggleVisibleContent, toggleVisibleGame } from "../data";
 import { redirect } from "next/navigation";
+import prisma from "../prisma";
 
 
 
