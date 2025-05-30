@@ -68,9 +68,6 @@ function UserListCard({ user }) {
                 value={user.role}
                 onChange={(e) => {
                     e.target.form.requestSubmit();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 500);
                 }}
                 disabled={pendingChangeRolCuenta}
                 className="w-full sm:w-auto border rounded px-2 py-1 text-sm cursor-pointer disabled:opacity-50 text-gray-800 dark:text-white bg-white dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-150"

@@ -182,7 +182,7 @@ export async function changeRolOfUserAction(prevState, formData) {
       },
     });
 
-revalidatePath('/');
+revalidatePath('/administradores');
 
 
 
