@@ -173,6 +173,7 @@ export default async function Page({ params }) {
         {/* Botón de reportar */}
         <div className="absolute top-2 right-2 flex gap-2 z-10">
           <ButtonReportConfig recargaUrl={"/juego/"+content.gameId} id={content.id} tipo="CONTENT" session={session} subtipo={content.type} />
+             {session?.user.role == "ADMINISTRADOR" && content.reportCount}
         </div>
 
         {/* Título */}

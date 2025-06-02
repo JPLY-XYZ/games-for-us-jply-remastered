@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Youtube, Gamepad2, MessageCircle, ThumbsUpIcon } from "lucide-react";
+import { Youtube, Gamepad2, MessageCircle, ThumbsUpIcon, Triangle } from "lucide-react";
 import ButtonReportConfig from "@/components/utilidad/button-report-config";
 
 
@@ -148,13 +148,23 @@ export default function TarjetaContenido({ contenido, sesion }) {
             </div>
           )}
 
-          
+          <div className="flex items-center gap-1">
             <ButtonReportConfig
               id={contenido.id}
               tipo="CONTENT"
               session={sesion}
               subtipo={contenido.type}
             />
+             <span >
+              
+    {sesion?.user.role == "ADMINISTRADOR" && contenido.reportCount}
+  </span>
+        <div>
+  
+ 
+</div>
+
+            </div>
         
 
           {/* Borde animado abajo */}

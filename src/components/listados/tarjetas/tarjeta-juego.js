@@ -14,7 +14,10 @@ export default function TarjetaJuego({ game, isOwner, session }) {
       
       {/* Botón reportar en esquina superior derecha */}
       <div className="absolute bottom-2 right-4 z-5">
+        <div className="flex items-center gap-1">
         <ButtonReportConfig id={game.id} tipo={"GAME"} session={session} />
+         {session?.user.role == "ADMINISTRADOR" && game.reportCount}
+         </div>
       </div>
 
       <Link href={`/juego/${game.id}`} className="flex flex-col flex-1">

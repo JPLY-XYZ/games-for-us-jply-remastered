@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { isOwner } from "@/lib/data";
 import ButtonDelete from "./button-delete";
 import ButtonReport from "./button-report";
-import {  Loader, LogIn } from 'lucide-react';
+import {  AlertTriangle, Loader, LogIn } from 'lucide-react';
 import Link from 'next/link';
 
 function ButtonReportConfig({ id, tipo, session, recargaUrl }) {
@@ -23,6 +23,10 @@ function ButtonReportConfig({ id, tipo, session, recargaUrl }) {
 
     if (session?.user == null) {
         return <Link href="/login"><LogIn  className="w-6 h-6" /></Link>;
+    }
+
+ if (session?.user.role == "ADMINISTRADOR") {
+      return  <AlertTriangle className="w-6 h-6" />;
     }
 
 

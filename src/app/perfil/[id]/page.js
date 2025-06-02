@@ -41,7 +41,13 @@
                 <div className="relative h-full">
                     <EditImageFondo user={user} ownership={ownership} />
                     <div className="absolute top-2 right-2 z-10">
+                       {!ownership && <div className="flex items-center gap-1">
+                            
                         <ButtonReportConfig id={user.id} tipo="USER" session={session} />
+                         {session?.user.role == "ADMINISTRADOR" && user.reportCount}
+                        </div> }
+                        
+                        
                     </div>
                 </div>
             </div>
