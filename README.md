@@ -14,9 +14,7 @@ src
 ┣ auth.js
 ┣ middleware.js
 
-markdown
-Copiar
-Editar
+
 
 ---
 
